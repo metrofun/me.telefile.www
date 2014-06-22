@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
+    nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream');
 
@@ -23,7 +24,7 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('server', function (next) {
+gulp.task('static-server', function (next) {
     var NodeServer = require('node-static'),
         server = new NodeServer.Server('./public'),
         port = 8080;
@@ -38,4 +39,12 @@ gulp.task('server', function (next) {
     });
 });
 
-gulp.task('default', ['browserify', 'server', 'watch']);
+gulp.task('signal-server', function () {
+    nodemon({
+        script: 'signal_server/index.js',
+        watch: ['signal_server'],
+        ext: 'js'
+    });
+});
+
+gulp.task('default', ['browserify', 'static-server', 'signal-server', 'watch']);
