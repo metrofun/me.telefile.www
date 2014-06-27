@@ -1,3 +1,5 @@
+var SignalBus = require('./SignalBus.js');
+
 function PeerConnection(channelId) {
     var self = this;
 
@@ -9,7 +11,7 @@ function PeerConnection(channelId) {
     this._onLocalSdp = this._onLocalSdp.bind(this);
 
     if (this._isCaller) {
-        this._peerConnection.createOffer(this._onLocalSdp, null, this._mediaConstraints);
+        this._peerConnection.createOffer(this._onLocalSdp);
     }
 
     //subscribe to local and remote events
@@ -17,7 +19,7 @@ function PeerConnection(channelId) {
         this._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
 
         if (!self._isCaller) {
-            self._peerConnection.createAnswer(this._onLocalSdp, null, this._mediaConstraints);
+            self._peerConnection.createAnswer(this._onLocalSdp);
         }
     });
     this._signalBus.on('candidate', function (candidate) {
@@ -28,21 +30,21 @@ function PeerConnection(channelId) {
     };
 }
 PeerConnection.prototype.getDataChannel = function () {
-    var dataChannel, self = this;
+
     if (!this._dataChannelPromise) {
-        this._dataChannelPromise = new Promise();
+        this._dataChannelPromise = new Promise(function (resolve, reject) {
+            var dataChannel = this._peerConnection.createDataChannel('default', {
+                reliable: true,
+                ordered: false,
+            });
 
-        dataChannel = this._peerConnection.createDataChannel('default', {
-            reliable: true,
-            ordered: false,
+            dataChannel.onopen = function () {
+                resolve(dataChannel);
+            };
+            dataChannel.onerror = dataChannel.onclose = function (e) {
+                reject(dataChannel);
+            };
         });
-
-        dataChannel.onopen = function () {
-            self._dataChannelPromise.resolve(dataChannel);
-        };
-        dataChannel.onerror = dataChannel.onclose = function (e) {
-            self._dataChannelPromise.reject(dataChannel);
-        };
     }
     return this._dataChannelPromise;
 };
@@ -51,7 +53,7 @@ PeerConnection.prototype._onLocalSdp = function (sdp) {
     this._signalBus.emit('sdp', sdp);
 };
 PeerConnection.prototype._mediaConstraints = {
-    OfferToReceiveAudio: false,
-    OfferToReceiveVideo: false
+    OfferToReceiveAudio: 0,
+    OfferToReceiveVideo: 0
 };
 module.exports = PeerConnection;

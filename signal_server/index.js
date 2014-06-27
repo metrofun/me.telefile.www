@@ -1,9 +1,12 @@
-var WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({port: 1111});
+var koa = require('koa'),
+    app = koa(),
+    http = require('http'),
+    server = http.createServer(app.callback()),
+    sockjs = require('sockjs'),
+    cors = require('koa-cors');
 
-wss.on('connection', function(ws) {
-    ws.on('message', function(message) {
-        console.log('message', message);
-    });
-    ws.send('something');
-});
+app.use(cors());
+
+sockjs.createServer().installHandlers(server);
+
+server.listen(1111);

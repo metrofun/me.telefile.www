@@ -1,4 +1,5 @@
 var EventEmitter = require('events').EventEmitter,
+    SockJS = require('sockjs-client'),
     util = require('util');
 
 function SignalBus(busNumber) {
@@ -9,26 +10,27 @@ function SignalBus(busNumber) {
 util.inherits(SignalBus, EventEmitter);
 
 SignalBus.prototype.connect = function () {
-    var promise = new Promise();
+    if (!this._sockPromise) {
+        this._sockPromise = new Promise(function (resolve, reject) {
+            this._sock = SockJS.create('http://127.0.0.1:1111');
+            this._sock.onmessage = this._onMessage;
 
-    this._sock = new SockJS( 'ws://127.0.0.1:1111/v1/room/' + (this.busNumber || ''));
-    this._sock.onmessage = this._onMessage;
-
-    _sock.onopen = function() {
-        _sock.resolve(this);
-    };
-    _sock.onclose = function() {
-        _sock.reject(this._sock);
-    };
-
-    return promise;
+            this._sock.onopen = resolve;
+            this._sock.onclose = reject;
+        }.bind(this));
+    }
+    return this._sockPromise;
 };
 SignalBus.prototype.emit = function () {
-    var args;
+    var args = arguments;
 
-    return this.connect().then(function () {
+    this.connect().then(function () {
         this._sock.send(JSON.stringify(args));
-    }.bind(this));
+    }.bind(this)).catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
+    });
 };
 SignalBus.prototype._onMessage = function (data) {
     this.emit.apply(this, JSON.parse(data));
