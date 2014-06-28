@@ -4,8 +4,8 @@ var EventEmitter = require('events').EventEmitter,
 
 window.SockJS = SockJS;
 
-function SignalBus(busNumber) {
-    this.busNumber = busNumber || 'create';
+function SignalBus(id) {
+    this.id = id;
 
     this.connect().catch(function (e) {
         setTimeout(function () {
@@ -20,14 +20,16 @@ SignalBus.prototype.connect = function () {
 
     if (!this._sockPromise) {
         this._sockPromise = new Promise(function (resolve, reject) {
-            self._sock = new SockJS('http://127.0.0.1:1111/v1/room/' + self.busNumber || 'create');
-            self._sock.onmessage = function (message) {
-                self.busNumber = message.data;
+            self._sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (self.id || 'create'));
 
-                console.log('busNumber', self.busNumber);
-                self._sock.onmessage = self._onMessage.bind(self);
-            };
+            if (!self.id) {
+                self.once('meta', function (meta) {
+                    self.id = meta.id;
+                    console.log(meta.id);
+                });
+            }
 
+            self._sock.onmessage = self._onMessage.bind(self);
             self._sock.onopen = resolve;
             self._sock.onclose = reject;
         });

@@ -13,8 +13,7 @@ var koa = require('koa'),
 router.addRoute('/v1/room/create/*', function (stream) {
     var roomHash = rooms.create(stream);
 
-    stream.write(roomHash);
-    console.log('write', roomHash);
+    stream.write(JSON.stringify(['meta', {id: roomHash}]));
 });
 router.addRoute('/v1/room/:roomHash/*', function (stream, params) {
     rooms.join(stream, params.roomHash);

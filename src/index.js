@@ -8,6 +8,10 @@ document.getElementById('create-button').onclick = function () {
 
     connection.getDataChannel().then(function () {
         console.log('dataChannel', arguments);
+    }).catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
     });
 };
 document.getElementById('join-button').onclick = function () {
@@ -15,5 +19,9 @@ document.getElementById('join-button').onclick = function () {
 
     connection.getDataChannel().then(function () {
         console.log('dataChannel', arguments);
+    }).catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
     });
 };
