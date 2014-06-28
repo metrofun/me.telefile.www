@@ -4,16 +4,16 @@ var PeerConnection = require('./PeerConnection.js');
 
 
 document.getElementById('create-button').onclick = function () {
-    console.log('created');
-
-    var connection = new PeerConnection('zzz');
+    var connection = new PeerConnection();
 
     connection.getDataChannel().then(function () {
-        console.log(arguments);
+        console.log('dataChannel', arguments);
     });
-
 };
-document.getElementById('join-form').onclick = function () {
-    console.log(document.getElementById('room-input').value);
-    return false;
+document.getElementById('join-button').onclick = function () {
+    var connection = new PeerConnection(document.getElementById('room-input').value);
+
+    connection.getDataChannel().then(function () {
+        console.log('dataChannel', arguments);
+    });
 };

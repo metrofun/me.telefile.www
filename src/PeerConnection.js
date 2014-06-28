@@ -16,14 +16,14 @@ function PeerConnection(channelId) {
 
     //subscribe to local and remote events
     this._signalBus.once('sdp', function (sdp) {
-        this._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
+        self._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
 
         if (!self._isCaller) {
-            self._peerConnection.createAnswer(this._onLocalSdp);
+            self._peerConnection.createAnswer(self._onLocalSdp);
         }
     });
     this._signalBus.on('candidate', function (candidate) {
-        this._peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+        self._peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
     this._peerConnection.onicecandidate = function (e) {
         self._signalBus.emit('candidate', e.candidate);
@@ -41,7 +41,7 @@ PeerConnection.prototype.getDataChannel = function () {
             dataChannel.onopen = function () {
                 resolve(dataChannel);
             };
-            dataChannel.onerror = dataChannel.onclose = function (e) {
+            dataChannel.onerror = dataChannel.onclose = function () {
                 reject(dataChannel);
             };
         });

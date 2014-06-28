@@ -6,16 +6,19 @@ var koa = require('koa'),
     sockjs = require('sockjs'),
     httpServer = http.createServer(app.callback()),
     sockjsServer = sockjs.createServer(),
-    cors = require('koa-cors');
+    cors = require('koa-cors'),
 
-router.addRoute('/v1/room/create/*', onRoomCreate);
-router.addRoute('/v1/room/:roomNumber/*', onRoomJoin);
+    rooms = require('./rooms.js');
 
-function onRoomCreate(transmitter) {
-}
-function onRoomJoin(receiver, params) {
-    console.log(params.roomNumber);
-}
+router.addRoute('/v1/room/create/*', function (stream) {
+    var roomHash = rooms.create(stream);
+
+    stream.write(roomHash);
+    console.log('write', roomHash);
+});
+router.addRoute('/v1/room/:roomHash/*', function (stream, params) {
+    rooms.join(stream, params.roomHash);
+});
 
 app.use(cors());
 
