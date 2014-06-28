@@ -1,6 +1,9 @@
 var EventEmitter = require('events').EventEmitter,
-    SockJS = require('sockjs-client'),
+    SockJS = require('sockjs-client/lib/sockjs.js'),
     util = require('util');
+
+// @see https://github.com/sockjs/sockjs-client/pull/184
+window.SockJS = SockJS;
 
 function SignalBus(busNumber) {
     this.busNumber = busNumber;
@@ -12,7 +15,7 @@ util.inherits(SignalBus, EventEmitter);
 SignalBus.prototype.connect = function () {
     if (!this._sockPromise) {
         this._sockPromise = new Promise(function (resolve, reject) {
-            this._sock = SockJS.create('http://127.0.0.1:1111');
+            this._sock = new SockJS('http://127.0.0.1:1111');
             this._sock.onmessage = this._onMessage;
 
             this._sock.onopen = resolve;

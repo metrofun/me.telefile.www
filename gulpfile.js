@@ -7,11 +7,14 @@ var gulp = require('gulp'),
 
 gulp.task('browserify', function () {
     var bundleStream = browserify('./src/index.js').bundle({
-        // debug: true
+        debug: true
     });
 
     return bundleStream
-        .on('error', gutil.log)
+        .on('error', function () {
+            this.emit('end');
+            gutil.log.apply(this, arguments);
+        })
         .pipe(source('index.js'))
         .pipe(gulp.dest('public'))
         .pipe(livereload());
