@@ -5,23 +5,7 @@ var PeerConnection = require('./PeerConnection.js');
 
 document.getElementById('create-button').onclick = function () {
     var connection = new PeerConnection();
-
-    connection.getDataChannel().then(function () {
-        console.log('dataChannel', arguments);
-    }).catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
 };
 document.getElementById('join-button').onclick = function () {
     var connection = new PeerConnection(document.getElementById('room-input').value);
-
-    connection.getDataChannel().then(function () {
-        console.log('dataChannel', arguments);
-    }).catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
 };

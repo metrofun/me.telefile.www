@@ -9,14 +9,14 @@ function PeerConnection(channelId) {
         iceServers: require('./iceServers.js')
     }, {optional: [{ RtpDataChannels: true }]});
 
-    this._ensureDataChannelEnabled();
-
     this._onLocalSdp = this._onLocalSdp.bind(this);
 
     if (this._isCaller) {
+        this._createDataChannel();
         this._peerConnection.createOffer(this._onLocalSdp);
-        this._peerConnection.ondatachannel = function () {
-            console.log('ondatachannel');
+    } else {
+        this._peerConnection.ondatachannel = function (e) {
+            console.log('ondatachannel', e);
         };
     }
 
@@ -29,9 +29,9 @@ function PeerConnection(channelId) {
             self._peerConnection.createAnswer(self._onLocalSdp);
         }
 
-        this.on('candidate', function (candidate) {
-            self._peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-        });
+    });
+    this._signalBus.on('candidate', function (candidate) {
+        self._peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
     this._peerConnection.onicecandidate = function (e) {
         if (e.candidate) {
@@ -40,27 +40,27 @@ function PeerConnection(channelId) {
     };
 }
 PeerConnection.prototype._ensureDataChannelEnabled = function () {
-    this.getDataChannel();
+    this.getDataChannel().catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
+    });
 };
-PeerConnection.prototype.getDataChannel = function () {
-    if (!this._dataChannelPromise) {
-        this._dataChannelPromise = new Promise(function (resolve, reject) {
-            var dataChannel = this._peerConnection.createDataChannel('default', {
-                reliable: true,
-                ordered: false,
-            });
+PeerConnection.prototype._createDataChannel = function () {
+    var dataChannel = this._peerConnection.createDataChannel('default', {
+        reliable: true,
+        ordered: false,
+    });
+    console.log(dataChannel);
 
-            dataChannel.onopen = function () {
-                console.log('onopen');
-                resolve(dataChannel);
-            };
-            dataChannel.onerror = dataChannel.onclose = function () {
-                console.log(arguments);
-                reject(dataChannel);
-            };
-        }.bind(this));
-    }
-    return this._dataChannelPromise;
+    dataChannel.onopen = function () {
+        console.log('onopen');
+    };
+    dataChannel.onerror = dataChannel.onclose = function () {
+        console.log('error', arguments);
+    };
+
+    return dataChannel;
 };
 PeerConnection.prototype._onLocalSdp = function (sdp) {
     this._peerConnection.setLocalDescription(sdp);
