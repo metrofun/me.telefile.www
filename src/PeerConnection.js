@@ -1,4 +1,6 @@
-var SignalBus = require('./SignalBus.js');
+var SignalBus = require('./SignalBus.js'),
+    _ = require('underscore'),
+    util = require('util');
 
 function PeerConnection(channelId) {
     var self = this;
@@ -9,24 +11,23 @@ function PeerConnection(channelId) {
         iceServers: require('./iceServers.js')
     }, {optional: [{ RtpDataChannels: true }]});
 
-    this._onLocalSdp = this._onLocalSdp.bind(this);
+    //NOTE a data channel should be created before an offer,
+    //otherwise doesn't work
+    this._enableDataChannel().catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
+    });
 
-    if (this._isCaller) {
-        this._createDataChannel();
-        this._peerConnection.createOffer(this._onLocalSdp);
-    } else {
-        this._peerConnection.ondatachannel = function (e) {
-            console.log('ondatachannel', e);
-        };
-    }
-
-    //subscribe to local and remote events
     this._signalBus.once('sdp', function (sdp) {
-        console.log('setRemoteDescription', self._peerConnection);
         self._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
 
         if (!self._isCaller) {
-            self._peerConnection.createAnswer(self._onLocalSdp);
+            self._peerConnection.createAnswer(
+                self._onLocalSdp.bind(self),
+                null,
+                this._mediaConstraints
+            );
         }
 
     });
@@ -38,36 +39,49 @@ function PeerConnection(channelId) {
             self._signalBus.emit('candidate', e.candidate);
         }
     };
+
+    if (this._isCaller) {
+        this._peerConnection.createOffer(this._onLocalSdp.bind(this), null, this._mediaConstraints);
+    }
 }
-PeerConnection.prototype._ensureDataChannelEnabled = function () {
-    this.getDataChannel().catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
+PeerConnection.prototype._enableDataChannel = function () {
+    this._dataChannelPromise = new Promise(function (resolve, reject) {
+        var dataChannel, handlers = {
+            onopen: function () {
+                resolve(this);
+            },
+            onerror: function () {
+                reject(this);
+                console.log('error', arguments);
+            }
+        };
+
+        if (this._isCaller) {
+            dataChannel = this._peerConnection.createDataChannel('default', {
+                reliable: true,
+                ordered: false,
+            });
+            _.extend(dataChannel, handlers);
+        } else {
+            this._peerConnection.ondatachannel = function (e) {
+                _.extend(e.channel, handlers);
+            };
+        }
+    }.bind(this));
+
+    return this._dataChannelPromise;
 };
-PeerConnection.prototype._createDataChannel = function () {
-    var dataChannel = this._peerConnection.createDataChannel('default', {
-        reliable: true,
-        ordered: false,
-    });
-    console.log(dataChannel);
-
-    dataChannel.onopen = function () {
-        console.log('onopen');
-    };
-    dataChannel.onerror = dataChannel.onclose = function () {
-        console.log('error', arguments);
-    };
-
-    return dataChannel;
+PeerConnection.prototype.getDataChannel = function () {
+    return this._dataChannelPromise;
 };
 PeerConnection.prototype._onLocalSdp = function (sdp) {
     this._peerConnection.setLocalDescription(sdp);
     this._signalBus.emit('sdp', sdp);
 };
 PeerConnection.prototype._mediaConstraints = {
-    OfferToReceiveAudio: 0,
-    OfferToReceiveVideo: 0
+    mandatory: {
+        OfferToReceiveAudio: false,
+        OfferToReceiveVideo: false
+    }
 };
 module.exports = PeerConnection;
