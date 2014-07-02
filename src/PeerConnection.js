@@ -1,8 +1,8 @@
 var SignalBus = require('./SignalBus.js'),
-    _ = require('underscore'),
-    util = require('util');
+    _ = require('underscore');
 
 function PeerConnection(channelId) {
+    console.log(channelId);
     var self = this;
 
     this._signalBus = new SignalBus(channelId);
@@ -13,11 +13,7 @@ function PeerConnection(channelId) {
 
     //NOTE a data channel should be created before an offer,
     //otherwise doesn't work
-    this._enableDataChannel().catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
+    this._enableDataChannel();
 
     this._signalBus.once('sdp', function (sdp) {
         self._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
@@ -58,8 +54,7 @@ PeerConnection.prototype._enableDataChannel = function () {
 
         if (this._isCaller) {
             dataChannel = this._peerConnection.createDataChannel('default', {
-                reliable: true,
-                ordered: false,
+                ordered: false
             });
             _.extend(dataChannel, handlers);
         } else {
@@ -67,12 +62,33 @@ PeerConnection.prototype._enableDataChannel = function () {
                 _.extend(e.channel, handlers);
             };
         }
-    }.bind(this));
+    }.bind(this)).catch(function (e) {
+        setTimeout(function () {
+            throw e;
+        });
+    });
 
     return this._dataChannelPromise;
 };
-PeerConnection.prototype.getDataChannel = function () {
-    return this._dataChannelPromise;
+PeerConnection.prototype.SEND_RETRY = 20; //ms
+PeerConnection.prototype.sendData = function (data) {
+    var self = this;
+
+    return this._dataChannelPromise.then(function () {
+        if (self._peerConnection.bufferedAmount === 0) {
+            return Promise.resolve(data);
+        } else {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve(this.sendData(data));
+                }, this.SEND_RETRY);
+            }).catch(function (e) {
+                setTimeout(function () {
+                    throw e;
+                });
+            });
+        }
+    });
 };
 PeerConnection.prototype._onLocalSdp = function (sdp) {
     this._peerConnection.setLocalDescription(sdp);

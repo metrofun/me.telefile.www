@@ -7,11 +7,7 @@ window.SockJS = SockJS;
 function SignalBus(id) {
     this.id = id;
 
-    this.connect().catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
+    this.connect();
 }
 util.inherits(SignalBus, EventEmitter);
 
@@ -32,6 +28,10 @@ SignalBus.prototype.connect = function () {
             self._sock.onmessage = self._onMessage.bind(self);
             self._sock.onopen = resolve;
             self._sock.onclose = reject;
+        }).catch(function (e) {
+            setTimeout(function () {
+                throw e;
+            });
         });
     }
     return this._sockPromise;
@@ -41,11 +41,7 @@ SignalBus.prototype.emit = function () {
 
     this.connect().then(function () {
         this._sock.send(JSON.stringify(args));
-    }.bind(this)).catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    });
+    }.bind(this));
 
 };
 SignalBus.prototype._onMessage = function (message) {
