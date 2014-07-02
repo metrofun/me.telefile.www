@@ -20,5 +20,7 @@ document.getElementById('join-button').onclick = function () {
 
 document.getElementById('file-select').addEventListener('change', function (e) {
     var file = e.target.files[0],
-        fileTransmiteter = new FileTransmitter(file);
+        fileTransmitter = new FileTransmitter(file);
+
+    fileTransmitter.send();
 }, false);

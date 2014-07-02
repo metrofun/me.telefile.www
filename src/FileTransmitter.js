@@ -4,31 +4,31 @@ var Rx = require('rx'),
  * @param {Blob} file
  */
 function FileTransmitter(file) {
-    var subject =  new Rx.Subject(),
-        source, offset = 0, self = this;
-
     this.file = file;
     this.processedSize = 0;
     this.peerConnection = new PeerConnection();
+}
+FileTransmitter.prototype.send = function () {
+    var subject =  new Rx.Subject(),
+        offset = 0, self = this, block, blockStart;
 
-    // var source = Rx.Observable.interval(100);
-    // source.subscribe(subject);
-    source = subject.concatMap(function (cursor) {
-        console.log('cursor', cursor);
-        return Rx.Observable.fromPromise(self._readBlock(cursor));
-    }).concatMap(function (arrayBuffer) {
-        return Rx.Observable.generate(0, function (offset) {
-            return offset < arrayBuffer.byteLength;
-        }, function (offset) {
-            return offset += self.CHUNK_SIZE;
-        }, function (offset) {
-            return arrayBuffer.slice(offset, offset + self.CHUNK_SIZE);
-        });
+    subject.concatMap(function (offset) {
+        if (!block || offset >= blockStart + self.BLOCK_SIZE) {
+            block = Rx.Observable.fromPromise(self._readBlock(offset));
+            blockStart = offset;
+        } else if (offset >= self.file.size) {
+            subject.onCompleted();
+        }
+        console.log(offset, blockStart);
+        return block;
+    }).map(function (arrayBuffer) {
+        return arrayBuffer.slice(offset - blockStart, offset - blockStart + self.CHUNK_SIZE);
+    }).concatMap(function (chunk) {
+        return Rx.Observable.fromPromise(self.peerConnection.sendData(chunk));
     }).subscribe(function (chunk) {
-        console.log(chunk);
+        console.log(String.fromCharCode.apply(null, new Uint8Array(chunk)));
         offset += self.CHUNK_SIZE;
-        self.peerConnection.send(chunk).then(function () {
-        });
+        subject.onNext(offset);
     }, function (e) {
         setTimeout(function () {
             throw e;
@@ -38,8 +38,6 @@ function FileTransmitter(file) {
     });
 
     subject.onNext(offset);
-}
-FileTransmitter.prototype.send = function () {
 };
 FileTransmitter.prototype._readBlock = function (start)  {
     var blockBlob = this.file.slice(start, start + this.BLOCK_SIZE);

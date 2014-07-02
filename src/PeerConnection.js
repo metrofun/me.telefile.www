@@ -9,7 +9,7 @@ function PeerConnection(channelId) {
     this._isCaller = !!channelId;
     this._peerConnection = new webkitRTCPeerConnection({
         iceServers: require('./iceServers.js')
-    }, {optional: [{ RtpDataChannels: true }]});
+    });
 
     //NOTE a data channel should be created before an offer,
     //otherwise doesn't work
@@ -46,6 +46,9 @@ PeerConnection.prototype._enableDataChannel = function () {
             onopen: function () {
                 resolve(this);
             },
+            onmessage: function (message) {
+                console.log(message);
+            },
             onerror: function () {
                 reject(this);
                 console.log('error', arguments);
@@ -63,9 +66,7 @@ PeerConnection.prototype._enableDataChannel = function () {
             };
         }
     }.bind(this)).catch(function (e) {
-        setTimeout(function () {
-            throw e;
-        });
+        setTimeout(function () {throw e; });
     });
 
     return this._dataChannelPromise;
@@ -74,14 +75,16 @@ PeerConnection.prototype.SEND_RETRY = 20; //ms
 PeerConnection.prototype.sendData = function (data) {
     var self = this;
 
-    return this._dataChannelPromise.then(function () {
-        if (self._peerConnection.bufferedAmount === 0) {
+    return this._dataChannelPromise.then(function (dataChannel) {
+        console.log(dataChannel.bufferedAmount, data);
+        if (dataChannel.bufferedAmount === 0) {
+            dataChannel.send(data);
             return Promise.resolve(data);
         } else {
             return new Promise(function (resolve) {
                 setTimeout(function () {
-                    resolve(this.sendData(data));
-                }, this.SEND_RETRY);
+                    resolve(self.sendData(data));
+                }, self.SEND_RETRY);
             }).catch(function (e) {
                 setTimeout(function () {
                     throw e;
