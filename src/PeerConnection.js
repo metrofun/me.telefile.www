@@ -1,9 +1,9 @@
 var SignalBus = require('./SignalBus.js'),
+    Rx = require('rx'),
     _ = require('underscore');
 
 function PeerConnection(channelId) {
     console.log(channelId);
-    var self = this;
 
     this._signalBus = new SignalBus(channelId);
     this._isCaller = !!channelId;
@@ -14,6 +14,14 @@ function PeerConnection(channelId) {
     //NOTE a data channel should be created before an offer,
     //otherwise doesn't work
     this._enableDataChannel();
+    this._enableSignaling();
+
+    if (this._isCaller) {
+        this._peerConnection.createOffer(this._onLocalSdp.bind(this), null, this._mediaConstraints);
+    }
+}
+PeerConnection.prototype._enableSignaling = function () {
+    var self = this;
 
     this._signalBus.once('sdp', function (sdp) {
         self._peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
@@ -25,7 +33,6 @@ function PeerConnection(channelId) {
                 this._mediaConstraints
             );
         }
-
     });
     this._signalBus.on('candidate', function (candidate) {
         self._peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
@@ -35,11 +42,7 @@ function PeerConnection(channelId) {
             self._signalBus.emit('candidate', e.candidate);
         }
     };
-
-    if (this._isCaller) {
-        this._peerConnection.createOffer(this._onLocalSdp.bind(this), null, this._mediaConstraints);
-    }
-}
+};
 PeerConnection.prototype._enableDataChannel = function () {
     this._dataChannelPromise = new Promise(function (resolve, reject) {
         var dataChannel, handlers = {
@@ -76,7 +79,6 @@ PeerConnection.prototype.sendData = function (data) {
     var self = this;
 
     return this._dataChannelPromise.then(function (dataChannel) {
-        console.log(dataChannel.bufferedAmount, data);
         if (dataChannel.bufferedAmount === 0) {
             dataChannel.send(data);
             return Promise.resolve(data);
@@ -93,6 +95,28 @@ PeerConnection.prototype.sendData = function (data) {
         }
     });
 };
+// PeerConnection.prototype.getObservable = function () {
+    // var self;
+    // if (!this._observable) {
+        // self = this;
+
+        // this._observable = Rx.Observer.create(
+            // function (data) {
+                // self.sendDatakk
+            // },
+            // function () {
+            // },
+            // function () {
+            // }
+        // );
+    // }
+    // return this._observable;
+// };
+// PeerConnection.prototype.getObserver = function () {
+    // // if (!this._observer) {
+    // // }
+    // return this._observer;
+// };
 PeerConnection.prototype._onLocalSdp = function (sdp) {
     this._peerConnection.setLocalDescription(sdp);
     this._signalBus.emit('sdp', sdp);

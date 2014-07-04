@@ -10,21 +10,20 @@ function FileTransmitter(file) {
 }
 FileTransmitter.prototype.send = function () {
     var subject =  new Rx.Subject(),
-        offset = 0, self = this, block, blockStart;
+        offset = 0, self = this, blockPromise, blockStart;
 
     subject.concatMap(function (offset) {
-        if (!block || offset >= blockStart + self.BLOCK_SIZE) {
-            block = Rx.Observable.fromPromise(self._readBlock(offset));
+        if (!blockPromise || offset >= blockStart + self.BLOCK_SIZE) {
+            blockPromise = self._readBlock(offset);
             blockStart = offset;
         } else if (offset >= self.file.size) {
             subject.onCompleted();
         }
-        console.log(offset, blockStart);
-        return block;
+        return blockPromise;
     }).map(function (arrayBuffer) {
         return arrayBuffer.slice(offset - blockStart, offset - blockStart + self.CHUNK_SIZE);
     }).concatMap(function (chunk) {
-        return Rx.Observable.fromPromise(self.peerConnection.sendData(chunk));
+        return self.peerConnection.sendData(chunk);
     }).subscribe(function (chunk) {
         console.log(String.fromCharCode.apply(null, new Uint8Array(chunk)));
         offset += self.CHUNK_SIZE;
