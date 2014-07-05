@@ -6,8 +6,6 @@ window.SockJS = SockJS;
 
 function SignalBus(id) {
     this.id = id;
-
-    this.connect();
 }
 util.inherits(SignalBus, EventEmitter);
 

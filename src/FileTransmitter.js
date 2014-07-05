@@ -1,13 +1,19 @@
 var Rx = require('rx'),
-    PeerConnection = require('./PeerConnection.js');
+    DataChannel = require('./DataChannel.js');
 /**
  * @param {Blob} file
  */
 function FileTransmitter(file) {
     this.file = file;
     this.processedSize = 0;
-    this.peerConnection = new PeerConnection();
+    this.dataChannel = new DataChannel();
+    this.dataChannel.connect();
 }
+FileTransmitter.prototype.get = function () {
+    this.dataChannel.getObservable().subscribe(function () {
+        console.log(arguments);
+    });
+};
 FileTransmitter.prototype.send = function () {
     var subject =  new Rx.Subject(),
         offset = 0, self = this, blockPromise, blockStart;
@@ -23,9 +29,8 @@ FileTransmitter.prototype.send = function () {
     }).map(function (arrayBuffer) {
         return arrayBuffer.slice(offset - blockStart, offset - blockStart + self.CHUNK_SIZE);
     }).concatMap(function (chunk) {
-        return self.peerConnection.sendData(chunk);
-    }).subscribe(function (chunk) {
-        console.log(String.fromCharCode.apply(null, new Uint8Array(chunk)));
+        return self.dataChannel.sendData(chunk);
+    }).subscribe(function () {
         offset += self.CHUNK_SIZE;
         subject.onNext(offset);
     }, function (e) {
@@ -55,6 +60,8 @@ FileTransmitter.prototype._readBlock = function (start)  {
             throw e;
         });
     });
+};
+FileTransmitter.prototype.receive = function () {
 };
 FileTransmitter.prototype.CHUNK_SIZE = 1000;
 FileTransmitter.prototype.BLOCK_SIZE = 1000 * 10;
