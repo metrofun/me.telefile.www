@@ -8,11 +8,6 @@ function FileTransmitter(file) {
     this.dataChannel = new DataChannel();
     this.dataChannel.connect();
 }
-FileTransmitter.prototype.get = function () {
-    this.dataChannel.getObservable().subscribe(function () {
-        console.log(arguments);
-    });
-};
 FileTransmitter.prototype.send = function () {
     var signalSubject =  new Rx.Subject(), self = this;
 

@@ -24,6 +24,7 @@
         "RTCSessionDescription",
         "RTCIceCandidate",
         "module",
+        "exports",
         "require",
         "Promise"
     ],
