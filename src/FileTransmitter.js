@@ -5,7 +5,6 @@ var Rx = require('rx'),
  */
 function FileTransmitter(file) {
     this.file = file;
-    this.processedSize = 0;
     this.dataChannel = new DataChannel();
     this.dataChannel.connect();
 }
@@ -15,37 +14,22 @@ FileTransmitter.prototype.get = function () {
     });
 };
 FileTransmitter.prototype.send = function () {
-    var subject =  new Rx.Subject(),
-        offset = 0, self = this, blockPromise, blockStart;
+    var signalSubject =  new Rx.Subject(), self = this;
 
-    subject.concatMap(function (offset) {
-        if (!blockPromise || offset >= blockStart + self.BLOCK_SIZE) {
-            blockPromise = self._readBlock(offset);
-            blockStart = offset;
-        } else if (offset >= self.file.size) {
-            subject.onCompleted();
-        }
-        return blockPromise;
-    }).map(function (arrayBuffer) {
-        return arrayBuffer.slice(offset - blockStart, offset - blockStart + self.CHUNK_SIZE);
-    }).concatMap(function (chunk) {
-        return self.dataChannel.sendData(chunk);
-    }).subscribe(function () {
-        offset += self.CHUNK_SIZE;
-        subject.onNext(offset);
-    }, function (e) {
-        setTimeout(function () {
-            throw e;
-        });
-    }, function () {
-        console.log('all', arguments);
-    });
+    signalSubject.scan(-self.CHUNK_SIZE, function (acc) {
+        return acc + self.CHUNK_SIZE;
+    }).takeWhile(function (offset) {
+        return offset < self.file.size;
+    }).concatMap(function (offset) {
+        return self._readChunk(offset);
+    }).subscribe(self.dataChannel.getObserver());
 
-    subject.onNext(offset);
+    self.dataChannel.getObserver().subscribe(signalSubject);
+
+    signalSubject.onNext('go');
 };
-FileTransmitter.prototype._readBlock = function (start)  {
-    var blockBlob = this.file.slice(start, start + this.BLOCK_SIZE);
-    this.processedSize += this.BLOCK_SIZE;
+FileTransmitter.prototype._readChunk = function (start)  {
+    var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);
 
     return new Promise(function (resolve) {
         var reader = new FileReader();
@@ -54,7 +38,7 @@ FileTransmitter.prototype._readBlock = function (start)  {
             resolve(this.result);
         };
 
-        reader.readAsArrayBuffer(blockBlob);
+        reader.readAsArrayBuffer(chunkBlob);
     }).catch(function (e) {
         setTimeout(function () {
             throw e;
@@ -64,6 +48,5 @@ FileTransmitter.prototype._readBlock = function (start)  {
 FileTransmitter.prototype.receive = function () {
 };
 FileTransmitter.prototype.CHUNK_SIZE = 1000;
-FileTransmitter.prototype.BLOCK_SIZE = 1000 * 10;
 
 module.exports = FileTransmitter;
