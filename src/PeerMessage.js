@@ -6,8 +6,6 @@ var jDataView = require('jdataview'),
     STRING_DATA_TYPE = 2,
     OBJECT_DATA_TYPE = 4;
 
-exports.CONTROL_PLANE = 1;
-exports.DATA_PLANE =  1 << 1;
 exports.encode = function (plane, payload) {
     var classType = Object.prototype.toString.call(payload),
         dataType, dataView;
@@ -62,5 +60,3 @@ exports.decode = function (buffer) {
         payload: payload
     };
 };
-
-console.log(this.decode(this.encode(this.CONTROL_PLANE, new ArrayBuffer(4))));

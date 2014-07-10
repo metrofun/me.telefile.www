@@ -1,5 +1,4 @@
-var Rx = require('rx'),
-    DataChannel = require('./DataChannel.js');
+var DataChannel = require('./DataChannel.js');
 /**
 * @param {Blob} file
 */
@@ -9,10 +8,17 @@ function FileReceiver(id) {
     this.dataChannel.connect();
 }
 FileReceiver.prototype.get = function () {
-    this.dataChannel.getObservable().reduce(function (acc, data) {
-        return acc.concat(data);
-    }, []).subscribe(function (data) {
-        console.log(data);
+    var observable = this.dataChannel.getObservable(),
+        metaSequence = observable.first(),
+        dataSequence = observable.skip(1).reduce(function (acc, data) {
+            return acc.concat(data);
+        }, []);
+
+    metaSequence.forkJoin(dataSequence, function (meta, data) {
+        return new Blob(data, meta);
+    }).subscribe(function (file) {
+        console.log(file);
+        window.open(window.URL.createObjectURL(file));
     });
 };
 

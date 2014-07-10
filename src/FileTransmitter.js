@@ -9,19 +9,23 @@ function FileTransmitter(file) {
     this.dataChannel.connect();
 }
 FileTransmitter.prototype.send = function () {
-    var signalSubject =  new Rx.Subject(), self = this;
+    var self = this,
+        signalSubject =  new Rx.Subject(),
+        chunksSequence =  signalSubject.scan(-self.CHUNK_SIZE, function (acc) {
+            return acc + self.CHUNK_SIZE;
+        }).takeWhile(function (offset) {
+            return offset < self.file.size;
+        }).concatMap(function (offset) {
+            return self._readChunk(offset);
+        });
 
-    signalSubject.scan(-self.CHUNK_SIZE, function (acc) {
-        return acc + self.CHUNK_SIZE;
-    }).takeWhile(function (offset) {
-        return offset < self.file.size;
-    }).concatMap(function (offset) {
-        return self._readChunk(offset);
-    }).subscribe(self.dataChannel.getObserver());
 
-    self.dataChannel.getObserver().subscribe(signalSubject);
+    Rx.Observable
+        .return({type: this.file.type})
+        .merge(chunksSequence)
+        .subscribe(this.dataChannel.getObserver());
 
-    signalSubject.onNext('go');
+    this.dataChannel.getObserver().subscribe(signalSubject);
 };
 FileTransmitter.prototype._readChunk = function (start)  {
     var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);
