@@ -1,9 +1,21 @@
 var gulp = require('gulp'),
+    less = require('gulp-less'),
     gutil = require('gulp-util'),
     nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream');
+
+gulp.task('less', function () {
+    gulp.src('./less/**/*.less')
+        .pipe(less())
+        .on('error', function () {
+            this.emit('end');
+            gutil.log.apply(this, arguments);
+        })
+        .pipe(gulp.dest('public'))
+        .pipe(livereload());
+});
 
 gulp.task('browserify', function () {
     var bundleStream = browserify('./src/index.js').bundle({
@@ -22,6 +34,10 @@ gulp.task('browserify', function () {
 
 gulp.task('watch', function () {
     gulp.watch('./src/**/*.js', ['browserify']);
+    gulp.watch('./less/**/*.less', ['less']);
+    gulp.watch('./public/index.html', function () {
+        livereload();
+    });
 });
 
 gulp.task('static-server', function (next) {
@@ -51,4 +67,4 @@ gulp.task('signal-server', function () {
     });
 });
 
-gulp.task('default', ['browserify', 'static-server', 'signal-server', 'watch']);
+gulp.task('default', ['less', 'browserify', 'static-server', 'signal-server', 'watch']);
