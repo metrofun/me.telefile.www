@@ -6,8 +6,12 @@
 @yellow: rgb(255, 215, 60);
 @white: rgb(236, 240, 241);
 @red: rgb(231, 76, 60);
+@green: rgb(82, 255, 163);
 
-@easingFunction: cubic-bezier(0.310, 0.440, 0.445, 1.650);
+@shadowZ1: 0 1px 1.5px rgba(0, 0, 0, 0.12);
+
+@step: 8px;
+@easingFunction: cubic-bezier(0.19, 1, 0.22, 1);
 
 .page {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
@@ -37,6 +41,8 @@
     line-height: 48px;
     padding: 16px;
 
+    .box-shadow(@shadowZ1);
+
     &__brand {
     }
     &__brand-left {
@@ -46,57 +52,108 @@
         color: @yellow;
     }
 }
-.control-block {
+@keyframes fadeOutRight {
+  0% {
+      opacity: 1;
+  }
+
+  100% {
+      opacity: 0;
+      transform: translate3d(100%, 0, 0);
+  }
+}
+.gate {
     display: inline-block;
     text-align: center;
-    padding-top: 80px;
+    padding-top: 10 * @step;
+    white-space: nowrap;
 
     &__image {
         height: 200px;
         display: block;
     }
-    &__button {
-        @ts: 30ms;
-
-        display: block;
+    &__control {
+        /* float: left; */
         cursor: pointer;
         font-size: 24px;
         line-height: 32px;
         text-transform: uppercase;
         color: @white;
-        border: 3px solid @white;
+        border: 2px solid @white;
         display: inline-block;
-        padding: 8px 24px;
+        padding: @step 3 * @step;
         background: @darkBlue;
-        transition-property: padding, margin;
-        transition-timing-function: @easingFunction;
-        transition-duration: @ts;
-        .box-shadow(~'0 3px 3px rgba(0, 0, 0, 0.16)');
-        /* transition-delay: 0, @ts, 2 * @ts, 3 * @ts; */
+        .box-shadow(@shadowZ1);
+        .placeholder(fade(@white, 54%));
+        outline: none;
+        /* max-width: 20 * @step; */
+    }
 
-        &:focus,
-        &:hover {
-            margin-top: 1px;
-            padding: 7px 23px;
-            outline: none;
+    &_type_send {
+        position: absolute;
+        right: 50%;
+
+        padding-right: 10 * @step;
+    }
+    &_type_receive {
+        position: absolute;
+        left: 50%;
+
+        padding-left: 10 * @step;
+    }
+}
+.key-form {
+    position: relative;
+    height: 34px;
+
+    &__input {
+        background: transparent;
+        border: none;
+        outline: none !important;
+        max-width: 15 * @step;
+        .transition(max-width 1s @easingFunction);
+
+        &.ng-hide {
+            max-width: 0;
         }
-        &:active {
-            border-color: @red;
+    }
+    &__icon {
+        background: @darkBlue;
+        border: none;
+        outline: none;
+        padding: 0;
+    }
+    &__button {
+        opacity: 1;
+        display: block;
+        .transition(opacity 1s @easingFunction);
+
+        &.ng-hide {
+            opacity: 0;
+            position: absolute;
+        }
+    }
+
+    &.ng-invalid.ng-dirty {
+        border-color: @red;
+    }
+    &.ng-valid.ng-dirty {
+        border-color: @green;
+
+        &:after {
+            content: '↺';
+            color: @green;
+            position: relative;
+            margin-right: -@step;
+            .animation(0.5s spin linear infinite);
         }
     }
 }
-.send.control-block {
-    position: absolute;
-    right: 50%;
-}
-.receive.control-block {
-    position: absolute;
-    left: 50%;
-}
-.receive .control-block__image {
-}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }
 .main {
     margin: auto;
-    padding-top: 80px;
+    padding-top: 10 * @step;
     color: blue;
 }

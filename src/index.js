@@ -1,3 +1,6 @@
+require('angular/angular');
+require('./app.js');
+
 window.Promise = require('es6-promise').Promise;
 
 var FileTransmitter = require('./FileTransmitter.js'),
