@@ -4,6 +4,7 @@ var koa = require('koa'),
     router = createRouter(),
     http = require('http'),
     sockjs = require('sockjs'),
+    DataStreamFrame = require('./data-stream-frame.js'),
     httpServer = http.createServer(app.callback()),
     sockjsServer = sockjs.createServer(),
     cors = require('koa-cors'),
@@ -13,7 +14,10 @@ var koa = require('koa'),
 router.addRoute('/v1/room/create/*', function (stream) {
     var roomHash = rooms.create(stream);
 
-    stream.write(JSON.stringify(['meta', {id: roomHash}]));
+    stream.write(DataStreamFrame.encode({
+        plane: 1,
+        payload: {type: 'meta', id: roomHash}
+    }));
 });
 router.addRoute('/v1/room/:roomHash/*', function (stream, params) {
     rooms.join(stream, params.roomHash);

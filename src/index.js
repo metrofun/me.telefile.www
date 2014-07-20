@@ -1,16 +1,28 @@
 require('angular/angular');
 require('./app.js');
 
-window.Promise = require('es6-promise').Promise;
+var SignalBus = require('./SignalBus.js'),
+    RSVP = require('rsvp');
 
-var FileTransmitter = require('./FileTransmitter.js'),
-    FileReceiver = require('./FileReceiver.js');
+RSVP.on('error', function (e) {
+    throw e;
+});
 
-document.getElementById('join-button').onclick = function () {
-    var fileReceiver = new FileReceiver(document.getElementById('room-input').value);
+(new SignalBus()).getStream().then(function (stream) {
+    stream.duplex.subscribe(function () {
+        console.log(arguments);
+    });
+});
 
-    fileReceiver.get();
-};
+return;
+var FileTransmitter = require('./FileTransmitter.js');
+    // FileReceiver = require('./FileReceiver.js');
+
+// document.getElementById('join-button').onclick = function () {
+    // var fileReceiver = new FileReceiver(document.getElementById('room-input').value);
+
+    // fileReceiver.get();
+// };
 
 document.getElementById('file-select').addEventListener('change', function (e) {
     var file = e.target.files[0],

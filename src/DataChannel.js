@@ -69,7 +69,7 @@ DataChannel.prototype = {
         this._pc.oniceconnectionstatechange = function () {
             // if (self._pc.iceConnectionState === 'disconnected') {
                 // TODO unify closes
-                // }
+            // }
         };
     },
     _enableDataChannel: function () {

@@ -29,8 +29,9 @@ module.exports = {
 
             room.receiver.pipe(room.transmitter);
             room.transmitter.pipe(room.receiver);
-
-            return true;
+        } else {
+            console.log('close');
+            stream.close(404);
         }
     },
     create: function (stream) {
@@ -49,6 +50,5 @@ module.exports = {
 
             return roomHash;
         }
-
     }
 };

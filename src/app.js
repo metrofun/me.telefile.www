@@ -1,11 +1,14 @@
-var Rx = require('rx');
+var Rx = require('rx'),
+    FileReceiver = require('./FileReceiver.js');
 
 angular.module('app', [])
     .controller('KeyFormCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         var subject = new Rx.Subject();
 
         subject.filter(Boolean).distinctUntilChanged().subscribe(function (pin) {
-            console.log(pin);
+            var fileReceiver = new FileReceiver(pin);
+
+            fileReceiver.get();
         });
 
         $scope.keydown = function (e) {
