@@ -10,9 +10,14 @@ function ReactiveTransport(transport) {
     this._openPauser = new Rx.Subject();
     this._transport = transport;
 
-    this._transport.onopen = function () {
+    //handles WebSocket and WebRTC
+    if (transport.readyState === 1 || transport.readyState === 'open') {
         this._openPauser.onNext(true);
-    }.bind(this);
+    } else {
+        this._transport.onopen = function () {
+            this._openPauser.onNext(true);
+        }.bind(this);
+    }
 }
 
 ReactiveTransport.prototype.getObservable = function () {
