@@ -1,26 +1,20 @@
-require('angular/angular');
+// require('angular/angular');
 // require('./app.js');
 
 var RSVP = require('rsvp');
-    Rx = require('rx');
 
 RSVP.on('error', function (e) {
     throw e;
 });
 
-var ReactiveSignaller = require('./reactive-signaller');
+var FileTransmitter = require('./FileTransmitter.js'),
+    FileReceiver = require('./FileReceiver.js');
 
-(new ReactiveSignaller());
+document.getElementById('join-button').onclick = function () {
+    var fileReceiver = new FileReceiver(document.getElementById('room-input').value);
 
-return;
-// var FileTransmitter = require('./FileTransmitter.js');
-    // FileReceiver = require('./FileReceiver.js');
-
-// document.getElementById('join-button').onclick = function () {
-    // var fileReceiver = new FileReceiver(document.getElementById('room-input').value);
-
-    // fileReceiver.get();
-// };
+    fileReceiver.get();
+};
 
 document.getElementById('file-select').addEventListener('change', function (e) {
     var file = e.target.files[0],

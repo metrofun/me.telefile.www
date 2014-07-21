@@ -3,7 +3,7 @@ var ReactiveSignaller = require('./reactive-signaller.js'),
     Rx = require('rx'),
     RSVP = require('rsvp');
 
-function DataChannel(channelId) {
+function ReactiveWebrtc(channelId) {
     this._channelId = channelId;
     this._isCaller = !!channelId;
     this._pc = new webkitRTCPeerConnection({
@@ -18,7 +18,7 @@ function DataChannel(channelId) {
         this._pc.createOffer(this._onLocalSdp.bind(this), null, this._mediaConstraints);
     }
 }
-DataChannel.prototype = {
+ReactiveWebrtc.prototype = {
     _enableSignaller: function () {
         var self = this, observable;
 
@@ -47,8 +47,8 @@ DataChannel.prototype = {
     },
     _getReactiveTransport: function () {
         if (!this._transportPromise) {
-            this._transportPromise = this._getDataChannel().then(function (dataChannel) {
-                return new ReactiveTransport(dataChannel);
+            this._transportPromise = this._getDataChannel().then(function (ReactiveWebrtc) {
+                return new ReactiveTransport(ReactiveWebrtc);
             });
         }
         return this._transportPromise;
@@ -65,7 +65,7 @@ DataChannel.prototype = {
                         resolve(e.channel);
                     };
                 }
-            });
+            }.bind(this));
         }
         return this._dataChannelPromise;
     },
@@ -93,11 +93,11 @@ DataChannel.prototype = {
         return this._observerSubject;
     },
     _emptyDataChannelQueue: function (data) {
-        return this._getDataChannel().then(function (dataChannel) {
+        return this._getDataChannel().then(function (ReactiveWebrtc) {
             return new RSVP.Promise(function (resolve) {
                 // TODO save another event loop
                 Rx.Observable.timer(0, 200).takeUntil(function () {
-                    return dataChannel.bufferedAmount === 0;
+                    return ReactiveWebrtc.bufferedAmount === 0;
                 }).subscribe(undefined, undefined, function () {
                     resolve(data);
                 });
@@ -126,4 +126,4 @@ DataChannel.prototype = {
         }
     }
 };
-module.exports = DataChannel;
+module.exports = ReactiveWebrtc;

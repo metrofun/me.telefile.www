@@ -14,10 +14,7 @@ var koa = require('koa'),
 router.addRoute('/v1/room/create/*', function (stream) {
     var roomHash = rooms.create(stream);
 
-    stream.write(DataStreamFrame.encode({
-        plane: 1,
-        payload: {meta: {id: roomHash}}
-    }));
+    stream.write(DataStreamFrame.encode(1, {meta: {id: roomHash}}));
 });
 router.addRoute('/v1/room/:roomHash/*', function (stream, params) {
     rooms.join(stream, params.roomHash);

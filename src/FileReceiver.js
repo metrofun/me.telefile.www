@@ -1,14 +1,13 @@
-var DataChannel = require('./DataChannel.js');
+var ReactiveWebrtc = require('./reactive-webrtc.js');
 /**
 * @param {Blob} file
 */
 function FileReceiver(id) {
     this.id = id;
-    this.dataChannel = new DataChannel(id);
-    this.dataChannel.connect();
+    this._reactiveWebrtc = new ReactiveWebrtc(id);
 }
 FileReceiver.prototype.get = function () {
-    var observable = this.dataChannel.getObservable(),
+    var observable = this._reactiveWebrtc.getObservable(),
         metaSequence = observable.first(),
         dataSequence = observable.skip(1).reduce(function (acc, data) {
             return acc.concat(data);

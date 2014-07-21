@@ -1,12 +1,12 @@
 var Rx = require('rx'),
-    DataChannel = require('./DataChannel.js');
+    RSVP = require('rsvp'),
+    ReactiveWebrtc = require('./reactive-webrtc.js');
 /**
  * @param {Blob} file
  */
 function FileTransmitter(file) {
     this.file = file;
-    this.dataChannel = new DataChannel();
-    this.dataChannel.connect();
+    this._reactiveWebrtc = new ReactiveWebrtc();
 }
 FileTransmitter.prototype.send = function () {
     var self = this,
@@ -23,14 +23,14 @@ FileTransmitter.prototype.send = function () {
     Rx.Observable
         .return({type: this.file.type})
         .merge(chunksSequence)
-        .subscribe(this.dataChannel.getObserver());
+        .subscribe(this._reactiveWebrtc.getObserver());
 
-    this.dataChannel.getObserver().subscribe(signalSubject);
+    this._reactiveWebrtc.getObserver().subscribe(signalSubject);
 };
 FileTransmitter.prototype._readChunk = function (start)  {
     var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);
 
-    return new Promise(function (resolve) {
+    return RSVP.Promise(function (resolve) {
         var reader = new FileReader();
 
         reader.onload = function () {

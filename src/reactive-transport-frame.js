@@ -6,10 +6,8 @@ var jDataView = require('jdataview'),
     STRING_TYPE = 2,
     OBJECT_TYPE = 4;
 
-exports.encode = function (data) {
-    var plane = data.plane,
-        payload = data.payload,
-        classType = Object.prototype.toString.call(payload),
+exports.encode = function (plane, payload) {
+    var classType = Object.prototype.toString.call(payload),
         dataType, dataView;
 
     switch (classType) {
