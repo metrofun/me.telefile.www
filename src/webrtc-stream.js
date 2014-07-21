@@ -1,4 +1,5 @@
-var SignalBus = require('./SignalBus.js'),
+var SignalStream = require('./signal-stream.js'),
+    DataStreamDuplex = require('./data-stream-duplex.js'),
     PeerMessage = require('./PeerMessage.js'),
     Rx = require('rx'),
     _ = require('underscore');
@@ -45,9 +46,9 @@ DataChannel.prototype = {
     _enableSignaling: function () {
         var self = this;
 
-        this._signalBus = new SignalBus(this._channelId);
+        this._signalStream = new SignalStream(this._channelId);
 
-        this._signalBus.once('sdp', function (sdp) {
+        this._signalStream.pluck('sdp').filter(Boolean).take(1).subscribe(function (sdp) {
             self._pc.setRemoteDescription(new RTCSessionDescription(sdp));
 
             if (!self._isCaller) {
@@ -58,18 +59,13 @@ DataChannel.prototype = {
                 );
             }
         });
-        this._signalBus.on('candidate', function (candidate) {
+        this._signalStream.pluck('candidate').filter(Boolean).subscribe(function (candidate) {
             self._pc.addIceCandidate(new RTCIceCandidate(candidate));
         });
         this._pc.onicecandidate = function (e) {
             if (e.candidate) {
-                self._signalBus.emit('candidate', e.candidate);
+                self._signalStream.onNext({candidate: e.candidate});
             }
-        };
-        this._pc.oniceconnectionstatechange = function () {
-            // if (self._pc.iceConnectionState === 'disconnected') {
-                // TODO unify closes
-            // }
         };
     },
     _enableDataChannel: function () {

@@ -1,21 +1,19 @@
 require('angular/angular');
-require('./app.js');
+// require('./app.js');
 
-var SignalBus = require('./SignalBus.js'),
-    RSVP = require('rsvp');
+var RSVP = require('rsvp');
+    Rx = require('rx');
 
 RSVP.on('error', function (e) {
     throw e;
 });
 
-(new SignalBus()).getStream().then(function (stream) {
-    stream.duplex.subscribe(function () {
-        console.log(arguments);
-    });
-});
+var ReactiveSignaller = require('./reactive-signaller');
+
+(new ReactiveSignaller());
 
 return;
-var FileTransmitter = require('./FileTransmitter.js');
+// var FileTransmitter = require('./FileTransmitter.js');
     // FileReceiver = require('./FileReceiver.js');
 
 // document.getElementById('join-button').onclick = function () {
