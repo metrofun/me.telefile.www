@@ -6,7 +6,7 @@ window.SockJS = SockJS;
 function ReactiveSignaller(id) {
     var self = this, sock;
 
-    sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (this.id || 'create'));
+    sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (id || 'create'));
     this._reactiveTransport = new ReactiveTransport(sock);
 
     if (id) {

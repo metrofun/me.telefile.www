@@ -32,7 +32,7 @@ ReactiveWebrtc.prototype = {
                 self._pc.createAnswer(
                     self._onLocalSdp.bind(self),
                     null,
-                    this._mediaConstraints
+                    self._mediaConstraints
                 );
             }
         });
@@ -62,6 +62,7 @@ ReactiveWebrtc.prototype = {
                     }));
                 } else {
                     this._pc.ondatachannel = function (e) {
+                        console.log('ondatachannel');
                         resolve(e.channel);
                     };
                 }
@@ -70,21 +71,20 @@ ReactiveWebrtc.prototype = {
         return this._dataChannelPromise;
     },
     getObserver: function () {
-        var observerSubject, observableSubject, pausedObserverSubject, pauser;
+        var observerSubject, observableSubject, pausedObserverSubject;
 
         if (!this._observerSubject) {
             observerSubject = new Rx.Subject();
             pausedObserverSubject = observerSubject
-                .pausableBuffered(pauser)
-                .map(this._emptyDataChannelQueue, this);
+                .map(this._emptyDataChannelQueue, this).pausableBuffered();
 
             observableSubject = new Rx.Subject();
 
             this._getReactiveTransport().then(function (reactiveTransport) {
                 pausedObserverSubject.subscribe(reactiveTransport.getObserver());
-                reactiveTransport.getObserver().subscribe(observerSubject);
+                reactiveTransport.getObserver().subscribe(observableSubject);
 
-                pauser.onNext(true);
+                pausedObserverSubject.resume();
             });
 
             this._observerSubject = Rx.Subject.create(observerSubject, observerSubject);

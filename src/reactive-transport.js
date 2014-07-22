@@ -7,17 +7,7 @@ var Rx = require('rx'),
     ERROR_TERMINATION = 'ERROR_TERMINATION';
 
 function ReactiveTransport(transport) {
-    this._openPauser = new Rx.Subject();
     this._transport = transport;
-
-    //handles WebSocket and WebRTC
-    if (transport.readyState === 1 || transport.readyState === 'open') {
-        this._openPauser.onNext(true);
-    } else {
-        this._transport.onopen = function () {
-            this._openPauser.onNext(true);
-        }.bind(this);
-    }
 }
 
 ReactiveTransport.prototype.getObservable = function () {
@@ -54,15 +44,28 @@ ReactiveTransport.prototype.getObserver = function () {
     if (!this._observerSubject) {
         self = this;
         proxySubject = new Rx.Subject();
-        observable = proxySubject.pausableBuffered(this._openPauser).share();
+        observable = proxySubject.pausableBuffered();
 
         observable.subscribe(function (payload) {
+            console.log('send', payload);
             self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
         }, function () {
             self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
         }, function () {
             self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
         });
+
+        //handles WebSocket and WebRTC
+        if (this._transport.readyState === 1 || this._transport.readyState === 'open') {
+            observable.resume();
+        } else {
+            this._transport.onopen = function () {
+                observable.resume();
+            }.bind(this);
+        }
+
+        // TODO remove workaround
+        proxySubject.onNext('first message will be skipped by pausableBuffered');
 
         this._observerSubject = Rx.Subject.create(proxySubject, observable);
     }

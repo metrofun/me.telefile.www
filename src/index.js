@@ -7,6 +7,18 @@ RSVP.on('error', function (e) {
     throw e;
 });
 
+require('Rx').Observable.prototype.log = function () {
+    this.share().do(function (data) {
+        console.log('onNext', data);
+    }, function (e) {
+        console.log('onError', e);
+    }, function (data) {
+        console.log('onCompleted', data);
+    });
+
+    return this;
+};
+
 var FileTransmitter = require('./FileTransmitter.js'),
     FileReceiver = require('./FileReceiver.js');
 
