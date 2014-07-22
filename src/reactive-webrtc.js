@@ -62,7 +62,6 @@ ReactiveWebrtc.prototype = {
                     }));
                 } else {
                     this._pc.ondatachannel = function (e) {
-                        console.log('ondatachannel');
                         resolve(e.channel);
                     };
                 }
@@ -71,35 +70,32 @@ ReactiveWebrtc.prototype = {
         return this._dataChannelPromise;
     },
     getObserver: function () {
-        var observerSubject, observableSubject, pausedObserverSubject;
+        var observerSubject, observableSubject;
 
         if (!this._observerSubject) {
-            observerSubject = new Rx.Subject();
-            pausedObserverSubject = observerSubject
-                .map(this._emptyDataChannelQueue, this).pausableBuffered();
-
+            observerSubject = new Rx.ReplaySubject();
             observableSubject = new Rx.Subject();
 
             this._getReactiveTransport().then(function (reactiveTransport) {
-                pausedObserverSubject.subscribe(reactiveTransport.getObserver());
+                observerSubject.subscribe(reactiveTransport.getObserver());
                 reactiveTransport.getObserver().subscribe(observableSubject);
-
-                pausedObserverSubject.resume();
             });
 
-            this._observerSubject = Rx.Subject.create(observerSubject, observerSubject);
+            this._observerSubject = Rx.Subject.create(observerSubject, observableSubject.share());
         }
 
         return this._observerSubject;
     },
     _emptyDataChannelQueue: function (data) {
-        return this._getDataChannel().then(function (ReactiveWebrtc) {
-            return new RSVP.Promise(function (resolve) {
-                // TODO save another event loop
-                Rx.Observable.timer(0, 200).takeUntil(function () {
-                    return ReactiveWebrtc.bufferedAmount === 0;
-                }).subscribe(undefined, undefined, function () {
-                    resolve(data);
+        return this._getDataChannel().then(function (dataChannel) {
+            return Rx.Observable.timer(0, 200).takeUntil(function () {
+                console.log(dataChannel.bufferedAmount);
+                return dataChannel.bufferedAmount === 0;
+            }).toPromise().then(function () {
+                return data;
+            }, function (e) {
+                setTimeout(function () {
+                    throw e;
                 });
             });
         });

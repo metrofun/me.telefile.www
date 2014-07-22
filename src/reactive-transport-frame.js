@@ -12,7 +12,7 @@ exports.encode = function (plane, payload) {
         dataView.writeInt8(plane);
         dataView.writeBytes(new Int8Array(payload));
 
-        return new ArrayBuffer(dataView.getBytes(dataView.byteLength, 0));
+        return dataView.getBytes(dataView.byteLength, 0);
     } else {
         return JSON.stringify({
             version: VERSION_1,
@@ -30,7 +30,7 @@ exports.decode = function (data) {
         dataView = new jDataView(data);
         version = dataView.getInt8();
         plane = dataView.getInt8();
-        payload = new ArrayBuffer(dataView.getBytes());
+        payload = dataView.getBytes();
     } else {
         data = JSON.parse(data);
         version = data.version;

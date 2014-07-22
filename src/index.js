@@ -1,11 +1,14 @@
 // require('angular/angular');
 // require('./app.js');
 
-var RSVP = require('rsvp');
+var RSVP = require('rsvp'),
+    Rx = require('rx');
 
 RSVP.on('error', function (e) {
     throw e;
 });
+
+Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
 require('Rx').Observable.prototype.log = function () {
     this.share().do(function (data) {

@@ -1,4 +1,5 @@
 var Rx = require('rx'),
+    RSVP = require('rsvp'),
     TransportFrame = require('./reactive-transport-frame.js'),
 
     DATA_PLANE = 1,
@@ -39,38 +40,41 @@ ReactiveTransport.prototype.getObservable = function () {
     return this._observableSubject;
 };
 ReactiveTransport.prototype.getObserver = function () {
-    var self, proxySubject, observable;
+    var self, observer, observable;
 
     if (!this._observerSubject) {
         self = this;
-        proxySubject = new Rx.Subject();
-        observable = proxySubject.pausableBuffered();
+        observer = new Rx.ReplaySubject();
+        observable = new Rx.Subject();
 
-        observable.subscribe(function (payload) {
-            console.log('send', payload);
-            self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
-        }, function () {
-            self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
-        }, function () {
-            self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
+        this._waitTillOpen().then(function () {
+            observer.subscribe(function (payload) {
+                self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
+            }, function (e) {
+                self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
+                throw e;
+            }, function () {
+                self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
+            });
+            observer.subscribe(observable);
         });
 
-        //handles WebSocket and WebRTC
-        if (this._transport.readyState === 1 || this._transport.readyState === 'open') {
-            observable.resume();
-        } else {
-            this._transport.onopen = function () {
-                observable.resume();
-            }.bind(this);
-        }
-
-        // TODO remove workaround
-        proxySubject.onNext('first message will be skipped by pausableBuffered');
-
-        this._observerSubject = Rx.Subject.create(proxySubject, observable);
+        this._observerSubject = Rx.Subject.create(observer, observable.share());
     }
 
     return this._observerSubject;
+};
+ReactiveTransport.prototype._waitTillOpen = function () {
+    return new RSVP.Promise(function (resolve) {
+        //handles WebSocket and WebRTC
+        if (this._transport.readyState === 1 || this._transport.readyState === 'open') {
+            resolve();
+        } else {
+            this._transport.onopen = function () {
+                resolve();
+            };
+        }
+    }.bind(this));
 };
 
 module.exports = ReactiveTransport;

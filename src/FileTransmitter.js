@@ -30,7 +30,7 @@ FileTransmitter.prototype.send = function () {
 FileTransmitter.prototype._readChunk = function (start)  {
     var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);
 
-    return RSVP.Promise(function (resolve) {
+    return new RSVP.Promise(function (resolve) {
         var reader = new FileReader();
 
         reader.onload = function () {
@@ -46,6 +46,6 @@ FileTransmitter.prototype._readChunk = function (start)  {
 };
 FileTransmitter.prototype.receive = function () {
 };
-FileTransmitter.prototype.CHUNK_SIZE = 1000;
+FileTransmitter.prototype.CHUNK_SIZE = 10000;
 
 module.exports = FileTransmitter;
