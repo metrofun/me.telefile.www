@@ -45,14 +45,6 @@ ReactiveWebrtc.prototype = {
             }
         };
     },
-    _getReactiveTransport: function () {
-        if (!this._transportPromise) {
-            this._transportPromise = this._getDataChannel().then(function (ReactiveWebrtc) {
-                return new ReactiveTransport(ReactiveWebrtc);
-            });
-        }
-        return this._transportPromise;
-    },
     _getDataChannel: function () {
         if (!this._dataChannelPromise) {
             this._dataChannelPromise = new RSVP.Promise(function (resolve) {
@@ -70,41 +62,57 @@ ReactiveWebrtc.prototype = {
         return this._dataChannelPromise;
     },
     getObserver: function () {
-        var observerSubject, observableSubject;
+        var observer, observable, controller,  queue, subscription;
 
         if (!this._observerSubject) {
-            observerSubject = new Rx.ReplaySubject();
-            observableSubject = new Rx.Subject();
+            observer = new Rx.Subject();
+            controller = new Rx.Subject();
+            observable = new Rx.Subject();
+            queue = [];
 
-            this._getReactiveTransport().then(function (reactiveTransport) {
-                observerSubject.subscribe(reactiveTransport.getObserver());
-                reactiveTransport.getObserver().subscribe(observableSubject);
+            subscription = observer.subscribe(function (data) {
+                queue.push(data);
             });
 
-            this._observerSubject = Rx.Subject.create(observerSubject, observableSubject.share());
+            this._getDataChannel().then(function (dataChannel) {
+                var reactiveTransport = new ReactiveTransport(dataChannel),
+                    transportObserver = reactiveTransport.getObserver();
+
+                Rx.Observable
+                    .fromArray(queue)
+                    .concat(observer)
+                    .concatMap(this._deferTillBufferEmpty(dataChannel))
+                    .subscribe(transportObserver);
+
+                subscription.dispose();
+                queue = null;
+
+                transportObserver.subscribe(observable);
+            }.bind());
+
+            this._observerSubject = Rx.Subject.create(observer, observable);
         }
 
         return this._observerSubject;
     },
-    _emptyDataChannelQueue: function (data) {
-        return this._getDataChannel().then(function (dataChannel) {
-            return Rx.Observable.timer(0, 200).takeUntil(function () {
-                console.log(dataChannel.bufferedAmount);
-                return dataChannel.bufferedAmount === 0;
-            }).toPromise().then(function () {
+    _deferTillBufferEmpty: function (dataChannel) {
+        return function (data) {
+            return Rx.Observable.timer(0, 200).map(function () {
+                return dataChannel.bufferedAmount > 0;
+            }).takeWhile(function (bufferedAmount) {
+                return bufferedAmount > 0;
+            }).concat(Rx.Observable.return('nonempy')).toPromise().then(function () {
                 return data;
-            }, function (e) {
-                setTimeout(function () {
-                    throw e;
-                });
             });
-        });
+        };
     },
     getObservable: function () {
         if (!this._observable) {
             this._observable = new Rx.Subject();
 
-            this._getReactiveTransport().then(function (reactiveTransport) {
+            this._getDataChannel().then(function (dataChannel) {
+                var reactiveTransport = new ReactiveTransport(dataChannel);
+
                 reactiveTransport.getObservable().subscribe(this._observable);
             }.bind(this));
         }

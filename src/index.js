@@ -10,13 +10,16 @@ RSVP.on('error', function (e) {
 
 Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
-require('Rx').Observable.prototype.log = function () {
-    this.share().do(function (data) {
-        console.log('onNext', data);
+require('Rx').Observable.prototype.log = function (ns) {
+    this.subscribe(function (data) {
+        console.log(ns + ' onNext', data);
     }, function (e) {
-        console.log('onError', e);
+        setTimeout(function () {
+            throw e;
+        });
+        console.log(ns + ' onError', e);
     }, function (data) {
-        console.log('onCompleted', data);
+        console.log(ns + ' onCompleted', data);
     });
 
     return this;

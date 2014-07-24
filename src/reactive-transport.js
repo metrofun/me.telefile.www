@@ -40,38 +40,43 @@ ReactiveTransport.prototype.getObservable = function () {
     return this._observableSubject;
 };
 ReactiveTransport.prototype.getObserver = function () {
-    var self, observer, observable;
+    var self, observer, observable, controller;
 
     if (!this._observerSubject) {
         self = this;
-        observer = new Rx.ReplaySubject();
+        observer = new Rx.Subject();
+        controller = new Rx.Subject();
         observable = new Rx.Subject();
 
-        this._waitTillOpen().then(function () {
-            observer.subscribe(function (payload) {
-                self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
-            }, function (e) {
-                self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
-                throw e;
-            }, function () {
-                self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
-            });
-            observer.subscribe(observable);
+        observer.pausableBuffered(controller).shareValue('fixme').subscribe(observable);
+
+        // workaround for pausableBuffered, that swallows first item
+        observer.onNext('fixme');
+
+        observable.subscribe(function (payload) {
+            self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
+        }, function (e) {
+            self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
+            throw e;
+        }, function () {
+            self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
         });
 
-        this._observerSubject = Rx.Subject.create(observer, observable.share());
+        Rx.Observable.fromPromise(this._readyStateIsOpen()).subscribe(controller);
+
+        this._observerSubject = Rx.Subject.create(observer, observable);
     }
 
     return this._observerSubject;
 };
-ReactiveTransport.prototype._waitTillOpen = function () {
+ReactiveTransport.prototype._readyStateIsOpen = function () {
     return new RSVP.Promise(function (resolve) {
         //handles WebSocket and WebRTC
         if (this._transport.readyState === 1 || this._transport.readyState === 'open') {
-            resolve();
+            resolve(true);
         } else {
             this._transport.onopen = function () {
-                resolve();
+                resolve(true);
             };
         }
     }.bind(this));
