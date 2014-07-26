@@ -88,7 +88,7 @@ ReactiveWebrtc.prototype = {
                 queue = null;
 
                 transportObserver.subscribe(observable);
-            }.bind());
+            }.bind(this));
 
             this._observerSubject = Rx.Subject.create(observer, observable);
         }

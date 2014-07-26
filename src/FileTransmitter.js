@@ -21,7 +21,7 @@ FileTransmitter.prototype.send = function () {
 
 
     Rx.Observable
-        .return({type: this.file.type})
+        .return(this.file)
         .merge(chunksSequence)
         .subscribe(this._reactiveWebrtc.getObserver());
 

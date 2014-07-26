@@ -9,9 +9,13 @@ function FileReceiver(id) {
 FileReceiver.prototype.getProgress = function () {
     var observable = this._reactiveWebrtc.getObservable(),
         metaSequence = observable.first(),
-        sizeSequence = observable.skip(1).scan(0, function (sum, data) {
+        sizeSequence = observable.skip(1).reduce(function (sum, data) {
+            console.log(sum, data);
             return sum + data.byteLength;
-        });
+        }, 0);
+
+    metaSequence.log('metaSequence');
+    sizeSequence.log('sizeSequence');
 
     return sizeSequence.combineLatest(metaSequence, function (size, meta) {
         return Math.floor(size / meta.size * 100);

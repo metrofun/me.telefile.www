@@ -102,6 +102,20 @@
         padding-left: 10 * @step;
     }
 }
+.send-file {
+    position: relative;
+
+    &__input {
+        z-index: 1;
+        opacity: 0;
+        position: absolute;
+        max-width: 100%;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+}
 .key-form {
     position: relative;
     height: 34px;
@@ -156,4 +170,7 @@
     margin: auto;
     padding-top: 10 * @step;
     color: blue;
+}
+.ng-hide {
+    display: none;
 }

@@ -1,4 +1,5 @@
 var Rx = require('rx'),
+    FileTransmitter = require('./FileTransmitter.js'),
     FileReceiver = require('./FileReceiver.js');
 
 angular.module('app', [])
@@ -8,7 +9,9 @@ angular.module('app', [])
         subject.filter(Boolean).distinctUntilChanged().subscribe(function (pin) {
             var fileReceiver = new FileReceiver(pin);
 
-            fileReceiver.get();
+            fileReceiver.getProgress().subscribe(function (data) {
+                console.log(data);
+            });
         });
 
         $scope.keydown = function (e) {
@@ -25,6 +28,14 @@ angular.module('app', [])
             $scope.showInput = false;
             $scope.KeyForm.$setPristine();
         };
+    }])
+    .controller('SendCtrl', ['$scope', '$element', function ($scope, $element) {
+        $element.find('input').bind('change', function (e) {
+            var file = e.target.files[0],
+                fileTransmitter = new FileTransmitter(file);
+
+            fileTransmitter.send();
+        });
     }])
     .directive('tfAutofocus', [function () {
         return function (scope, element) {
