@@ -13,27 +13,10 @@
 @step: 8px;
 @easingFunction: cubic-bezier(0.19, 1, 0.22, 1);
 
-.page {
+body {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
     font-weight: lighter;
     background: @darkBlue;
-
-    &__title,
-    &__subtitle {
-        white-space: nowrap;
-        text-align: center;
-    }
-    &__title {
-        text-transform: uppercase;
-        font-size: 56px;
-        line-height: 60px;
-        color: white;
-    }
-    &__subtitle {
-        font-size: 34px;
-        line-height: 40px;
-        color: fade(@white, 54%);
-    }
 }
 .navbar {
     background: lighten(@darkBlue, 10%);
@@ -141,11 +124,6 @@
         opacity: 1;
         display: block;
         .transition(opacity 1s @easingFunction);
-
-        &.ng-hide {
-            opacity: 0;
-            position: absolute;
-        }
     }
 
     &.ng-invalid.ng-dirty {
@@ -170,6 +148,23 @@
     margin: auto;
     padding-top: 10 * @step;
     color: blue;
+
+    &__title,
+    &__subtitle {
+        white-space: nowrap;
+        text-align: center;
+    }
+    &__title {
+        text-transform: uppercase;
+        font-size: 56px;
+        line-height: 60px;
+        color: white;
+    }
+    &__subtitle {
+        font-size: 34px;
+        line-height: 40px;
+        color: fade(@white, 54%);
+    }
 }
 .ng-hide {
     display: none;

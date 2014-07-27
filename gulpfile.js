@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
+    reactify = require('reactify'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream');
 
@@ -18,22 +19,33 @@ gulp.task('less', function () {
 });
 
 gulp.task('browserify', function () {
-    var bundleStream = browserify('./src/index.js').bundle({
-        debug: true
-    });
+    var bundler = browserify('./src/index.js');
 
-    return bundleStream
-        .on('error', function () {
-            this.emit('end');
-            gutil.log.apply(this, arguments);
-        })
-        .pipe(source('index.js'))
-        .pipe(gulp.dest('public'))
-        .pipe(livereload());
+    bundler.transform({es6: true}, reactify);
+
+    function rebundle () {
+        console.log('rebundle');
+        return bundler.bundle({debug: true})
+            .on('error', function () {
+                this.emit('end');
+                gutil.log.apply(this, arguments);
+            })
+            .pipe(source('index.js'))
+            .pipe(gulp.dest('public'))
+            .pipe(livereload());
+    }
+
+    bundler.on('update', rebundle);
+
+    gulp.watch([
+        './src/**/*.js',
+        './src/**/*.jsx'
+    ], rebundle);
+
+    return rebundle();
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./src/**/*.js', ['browserify']);
     gulp.watch('./less/**/*.less', ['less']);
     gulp.watch('./public/index.html', function () {
         livereload();
