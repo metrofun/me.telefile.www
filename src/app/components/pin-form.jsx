@@ -15,6 +15,7 @@ module.exports = React.createClass({
     },
     hideInput: function () {
         this.setState({showInput: false});
+        pinStore.onNext({pin: ''});
     },
     onKeyDown: function (e) {
         if (e.keyCode == 27) {
