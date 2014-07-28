@@ -24,7 +24,6 @@ gulp.task('browserify', function () {
     bundler.transform({es6: true}, reactify);
 
     function rebundle () {
-        console.log('rebundle');
         return bundler.bundle({debug: true})
             .on('error', function () {
                 this.emit('end');
@@ -35,12 +34,12 @@ gulp.task('browserify', function () {
             .pipe(livereload());
     }
 
-    bundler.on('update', rebundle);
+    gulp.task('browserify-rebundle', rebundle);
 
     gulp.watch([
         './src/**/*.js',
         './src/**/*.jsx'
-    ], rebundle);
+    ], ['browserify-rebundle']);
 
     return rebundle();
 });

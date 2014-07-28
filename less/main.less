@@ -99,7 +99,7 @@ body {
         bottom: 0;
     }
 }
-.key-form {
+.pin-form {
     position: relative;
     height: 34px;
 
@@ -109,10 +109,6 @@ body {
         outline: none !important;
         max-width: 15 * @step;
         .transition(max-width 1s @easingFunction);
-
-        &.ng-hide {
-            max-width: 0;
-        }
     }
     &__icon {
         background: @darkBlue;
@@ -126,10 +122,10 @@ body {
         .transition(opacity 1s @easingFunction);
     }
 
-    &.ng-invalid.ng-dirty {
+    &_valid_no {
         border-color: @red;
     }
-    &.ng-valid.ng-dirty {
+    &_valid_yes {
         border-color: @green;
 
         &:after {
@@ -165,7 +161,4 @@ body {
         line-height: 40px;
         color: fade(@white, 54%);
     }
-}
-.ng-hide {
-    display: none;
 }
