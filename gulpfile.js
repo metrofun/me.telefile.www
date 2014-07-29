@@ -1,6 +1,8 @@
 var gulp = require('gulp'),
     less = require('gulp-less'),
     gutil = require('gulp-util'),
+    uglify = require('gulp-uglify'),
+    streamify = require('gulp-streamify'),
     nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     reactify = require('reactify'),
@@ -30,6 +32,7 @@ gulp.task('browserify', function () {
                 gutil.log.apply(this, arguments);
             })
             .pipe(source('index.js'))
+            // .pipe(streamify(uglify()))
             .pipe(gulp.dest('public'))
             .pipe(livereload());
     }

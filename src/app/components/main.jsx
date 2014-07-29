@@ -1,4 +1,5 @@
 var React = require('react'),
+    progressAnnulus  = require('./progress-annulus.jsx');
     pinForm = require('./pin-form.jsx');
 
 module.exports = React.createClass({
@@ -7,6 +8,7 @@ module.exports = React.createClass({
             <div className="main">
                 <div className="main__title">send files peer-to-peer</div>
                 <div className="main__subtitle">securely at maximum speed</div>
+                <progressAnnulus />
                 <div className="gate gate_type_send">
                     <img className="gate__image" src="assets/plane.png" alt="send" />
                     <div className="gate__control send-file">

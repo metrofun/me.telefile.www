@@ -85,6 +85,44 @@ body {
         padding-left: 10 * @step;
     }
 }
+.progress-annulus {
+    position: relative;
+
+    &__circle {
+        margin: auto;
+        display: block;
+
+    }
+    &__label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        .translate(-50%, -50%);
+
+        text-transform: uppercase;
+        font-size: 2 * 56px;
+        color: white;
+
+        &:after {
+            font-size: 56px;
+            color: fade(@white, 54%);
+            content: '%';
+            position: absolute;
+            top: 0;
+            left: 100%;
+        }
+
+    }
+    &__foreground-path {
+        stroke-width: 0;
+        /* stroke: rgba(0, 0, 0, 0.12); */
+        fill: @red;
+    }
+    &__background-path {
+        stroke-width: 1;
+        fill: darken(@darkBlue, 10%);
+    }
+}
 .send-file {
     position: relative;
 
