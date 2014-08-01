@@ -28,13 +28,12 @@
     "routes": "^1.1.0",
     "routes.js": "0.0.1",
     "rsvp": "^3.0.9",
-    "rx": "^2.2.27",
+    "rx": "git://github.com/Reactive-Extensions/RxJS#24f1322cdb9f02d655736fd189490aae400e6cb3",
     "sockjs": "^0.3.9",
     "sockjs-client": "git://github.com/sockjs/sockjs-client",
     "static-server": "~1.0.0",
     "underscore": "^1.6.0",
-    "vinyl-source-stream": "~0.1.1",
-    "watchify": "^1.0.1"
+    "vinyl-source-stream": "~0.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

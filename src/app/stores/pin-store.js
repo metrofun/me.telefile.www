@@ -1,15 +1,32 @@
-var Store = require('./store-class.js');
+var Rx = require('rx'),
+    dispatcher = require('../dispatcher.js'),
+    ReactiveStore = require('./reactive-store-class'),
+    actions =  require('../actions/actions.js');
 
-function isPinValid(pin) {
+function isValid(pin) {
     return /^[a-zA-Z0-9]{8}$/.test(pin);
 }
 
-module.exports = new Store({
-    pin: '',
-    pinIsValid: false
-}, function (data) {
-    if (!data.hasOwnProperty('pinIsValid') && data.hasOwnProperty('pin')) {
-        data.pinIsValid = isPinValid(data.pin);
-    }
-    return data;
+function PinStore() {
+    this.subject = new Rx.Subject();
+
+    ReactiveStore.call(this, this.subject, {
+        pin: '',
+        pinIsValid: true
+    });
+
+    // PIN_CHANGED
+    dispatcher.filter(function (e) {
+        return e.action === actions.PIN_CHANGED;
+    }).pluck('pin').map(function (pin) {
+        return {
+            pin: pin,
+            pinIsValid: isValid(pin)
+        };
+    }).subscribe(this.subject);
+}
+PinStore.prototype = Object.create(ReactiveStore.prototype, {
+    constructor: {value: PinStore}
 });
+
+module.exports = new PinStore();

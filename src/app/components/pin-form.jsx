@@ -1,5 +1,7 @@
 var React = require('react/addons'),
     cx = React.addons.classSet,
+    dispatcher = require('../dispatcher.js'),
+    actions = require('../actions/actions.js'),
     pinStore = require('../stores/pin-store.js');
 
 module.exports = React.createClass({
@@ -15,13 +17,20 @@ module.exports = React.createClass({
     },
     hideInput: function () {
         this.setState({showInput: false});
-        pinStore.onNext({pin: ''});
+
+        dispatcher.onNext({
+            action: actions.PIN_CHANGED,
+            pin: ''
+        });
     },
     onKeyDown: function (e) {
         if (e.keyCode == 27) {
             this.hideInput();
         } else {
-            pinStore.onNext({pin: e.target.value});
+            dispatcher.onNext({
+                action: actions.PIN_CHANGED,
+                pin: e.target.value
+            });
         }
     },
     componentDidMount: function() {
