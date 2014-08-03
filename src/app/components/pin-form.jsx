@@ -1,12 +1,12 @@
 var React = require('react/addons'),
-    cx = React.addons.classSet,
+    _ = require('underscore'),
     dispatcher = require('../dispatcher.js'),
     actions = require('../actions/actions.js'),
     pinStore = require('../stores/pin-store.js');
 
 module.exports = React.createClass({
     getInitialState: function () {
-        return ({
+        return _.extend({
             showInput: false,
         }, pinStore);
     },
@@ -24,7 +24,7 @@ module.exports = React.createClass({
         });
     },
     onKeyDown: function (e) {
-        if (e.keyCode == 27) {
+        if (e.keyCode === 27) {
             this.hideInput();
         } else {
             dispatcher.onNext({
@@ -34,8 +34,8 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.subscription = pinStore.subscribe(function (pinStore) {
-            this.setState(pinStore);
+        this.subscription = pinStore.subscribe(function (pinState) {
+            this.setState(pinState);
         }.bind(this));
     },
     componentWillUnmount: function() {
@@ -50,6 +50,13 @@ module.exports = React.createClass({
         classes[this.props.className] = true;
 
         if (this.state.showInput) {
+            if (this.state.pinIsValid) {
+                dispatcher.onNext({
+                    action: actions.RECEIVE_FILE,
+                    pin: this.state.pin
+                });
+            }
+
             content = <input
                 ref="input"
                 className="pin-form__input"
@@ -63,9 +70,7 @@ module.exports = React.createClass({
         }
 
         return (
-            <div
-                onClick={this.showAndFocusInput}
-                className={ cx(classes) }>
+            <div onClick={this.showAndFocusInput} className={ React.addons.classSet(classes) }>
                 { content }
             </div>
         );

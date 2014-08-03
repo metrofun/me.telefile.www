@@ -1,4 +1,5 @@
 var React = require('react'),
+    fileStore = require('../stores/file-store.js'),
     d3 = require('d3');
 
 module.exports = React.createClass({
@@ -6,7 +7,17 @@ module.exports = React.createClass({
         return {radius: 150, width: 8};
     },
     getInitialState: function () {
-        return {progress: 50};
+        return {
+            progress: 0
+        };
+    },
+    componentDidMount: function() {
+        this.subscription = fileStore.subscribe(function (fileState) {
+            this.setState({progress: fileState.progress});
+        }.bind(this));
+    },
+    componentWillUnmount: function() {
+        this.subscription.dispose();
     },
     render: function () {
         var arc = d3.svg.arc()
