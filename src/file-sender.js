@@ -13,7 +13,7 @@ function FileSender(file) {
 FileSender.prototype = {
     constructor: FileSender,
     getProgress: function () {
-        var observable = this._reactiveWebrtc.getObservable(),
+        var observable = this._reactiveWebrtc.getObserver(),
             metaSequence = observable.first(),
             sizeSequence = observable.skip(1).scan(0, function (sum, data) {
                 return sum + data.byteLength;
@@ -59,7 +59,7 @@ FileSender.prototype = {
             });
         });
     },
-    CHUNK_SIZE: 10000
+    CHUNK_SIZE: 32768
 };
 
 module.exports = FileSender;

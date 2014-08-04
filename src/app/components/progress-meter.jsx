@@ -30,20 +30,20 @@ module.exports = React.createClass({
             });
 
         return (
-            <div className="progress-annulus">
-                <div className="progress-annulus__label">{this.state.progress}</div>
+            <div className="progress-meter">
+                <div className="progress-meter__label">{this.state.progress}</div>
                 <svg
-                    className="progress-annulus__circle"
+                    className="progress-meter__circle"
                     width={ 2 * this.props.radius }
                     height={ 2 * this.props.radius }
                     xmlns="http://www.w3.org/2000/svg" version="1.1">
                     <g transform={'translate(' + this.props.radius + ',' + this.props.radius + ')'}>
                         <path
-                            className="progress-annulus__background-path"
+                            className="progress-meter__background-path"
                             d={arc(100)}>
                         </path>
                         <path
-                            className="progress-annulus__foreground-path"
+                            className="progress-meter__foreground-path"
                             d={arc(this.state.progress)}>
                         </path>
                     </g>

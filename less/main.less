@@ -45,18 +45,16 @@ body {
       transform: translate3d(100%, 0, 0);
   }
 }
-.gate {
-    display: inline-block;
+.receive-wizard {
     text-align: center;
-    padding-top: 10 * @step;
     white-space: nowrap;
+    display: inline-block;
 
     &__image {
         height: 200px;
         display: block;
     }
     &__control {
-        /* float: left; */
         cursor: pointer;
         font-size: 24px;
         line-height: 32px;
@@ -69,23 +67,33 @@ body {
         .box-shadow(@shadowZ1);
         .placeholder(fade(@white, 54%));
         outline: none;
-        /* max-width: 20 * @step; */
-    }
-
-    &_type_send {
-        position: absolute;
-        right: 50%;
-
-        padding-right: 10 * @step;
-    }
-    &_type_receive {
-        position: absolute;
-        left: 50%;
-
-        padding-left: 10 * @step;
     }
 }
-.progress-annulus {
+.send-wizard {
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
+
+    &__image {
+        height: 200px;
+        display: block;
+    }
+    &__control {
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 32px;
+        text-transform: uppercase;
+        color: @white;
+        border: 2px solid @white;
+        display: inline-block;
+        padding: @step 3 * @step;
+        background: @darkBlue;
+        .box-shadow(@shadowZ1);
+        .placeholder(fade(@white, 54%));
+        outline: none;
+    }
+}
+.progress-meter {
     position: relative;
 
     &__circle {
@@ -116,7 +124,7 @@ body {
     &__foreground-path {
         stroke-width: 0;
         /* stroke: rgba(0, 0, 0, 0.12); */
-        fill: @red;
+        fill: @green;
     }
     &__background-path {
         stroke-width: 1;
@@ -185,7 +193,6 @@ body {
 
     &__title,
     &__subtitle {
-        white-space: nowrap;
         text-align: center;
     }
     &__title {
