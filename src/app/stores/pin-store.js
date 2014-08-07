@@ -4,7 +4,7 @@ var Rx = require('rx'),
     actions =  require('../actions/actions.js');
 
 function isValid(pin) {
-    return /^[a-zA-Z0-9]{8}$/.test(pin);
+    return /^[a-zA-Z0-9]{6}$/.test(pin);
 }
 
 function PinStore() {

@@ -14,30 +14,20 @@ function FileStore() {
     this.subject = new Rx.Subject();
 
     ReactiveStore.call(this, this.subject, {
-        state: this.IDLE
+        phase: this.IDLE
     });
 
     dispatcher.map(function (e) {
         if (e.action === ACTIONS.RECEIVE_FILE) {
             self._setReceiver(new FileReceiver(e.pin));
 
-            return self.getReceiver().getProgress().map(function (progress) {
-                return {
-                    state: self.RECEIVE,
-                    progress: progress
-                };
-            });
+            return {phase: self.RECEIVE};
         } else if (e.action === ACTIONS.SEND_FILE) {
             self._setSender(new FileSender(e.file));
 
-            return self.getSender().getProgress().map(function (progress) {
-                return {
-                    state: self.SEND,
-                    progress: progress
-                };
-            });
+            return {phase: self.SEND};
         }
-    }).filter(Boolean).mergeAll().subscribe(this.subject);
+    }).filter(Boolean).subscribe(this.subject);
 }
 FileStore.prototype = Object.create(ReactiveStore.prototype);
 

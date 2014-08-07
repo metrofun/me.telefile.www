@@ -39,7 +39,9 @@ module.exports = React.createClass({
         }.bind(this));
     },
     componentWillUnmount: function() {
-        this.subscription.dispose();
+        if (this.subscription) {
+            this.subscription.dispose();
+        }
     },
     render: function () {
         var content, classes = {

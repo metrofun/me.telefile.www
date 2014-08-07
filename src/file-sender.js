@@ -11,17 +11,19 @@ function FileSender(file) {
     this._send();
 }
 FileSender.prototype = {
+    getPin: function () {
+        return this._reactiveWebrtc.getPin();
+    },
     constructor: FileSender,
     getProgress: function () {
         var observable = this._reactiveWebrtc.getObserver(),
-            metaSequence = observable.first(),
             sizeSequence = observable.skip(1).scan(0, function (sum, data) {
                 return sum + data.byteLength;
             });
 
-        return sizeSequence.combineLatest(metaSequence, function (size, meta) {
-            return Math.floor(size / meta.size * 100);
-        }).distinctUntilChanged();
+        return sizeSequence.map(function (size) {
+            return Math.floor(size / this.file.size * 100);
+        }, this).distinctUntilChanged();
     },
     _send: function () {
         var self = this,

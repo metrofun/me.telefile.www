@@ -22,7 +22,7 @@ router.addRoute('/v1/room/:roomHash/*', function (stream, params) {
 
 app.use(cors());
 
-sockjsServer.installHandlers(httpServer, {prefix: '[/]v1[/]room[/](?:create|[a-zA-Z0-9]{8})'});
+sockjsServer.installHandlers(httpServer, {prefix: '[/]v1[/]room[/](?:create|[a-zA-Z0-9]{6})'});
 sockjsServer.on('connection', function (stream) {
     var match = router.match(stream.pathname);
 

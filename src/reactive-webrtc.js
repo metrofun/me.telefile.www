@@ -19,6 +19,9 @@ function ReactiveWebrtc(channelId) {
     }
 }
 ReactiveWebrtc.prototype = {
+    getPin: function () {
+        return this._reactiveSignaller.getPin();
+    },
     _enableSignaller: function () {
         var self = this, observable;
 

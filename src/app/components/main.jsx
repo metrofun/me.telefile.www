@@ -2,9 +2,8 @@ var React = require('react'),
     dispatcher = require('../dispatcher.js'),
     actions = require('../actions/actions.js'),
     fileStore = require('../stores/file-store.js'),
-    progressMeter  = require('./progress-meter.jsx'),
-    sendWizard = require('./send-wizard.jsx'),
-    receiveWizard = require('./receive-wizard.jsx'),
+    wizardTypeSend = require('./wizard-type-send.jsx'),
+    wizardTypeReceive = require('./wizard-type-receive.jsx'),
     pinForm = require('./pin-form.jsx');
 
 module.exports = React.createClass({
@@ -22,15 +21,14 @@ module.exports = React.createClass({
         this.subscription.dispose();
     },
     render: function () {
-        var file = this.state.file;
+        var file = this.state.file, content = '';
 
         return (
             <div className="main">
-                <div className="main__title">send files peer-to-peer</div>
-                <div className="main__subtitle">securely at maximum speed</div>
-                { this.state.file.state !== fileStore.IDLE ? <progressMeter />:'' }
-                <sendWizard />
-                <receiveWizard />
+                {file.phase === fileStore.IDLE && <div className="wizard__title">send files peer-to-peer</div>}
+                {file.phase === fileStore.IDLE && <div className="wizard__subtitle">securely at maximum speed</div>}
+                {file.phase !== fileStore.RECEIVE && <wizardTypeSend />}
+                {file.phase !== fileStore.SEND && <wizardTypeReceive />}
             </div>
         );
     }

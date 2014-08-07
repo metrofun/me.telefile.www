@@ -1,11 +1,11 @@
-var HASHNAME_LENGTH = 8,
+var HASHNAME_LENGTH = 6,
     rooms = Object.create(null),
     hashAlphabet = buildHashAlphabet();
 
 function buildHashAlphabet() {
     return [
-        {charCode: 97, length: 26},
-        {charCode: 65, length: 26},
+        // {charCode: 97, length: 26},
+        // {charCode: 65, length: 26},
         {charCode: 48, length: 10}
     ].reduce(function (memo, meta) {
         memo = memo.concat(Array.apply(null, {length: meta.length}).map(function (undef, idx) {
