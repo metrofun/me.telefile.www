@@ -22,7 +22,7 @@ FileSender.prototype = {
             });
 
         return sizeSequence.map(function (size) {
-            return Math.floor(size / this.file.size * 100);
+            return size / this.file.size * 100;
         }, this).distinctUntilChanged();
     },
     _send: function () {

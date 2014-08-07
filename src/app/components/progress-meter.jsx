@@ -30,7 +30,9 @@ module.exports = React.createClass({
 
         return (
             <div className="progress-meter">
-                <div className="progress-meter__label">{this.state.progress}</div>
+                <div className="progress-meter__label">
+                    {this.state.progress.toFixed(Number(this.state.progress < 10))}
+                </div>
                 <svg
                     className="progress-meter__circle"
                     width={ 2 * this.props.radius }

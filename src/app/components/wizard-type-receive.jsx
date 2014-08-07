@@ -18,13 +18,13 @@ module.exports = React.createClass(_.extend(keyMirror({
         var self = this;
 
         this.subscription = fileStore.subscribe(function (fileState) {
-            if (fileState.state === fileStore.RECEIVE) {
+            if (fileState.phase === fileStore.RECEIVE) {
                 self.setState({
                     phase: self.RECEIVING,
                     progress: fileStore.getReceiver().getProgress()
                 });
             } else {
-                this.setState({phase: this.IDLE});
+                this.setState({phase: self.IDLE});
             }
         }.bind(this));
 

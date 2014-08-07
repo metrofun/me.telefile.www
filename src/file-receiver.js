@@ -14,7 +14,7 @@ FileReceiver.prototype.getProgress = function () {
         });
 
     return sizeSequence.combineLatest(metaSequence, function (size, meta) {
-        return Math.floor(size / meta.size * 100);
+        return size / meta.size * 100;
     }).distinctUntilChanged();
 };
 FileReceiver.prototype.getBlob = function () {
