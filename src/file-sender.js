@@ -67,7 +67,7 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
             });
         });
     },
-    CHUNK_SIZE: 32768
+    CHUNK_SIZE: 50000
 });
 
 module.exports = FileSender;

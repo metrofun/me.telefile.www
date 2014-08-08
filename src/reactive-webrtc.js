@@ -100,13 +100,20 @@ ReactiveWebrtc.prototype = {
     },
     _deferTillBufferEmpty: function (dataChannel) {
         return function (data) {
-            return Rx.Observable.timer(0, 200).map(function () {
-                return dataChannel.bufferedAmount > 0;
-            }).takeWhile(function (bufferedAmount) {
-                return bufferedAmount > 0;
-            }).concat(Rx.Observable.return('nonempy')).toPromise().then(function () {
-                return data;
-            });
+            //make things a bit faster, by starting timer only if needed
+            if (dataChannel.bufferedAmount === 0) {
+                return Rx.Observable.return(data);
+            } else {
+                // every 300ms after 100ms
+                return Rx.Observable.timer(100, 300).map(function () {
+                    return dataChannel.bufferedAmount > 0;
+                }).takeWhile(function (bufferedAmount) {
+                    return bufferedAmount > 0;
+                //empty sequence never resolves
+                }).concat(Rx.Observable.return('nonempy')).toPromise().then(function () {
+                    return data;
+                });
+            }
         };
     },
     getObservable: function () {
