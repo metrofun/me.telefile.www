@@ -5,6 +5,7 @@ var React = require('react'),
     progressMeter  = require('./progress-meter.jsx'),
     keyMirror = require('react/lib/keyMirror'),
     fileStore = require('../stores/file-store.js'),
+    speed = require('./speed.jsx'),
     pinForm = require('./pin-form.jsx');
 
 module.exports = React.createClass(_.extend(keyMirror({
@@ -21,7 +22,8 @@ module.exports = React.createClass(_.extend(keyMirror({
             if (fileState.phase === fileStore.RECEIVE) {
                 self.setState({
                     phase: self.RECEIVING,
-                    progress: fileStore.getReceiver().getProgress()
+                    progress: fileStore.getReceiver().getProgress(),
+                    Bps: fileStore.getReceiver().getBps()
                 });
             } else {
                 this.setState({phase: self.IDLE});
@@ -54,7 +56,9 @@ module.exports = React.createClass(_.extend(keyMirror({
             return (
                 <div className='wizard wizard_type_receive'>
                     <div className='wizard__title'>Receiving in progress</div>
-                    <div className='wizard__subtitle'>average speed is 24kb/s</div>
+                    <div className='wizard__subtitle'>
+                        <speed Bps={this.state.Bps} />
+                    </div>
                     <progressMeter progress={this.state.progress} />
                     <div className='wizard__control'>
                         <div className='wizard__control-text'>cancel</div>

@@ -3,6 +3,7 @@ var React = require('react'),
     _ = require('underscore'),
     progressMeter  = require('./progress-meter.jsx'),
     fileStore = require('../stores/file-store.js'),
+    speed = require('./speed.jsx'),
     keyMirror = require('react/lib/keyMirror'),
     actions = require('../actions/actions.js');
 
@@ -26,7 +27,8 @@ module.exports = React.createClass(_.extend(keyMirror({
                 fileStore.getSender().getProgress().take(1).subscribe(function () {
                     self.setState({
                         phase: self.SENDING,
-                        progress: fileStore.getSender().getProgress()
+                        progress: fileStore.getSender().getProgress(),
+                        Bps: fileStore.getSender().getBps()
                     });
                 });
             } else {
@@ -73,7 +75,9 @@ module.exports = React.createClass(_.extend(keyMirror({
             return (
                 <div className='wizard wizard_type_send'>
                     <div className='wizard__title'>Sending in progress</div>
-                    <div className='wizard__subtitle'>average speed is 24kb/s</div>
+                    <div className='wizard__subtitle'>
+                        <speed Bps={this.state.Bps}/>
+                    </div>
                     <progressMeter progress={this.state.progress} />
                     <div className='wizard__control'>
                         <div className='wizard__control-text'>cancel</div>

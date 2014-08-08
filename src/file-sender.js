@@ -1,29 +1,35 @@
 var Rx = require('rx'),
     RSVP = require('rsvp'),
+    _ = require('underscore'),
+    AbstractFilePeer = require('./abstract-file-peer.js'),
     ReactiveWebrtc = require('./reactive-webrtc.js');
 /**
  * @param {Blob} file
  */
 function FileSender(file) {
+    AbstractFilePeer.call(this);
+
     this.file = file;
     this._reactiveWebrtc = new ReactiveWebrtc();
-
     this._send();
 }
-FileSender.prototype = {
+FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
+    constructor: FileSender,
+
     getPin: function () {
         return this._reactiveWebrtc.getPin();
     },
-    constructor: FileSender,
-    getProgress: function () {
-        var observable = this._reactiveWebrtc.getObserver(),
-            sizeSequence = observable.skip(1).scan(0, function (sum, data) {
-                return sum + data.byteLength;
+    getWebrtcSubject: function () {
+        return this._reactiveWebrtc.getObserver();
+    },
+    getMeta: function () {
+        return new RSVP.Promise(function (resolve) {
+            resolve({
+                type: this.file.type,
+                name: this.file.name,
+                size: this.file.size
             });
-
-        return sizeSequence.map(function (size) {
-            return size / this.file.size * 100;
-        }, this).distinctUntilChanged();
+        }.bind(this));
     },
     _send: function () {
         var self = this,
@@ -38,11 +44,11 @@ FileSender.prototype = {
 
 
         Rx.Observable
-            .return(this.file)
+            .fromPromise(this.getMeta())
             .merge(chunksSequence)
-            .subscribe(this._reactiveWebrtc.getObserver());
+            .subscribe(this.getWebrtcSubject());
 
-        this._reactiveWebrtc.getObserver().subscribe(signalSubject);
+        this.getWebrtcSubject().subscribe(signalSubject);
     },
     _readChunk: function (start)  {
         var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);
@@ -62,6 +68,6 @@ FileSender.prototype = {
         });
     },
     CHUNK_SIZE: 32768
-};
+});
 
 module.exports = FileSender;

@@ -1,32 +1,35 @@
-var ReactiveWebrtc = require('./reactive-webrtc.js');
+var ReactiveWebrtc = require('./reactive-webrtc.js'),
+    _ = require('underscore'),
+    AbstractFilePeer = require('./abstract-file-peer.js');
 /**
 * @param {Blob} file
 */
 function FileReceiver(id) {
+    AbstractFilePeer.call(this);
+
     this.id = id;
     this._reactiveWebrtc = new ReactiveWebrtc(id);
 }
-FileReceiver.prototype.getProgress = function () {
-    var observable = this._reactiveWebrtc.getObservable(),
-        metaSequence = observable.first(),
-        sizeSequence = observable.skip(1).scan(0, function (sum, data) {
-            return sum + data.byteLength;
-        });
+FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
+    constructor: FileReceiver,
 
-    return sizeSequence.combineLatest(metaSequence, function (size, meta) {
-        return size / meta.size * 100;
-    }).distinctUntilChanged();
-};
-FileReceiver.prototype.getBlob = function () {
-    var observable = this._reactiveWebrtc.getObservable(),
-        metaSequence = observable.first(),
-        dataSequence = observable.skip(1).reduce(function (acc, data) {
-            return new Blob([acc, data]);
-        }, new Blob());
+    getWebrtcSubject: function () {
+        return this._reactiveWebrtc.getObservable();
+    },
+    getMeta: function () {
+        return this.getWebrtcSubject().take(1).toPromise();
+    },
+    getBlob: function () {
+        var observable = this.getWebrtcSubject(),
+            metaSequence = observable.first(),
+            dataSequence = observable.skip(1).reduce(function (acc, data) {
+                return new Blob([acc, data]);
+            }, new Blob());
 
-    return metaSequence.forkJoin(dataSequence, function (meta, data) {
-        return new Blob([data], meta);
-    }).toPromise();
-};
+        return metaSequence.forkJoin(dataSequence, function (meta, data) {
+            return new Blob([data], meta);
+        }).toPromise();
+    }
+});
 
 module.exports = FileReceiver;

@@ -2,6 +2,7 @@ var React = require('react'),
     dispatcher = require('../dispatcher.js'),
     actions = require('../actions/actions.js'),
     fileStore = require('../stores/file-store.js'),
+    speed = require('./speed.jsx'),
     wizardTypeSend = require('./wizard-type-send.jsx'),
     wizardTypeReceive = require('./wizard-type-receive.jsx'),
     pinForm = require('./pin-form.jsx');
