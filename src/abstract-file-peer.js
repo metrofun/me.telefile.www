@@ -20,11 +20,19 @@ AbstractFilePeer.prototype = {
     },
     getBps: function () {
         //skip frame containing encoded meta
-        return this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
-            return sum + data.byteLength;
-        }).sample(500/* ms */).map(function (sum) {
-            return sum / (Date.now() - this._startTime) * 1000;
-        }, this);
+        return Rx.Observable.combineLatest(
+            this.getWebrtcSubject().take(1).map(function () {
+                return Date.now();
+            }),
+
+            this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
+                return sum + data.byteLength;
+            }).sample(500/* ms */),
+
+            function (startTime, sum) {
+                return sum / (Date.now() - startTime) * 1000;
+            }
+        );
     }
 };
 

@@ -11,7 +11,7 @@ module.exports = React.createClass({
             return Math.round(Bps) + 'Bps';
         } else if (Bps < 1024 * 1024) {
             return Math.round(Bps / 1024) + 'KBps';
-        } else if (Bps < 1024 * 1024 * 1024) {
+        } else {
             return (Bps / 1024 / 1025).toFixed(1) + 'MBps';
         }
     },
