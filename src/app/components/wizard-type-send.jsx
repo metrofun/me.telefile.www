@@ -19,11 +19,12 @@ module.exports = React.createClass(_.extend(keyMirror({
         var self = this;
 
         this.subscription = fileStore.subscribe(function (fileState) {
-            console.log(fileState);
             if (fileState.phase === fileStore.SEND) {
                 self.setState({phase: self.WAIT_CONNECTION});
                 fileStore.getSender().getPin().then(function (pin) {
-                    self.setState({pin: pin});
+                    if (self.isMounted()) {
+                        self.setState({pin: pin});
+                    }
                 });
                 fileStore.getSender().getProgress().take(1).subscribe(function () {
                     self.setState({

@@ -22,12 +22,20 @@ module.exports = React.createClass({
         this.subscription.dispose();
     },
     render: function () {
-        var file = this.state.file, content = '';
+        var file = this.state.file, title, subtitle;
+
+        if (file.phase === fileStore.IDLE) {
+            title = (<div className="wizard__title">send files peer-to-peer</div>);
+            subtitle = (<div className="wizard__subtitle">securely at maximum speed</div>);
+        } else if (file.phase === fileStore.ERROR) {
+            title = (<div className="wizard__title">An error has occurred</div>);
+            subtitle = (<div className="wizard__subtitle">try to start again</div>);
+        }
 
         return (
             <div className="main">
-                {file.phase === fileStore.IDLE && <div className="wizard__title">send files peer-to-peer</div>}
-                {file.phase === fileStore.IDLE && <div className="wizard__subtitle">securely at maximum speed</div>}
+                {title}
+                {subtitle}
                 {file.phase !== fileStore.RECEIVE && <wizardTypeSend />}
                 {file.phase !== fileStore.SEND && <wizardTypeReceive />}
             </div>
