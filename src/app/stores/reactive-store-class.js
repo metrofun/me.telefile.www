@@ -11,7 +11,7 @@ function ReactiveStore(observable, state) {
     this._state = state || {};
 
     Rx.Observable.call(this, function (observer) {
-        observable.distinctUntilChanged(null, isDifferent).do(function (state) {
+        return observable.distinctUntilChanged(null, isDifferent).do(function (state) {
             self._state = state;
         }).subscribe(observer);
     });

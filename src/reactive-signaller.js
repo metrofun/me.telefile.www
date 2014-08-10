@@ -5,32 +5,42 @@ var SockJS = require('sockjs-client/lib/sockjs.js'),
 window.SockJS = SockJS;
 
 function ReactiveSignaller(pin) {
-    var sock;
-
-    sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (pin || 'create'));
-    this._reactiveTransport = new ReactiveTransport(sock);
-    this._pinPromise = new RSVP.Promise(function (resolve) {
+    this._sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (pin || 'create'));
+    this._reactiveTransport = new ReactiveTransport(this._sock);
+    this._pinPromise = new RSVP.Promise(function (resolve, reject) {
         if (pin) {
             resolve(pin);
         } else {
             this._reactiveTransport.getObservable()
+                .catch(function (e) {
+                    console.log('catch', e);
+                    reject(e);
+                })
                 .pluck('meta').filter(Boolean).take(1)
                 .subscribe(function (message) {
                     resolve(message.id);
+                }, function (e) {
+                    console.log('subscribe', e);
                 });
         }
     }.bind(this));
 }
 
-ReactiveSignaller.prototype.getPin = function () {
-    return this._pinPromise;
-};
-ReactiveSignaller.prototype.getObservable = function () {
-    return this._reactiveTransport.getObservable();
-};
+ReactiveSignaller.prototype = {
+    constructor: ReactiveSignaller,
 
-ReactiveSignaller.prototype.getObserver = function () {
-    return this._reactiveTransport.getObserver();
+    stop: function () {
+        this._sock.close();
+    },
+    getPin: function () {
+        return this._pinPromise;
+    },
+    getObservable: function () {
+        return this._reactiveTransport.getObservable();
+    },
+    getObserver: function () {
+        return this._reactiveTransport.getObserver();
+    }
 };
 
 module.exports = ReactiveSignaller;

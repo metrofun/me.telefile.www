@@ -22,11 +22,70 @@ ReactiveWebrtc.prototype = {
     getPin: function () {
         return this._reactiveSignaller.getPin();
     },
+    getObserver: function () {
+        var observer, observable, controller,
+            queue, subscription;
+
+        if (!this._observerSubject) {
+            observer = new Rx.Subject();
+            controller = new Rx.Subject();
+            observable = new Rx.Subject();
+            queue = [];
+
+            subscription = observer.subscribe(function (data) {
+                queue.push(data);
+            });
+
+            // TODO what of cancelled before datachannel acquired ?
+            this._getDataChannel().then(function (dataChannel) {
+                var reactiveTransport = new ReactiveTransport(dataChannel),
+                    transportObserver = reactiveTransport.getObserver();
+
+                Rx.Observable
+                    .fromArray(queue)
+                    .concat(observer)
+                    .concatMap(this._deferTillBufferEmpty(dataChannel))
+                    .subscribe(transportObserver);
+
+                subscription.dispose();
+                queue = null;
+
+                transportObserver.subscribe(observable);
+            }.bind(this));
+
+            this._observerSubject = Rx.Subject.create(observer, observable);
+        }
+
+        return this._observerSubject;
+    },
+    getObservable: function () {
+        if (!this._observable) {
+            this._observable = new Rx.Subject();
+
+            this._getDataChannel().then(function (dataChannel) {
+                var reactiveTransport = new ReactiveTransport(dataChannel);
+
+                reactiveTransport.getObservable().subscribe(this._observable);
+            }.bind(this));
+        }
+
+        return this._observable;
+    },
+    stop: function () {
+        this._pc.close();
+        this._reactiveSignaller.stop();
+    },
     _enableSignaller: function () {
         var self = this, observable;
 
         this._reactiveSignaller = new ReactiveSignaller(this._channelId);
-        observable = this._reactiveSignaller.getObservable();
+
+        observable = this._reactiveSignaller.getObservable().catch(function (e) {
+            console.log('ReactiveSignaller onError:', e);
+            self.getObservable().onError(e);
+
+            return Rx.Observable.empty();
+        });
 
         observable.pluck('sdp').filter(Boolean).take(1).subscribe(function (sdp) {
             self._pc.setRemoteDescription(new RTCSessionDescription(sdp));
@@ -42,6 +101,8 @@ ReactiveWebrtc.prototype = {
         observable.pluck('candidate').filter(Boolean).subscribe(function (candidate) {
             self._pc.addIceCandidate(new RTCIceCandidate(candidate));
         });
+
+
         this._pc.onicecandidate = function (e) {
             if (e.candidate) {
                 self._reactiveSignaller.getObserver().onNext({candidate: e.candidate});
@@ -64,40 +125,6 @@ ReactiveWebrtc.prototype = {
         }
         return this._dataChannelPromise;
     },
-    getObserver: function () {
-        var observer, observable, controller,  queue, subscription;
-
-        if (!this._observerSubject) {
-            observer = new Rx.Subject();
-            controller = new Rx.Subject();
-            observable = new Rx.Subject();
-            queue = [];
-
-            subscription = observer.subscribe(function (data) {
-                queue.push(data);
-            });
-
-            this._getDataChannel().then(function (dataChannel) {
-                var reactiveTransport = new ReactiveTransport(dataChannel),
-                    transportObserver = reactiveTransport.getObserver();
-
-                Rx.Observable
-                    .fromArray(queue)
-                    .concat(observer)
-                    .concatMap(this._deferTillBufferEmpty(dataChannel))
-                    .subscribe(transportObserver);
-
-                subscription.dispose();
-                queue = null;
-
-                transportObserver.subscribe(observable);
-            }.bind(this));
-
-            this._observerSubject = Rx.Subject.create(observer, observable);
-        }
-
-        return this._observerSubject;
-    },
     _deferTillBufferEmpty: function (dataChannel) {
         return function (data) {
             //make things a bit faster, by starting timer only if needed
@@ -115,19 +142,6 @@ ReactiveWebrtc.prototype = {
                 });
             }
         };
-    },
-    getObservable: function () {
-        if (!this._observable) {
-            this._observable = new Rx.Subject();
-
-            this._getDataChannel().then(function (dataChannel) {
-                var reactiveTransport = new ReactiveTransport(dataChannel);
-
-                reactiveTransport.getObservable().subscribe(this._observable);
-            }.bind(this));
-        }
-
-        return this._observable;
     },
     _onLocalSdp: function (sdp) {
         this._pc.setLocalDescription(sdp);

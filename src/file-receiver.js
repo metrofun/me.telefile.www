@@ -29,6 +29,9 @@ FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
         return metaSequence.forkJoin(dataSequence, function (meta, data) {
             return new Blob([data], meta);
         }).toPromise();
+    },
+    stop: function () {
+        this._reactiveWebrtc.stop();
     }
 });
 

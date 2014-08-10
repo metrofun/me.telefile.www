@@ -19,13 +19,17 @@ function FileStore() {
 
     dispatcher.map(function (e) {
         if (e.action === ACTIONS.RECEIVE_FILE) {
-            self._setReceiver(new FileReceiver(e.pin));
+            self._initReceiver(new FileReceiver(e.pin));
 
             return {phase: self.RECEIVE};
         } else if (e.action === ACTIONS.SEND_FILE) {
-            self._setSender(new FileSender(e.file));
+            self._initSender(new FileSender(e.file));
 
             return {phase: self.SEND};
+        } else if (e.action === ACTIONS.STOP_FILE) {
+            self._clean();
+
+            return {phase: self.IDLE};
         }
     }).filter(Boolean).subscribe(this.subject);
 }
@@ -34,24 +38,39 @@ FileStore.prototype = Object.create(ReactiveStore.prototype);
 _.extend(FileStore.prototype, keyMirror({
     IDLE: null,
     RECEIVE: null,
-    SEND: null
+    SEND: null,
+    ERROR: null
 }), {
     constructor: FileStore,
-    _clean: function () {
-    },
-    _setSender: function (sender) {
-        this._clean();
-        this._sender = sender;
-    },
-    _setReceiver: function (receiver) {
-        this._clean();
-        this._receiver = receiver;
-    },
+
     getSender: function () {
         return this._sender;
     },
     getReceiver: function () {
         return this._receiver;
+    },
+    _clean: function () {
+        ['_sender', '_receiver'].forEach(function (prop) {
+            if (this[prop]) {
+                this[prop].stop();
+                this[prop] = null;
+            }
+        }, this);
+    },
+    _initSender: function (sender) {
+        this._clean();
+        this._sender = sender;
+        this._sender.getProgress().subscribe(undefined, this._onError.bind(this));
+    },
+    _initReceiver: function (receiver) {
+        this._clean();
+        this._receiver = receiver;
+        this._receiver.getProgress().subscribe(undefined, this._onError.bind(this));
+    },
+    _onError: function () {
+        this.subject.onNext({
+            phase: this.ERROR
+        });
     }
 });
 

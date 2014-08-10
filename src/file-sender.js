@@ -16,11 +16,16 @@ function FileSender(file) {
 FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
     constructor: FileSender,
 
+    CHUNK_SIZE: 50000,
+
     getPin: function () {
         return this._reactiveWebrtc.getPin();
     },
     getWebrtcSubject: function () {
         return this._reactiveWebrtc.getObserver();
+    },
+    stop: function () {
+        this._reactiveWebrtc.stop();
     },
     getMeta: function () {
         return new RSVP.Promise(function (resolve) {
@@ -66,8 +71,7 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
                 throw e;
             });
         });
-    },
-    CHUNK_SIZE: 50000
+    }
 });
 
 module.exports = FileSender;

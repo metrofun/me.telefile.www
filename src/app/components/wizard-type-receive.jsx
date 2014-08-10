@@ -26,15 +26,13 @@ module.exports = React.createClass(_.extend(keyMirror({
                     Bps: fileStore.getReceiver().getBps()
                 });
             } else {
-                this.setState({phase: self.IDLE});
+                self.setState({phase: self.IDLE});
             }
-        }.bind(this));
+        });
 
     },
     componentWillUnmount: function() {
-        if (this.subscription) {
-            this.subscription.dispose();
-        }
+        this.subscription.dispose();
     },
     onChange: function (e) {
         var file = e.target.files[0];

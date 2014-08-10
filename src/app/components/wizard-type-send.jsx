@@ -19,8 +19,9 @@ module.exports = React.createClass(_.extend(keyMirror({
         var self = this;
 
         this.subscription = fileStore.subscribe(function (fileState) {
+            console.log(fileState);
             if (fileState.phase === fileStore.SEND) {
-                this.setState({phase: this.WAIT_CONNECTION});
+                self.setState({phase: self.WAIT_CONNECTION});
                 fileStore.getSender().getPin().then(function (pin) {
                     self.setState({pin: pin});
                 });
@@ -32,14 +33,17 @@ module.exports = React.createClass(_.extend(keyMirror({
                     });
                 });
             } else {
-                this.setState({phase: this.IDLE});
+                self.setState({phase: self.IDLE});
             }
-        }.bind(this));
+        });
     },
     componentWillUnmount: function() {
-        if (this.subscription) {
-            this.subscription.dispose();
-        }
+        this.subscription.dispose();
+    },
+    onCancel: function () {
+        dispatcher.onNext({
+            action: actions.STOP_FILE
+        });
     },
     onFileSelect: function (e) {
         var file = e.target.files[0];
@@ -66,7 +70,7 @@ module.exports = React.createClass(_.extend(keyMirror({
                     <div className='wizard__title'>Waiting for receiver</div>
                     <div className='wizard__subtitle'>Input below pin on another device</div>
                     <div className='wizard__pin'>{ this.state.pin }</div>
-                    <div className='wizard__control'>
+                    <div className='wizard__control'onClick={this.onCancel}>
                         <div className='wizard__control-text'>cancel</div>
                     </div>
                 </div>
@@ -79,7 +83,7 @@ module.exports = React.createClass(_.extend(keyMirror({
                         <speed Bps={this.state.Bps}/>
                     </div>
                     <progressMeter progress={this.state.progress} />
-                    <div className='wizard__control'>
+                    <div className='wizard__control' onClick={this.onCancel}>
                         <div className='wizard__control-text'>cancel</div>
                     </div>
                 </div>

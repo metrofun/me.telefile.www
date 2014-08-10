@@ -13,6 +13,7 @@ function ReactiveTransport(transport) {
 
 ReactiveTransport.prototype.getObservable = function () {
     var self;
+
     if (!this._observableSubject) {
         self = this;
         this._observableSubject = new Rx.Subject();
@@ -33,7 +34,6 @@ ReactiveTransport.prototype.getObservable = function () {
         this._transport.onclose = this._transport.onerror = function () {
             // todo
             self._observableSubject.onError(ERROR_TERMINATION);
-            self._observableSubject.dispose();
         };
     }
 
@@ -57,9 +57,14 @@ ReactiveTransport.prototype.getObserver = function () {
             self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
         }, function (e) {
             self._transport.send(TransportFrame.encode(CONTROL_PLANE, ERROR_TERMINATION));
-            throw e;
+            setTimeout(function () {
+                throw e;
+            });
         }, function () {
             self._transport.send(TransportFrame.encode(CONTROL_PLANE, NORMAL_TERMINATION));
+
+            //close transport
+            self._transport.close();
         });
 
         Rx.Observable.fromPromise(this._readyStateIsOpen()).subscribe(controller);
