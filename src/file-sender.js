@@ -24,8 +24,8 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
     getWebrtcSubject: function () {
         return this._reactiveWebrtc.getObserver();
     },
-    stop: function () {
-        this._reactiveWebrtc.stop();
+    terminate: function () {
+        this._reactiveWebrtc.terminate();
     },
     getMeta: function () {
         return new RSVP.Promise(function (resolve) {

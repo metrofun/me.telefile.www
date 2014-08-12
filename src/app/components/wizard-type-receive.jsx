@@ -42,6 +42,11 @@ module.exports = React.createClass(_.extend(keyMirror({
             file: file
         });
     },
+    onCancel: function () {
+        dispatcher.onNext({
+            action: actions.STOP_FILE
+        });
+    },
     render: function () {
         if (this.state.phase === this.IDLE) {
             return (
@@ -58,7 +63,7 @@ module.exports = React.createClass(_.extend(keyMirror({
                         <speed Bps={this.state.Bps} />
                     </div>
                     <progressMeter progress={this.state.progress} />
-                    <div className='wizard__control'>
+                    <div className='wizard__control' onClick={this.onCancel}>
                         <div className='wizard__control-text'>cancel</div>
                     </div>
                 </div>

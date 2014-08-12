@@ -38,8 +38,8 @@ ReactiveWebrtc.prototype = {
 
             // TODO what of cancelled before datachannel acquired ?
             this._getDataChannel().then(function (dataChannel) {
-                var reactiveTransport = new ReactiveTransport(dataChannel),
-                    transportObserver = reactiveTransport.getObserver();
+                this._reactiveTransport = new ReactiveTransport(dataChannel);
+                var transportObserver = this._reactiveTransport.getObserver();
 
                 Rx.Observable
                     .fromArray(queue)
@@ -63,17 +63,25 @@ ReactiveWebrtc.prototype = {
             this._observable = new Rx.Subject();
 
             this._getDataChannel().then(function (dataChannel) {
-                var reactiveTransport = new ReactiveTransport(dataChannel);
+                this._reactiveTransport = new ReactiveTransport(dataChannel);
 
-                reactiveTransport.getObservable().subscribe(this._observable);
+                this._reactiveTransport.getObservable().subscribe(this._observable);
             }.bind(this));
         }
 
         return this._observable;
     },
-    stop: function () {
+    terminate: function () {
         this._pc.close();
-        this._reactiveSignaller.stop();
+        this._pc = undefined;
+        if (this._reactiveTransport) {
+            this._reactiveTransport.terminate();
+            this._reactiveTransport = null;
+        }
+        if (this._reactiveSignaller) {
+            this._reactiveSignaller.terminate();
+            this._reactiveSignaller = null;
+        }
     },
     _enableSignaller: function () {
         var self = this, observable;
@@ -83,6 +91,7 @@ ReactiveWebrtc.prototype = {
         observable = this._reactiveSignaller.getObservable().catch(function (e) {
             console.log('ReactiveSignaller onError:', e);
             self.getObservable().onError(e);
+            self.getObserver().onError(e);
 
             return Rx.Observable.empty();
         });

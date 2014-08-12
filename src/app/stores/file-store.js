@@ -52,7 +52,8 @@ _.extend(FileStore.prototype, keyMirror({
     _clean: function () {
         ['_sender', '_receiver'].forEach(function (prop) {
             if (this[prop]) {
-                this[prop].stop();
+                this[prop].terminate();
+                this[prop + 'Subscription'].dispose();
                 this[prop] = null;
             }
         }, this);
@@ -60,12 +61,16 @@ _.extend(FileStore.prototype, keyMirror({
     _initSender: function (sender) {
         this._clean();
         this._sender = sender;
-        this._sender.getProgress().subscribe(undefined, this._onError.bind(this));
+        this._senderSubscription = this._sender
+            .getProgress()
+            .subscribe(undefined, this._onError.bind(this));
     },
     _initReceiver: function (receiver) {
         this._clean();
         this._receiver = receiver;
-        this._receiver.getProgress().subscribe(undefined, this._onError.bind(this));
+        this._receiverSubscription = this._receiver
+            .getProgress()
+            .subscribe(undefined, this._onError.bind(this));
     },
     _onError: function () {
         this.subject.onNext({

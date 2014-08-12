@@ -30,8 +30,8 @@ FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
             return new Blob([data], meta);
         }).toPromise();
     },
-    stop: function () {
-        this._reactiveWebrtc.stop();
+    terminate: function () {
+        this._reactiveWebrtc.terminate();
     }
 });
 

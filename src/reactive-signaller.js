@@ -29,8 +29,9 @@ function ReactiveSignaller(pin) {
 ReactiveSignaller.prototype = {
     constructor: ReactiveSignaller,
 
-    stop: function () {
-        this._sock.close();
+    terminate: function () {
+        this._reactiveTransport.terminate();
+        this._reactiveTransport = null;
     },
     getPin: function () {
         return this._pinPromise;
