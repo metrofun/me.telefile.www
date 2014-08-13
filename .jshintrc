@@ -20,10 +20,11 @@
     "dojo"          : false,
 
     "predef"        : [  // Extra globals.
+        "mozRTCIceCandidate",
+        "mozRTCSessionDescription",
+        "mozRTCPeerConnection",
         "webkitRTCPeerConnection",
         "angular",
-        "RTCSessionDescription",
-        "RTCIceCandidate",
         "module",
         "exports",
         "require"

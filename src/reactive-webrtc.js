@@ -1,13 +1,17 @@
 var ReactiveSignaller = require('./reactive-signaller.js'),
     ReactiveTransport = require('./reactive-transport.js'),
     Rx = require('rx'),
-    RSVP = require('rsvp');
+    RSVP = require('rsvp'),
+
+    RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection,
+    RTCIceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate,
+    RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 
 function ReactiveWebrtc(channelId) {
     this._channelId = channelId;
     this._isCaller = !!channelId;
-    this._pc = new webkitRTCPeerConnection({
-        iceServers: require('./iceServers.js')
+    this._pc = new RTCPeerConnection({
+        iceServers: require('./ice-servers.js')
     });
 
     //request data channel before creating and offer
@@ -15,7 +19,9 @@ function ReactiveWebrtc(channelId) {
     this._enableSignaller();
 
     if (this._isCaller) {
-        this._pc.createOffer(this._onLocalSdp.bind(this), null, this._mediaConstraints);
+        this._pc.createOffer(this._onLocalSdp.bind(this), function (e) {
+            console.error(e);
+        }, this._mediaConstraints);
     }
 }
 ReactiveWebrtc.prototype = {
@@ -102,7 +108,9 @@ ReactiveWebrtc.prototype = {
             if (!self._isCaller) {
                 self._pc.createAnswer(
                     self._onLocalSdp.bind(self),
-                    null,
+                    function (e) {
+                        console.error(e);
+                    },
                     self._mediaConstraints
                 );
             }

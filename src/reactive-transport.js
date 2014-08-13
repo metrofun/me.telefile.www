@@ -21,6 +21,9 @@ ReactiveTransport.prototype = {
             self = this;
             this._observableSubject = new Rx.Subject();
 
+            //fix for firefox
+            this._transport.binaryType = 'arraybuffer';
+
             this._transport.onmessage = function (e) {
                 var message = TransportFrame.decode(e.data);
 
@@ -34,7 +37,7 @@ ReactiveTransport.prototype = {
                     self._observableSubject.onNext(message.payload);
                 }
             };
-            this._transport.onclose = this._transport.onerror = function (e) {
+            this._transport.onclose = this._transport.onerror = function () {
                 // todo
                 self._observableSubject.onError(ERROR_TERMINATION);
             };

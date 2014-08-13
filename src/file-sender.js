@@ -16,7 +16,7 @@ function FileSender(file) {
 FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
     constructor: FileSender,
 
-    CHUNK_SIZE: 50000,
+    CHUNK_SIZE: 15000,
 
     getPin: function () {
         return this._reactiveWebrtc.getPin();
