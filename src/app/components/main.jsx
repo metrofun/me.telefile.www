@@ -1,11 +1,7 @@
 var React = require('react'),
-    dispatcher = require('../dispatcher.js'),
-    actions = require('../actions/actions.js'),
     fileStore = require('../stores/file-store.js'),
-    speed = require('./speed.jsx'),
     wizardTypeSend = require('./wizard-type-send.jsx'),
-    wizardTypeReceive = require('./wizard-type-receive.jsx'),
-    pinForm = require('./pin-form.jsx');
+    wizardTypeReceive = require('./wizard-type-receive.jsx');
 
 module.exports = React.createClass({
     getInitialState: function () {
@@ -25,7 +21,7 @@ module.exports = React.createClass({
         var file = this.state.file, title, subtitle;
 
         if (file.phase === fileStore.IDLE) {
-            title = (<div className="wizard__title">send files peer-to-peer</div>);
+            title = (<div className="wizard__title">send files peer&#8209;to&#8209;peer</div>);
             subtitle = (<div className="wizard__subtitle">securely at maximum speed</div>);
         } else if (file.phase === fileStore.ERROR) {
             title = (<div className="wizard__title">An error has occurred</div>);
@@ -33,7 +29,7 @@ module.exports = React.createClass({
         }
 
         return (
-            <div className="main">
+            <div className={ "main main_phase_" + file.phase.toLowerCase() }>
                 {title}
                 {subtitle}
                 {file.phase !== fileStore.RECEIVE && <wizardTypeSend />}
