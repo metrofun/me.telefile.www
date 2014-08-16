@@ -20,15 +20,20 @@ FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
         return this.getWebrtcSubject().take(1).toPromise();
     },
     getBlob: function () {
-        var observable = this.getWebrtcSubject(),
-            metaSequence = observable.first(),
-            dataSequence = observable.skip(1).reduce(function (acc, data) {
-                return new Blob([acc, data]);
-            }, new Blob());
+        if (!this._blobPromise) {
+            var observable = this.getWebrtcSubject(),
+                metaSequence = observable.first(),
+                dataSequence = observable.skip(1).reduce(function (acc, data) {
+                    console.log(data);
+                    return new Blob([acc, data]);
+                }, new Blob());
 
-        return metaSequence.forkJoin(dataSequence, function (meta, data) {
-            return new Blob([data], meta);
-        }).toPromise();
+            this._blobPromise = metaSequence.forkJoin(dataSequence, function (meta, data) {
+                return new Blob([data], meta);
+            }).toPromise();
+        }
+
+        return this._blobPromise;
     },
     terminate: function () {
         this._reactiveWebrtc.terminate();

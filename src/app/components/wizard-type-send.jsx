@@ -10,7 +10,8 @@ var React = require('react'),
 module.exports = React.createClass(_.extend(keyMirror({
     IDLE: null,
     WAIT_CONNECTION: null,
-    SENDING: null
+    SENDING: null,
+    READY: null
 }), {
     getInitialState: function () {
         return {phase: this.IDLE};
@@ -20,21 +21,25 @@ module.exports = React.createClass(_.extend(keyMirror({
 
         this.subscription = fileStore.subscribe(function (fileState) {
             if (fileState.phase === fileStore.SEND) {
-                self.setState({phase: self.WAIT_CONNECTION});
+                self.replaceState({phase: self.WAIT_CONNECTION});
                 fileStore.getSender().getPin().then(function (pin) {
                     if (self.isMounted()) {
                         self.setState({pin: pin});
                     }
                 });
                 fileStore.getSender().getProgress().take(1).subscribe(function () {
-                    self.setState({
+                    self.replaceState({
                         phase: self.SENDING,
                         progress: fileStore.getSender().getProgress(),
                         Bps: fileStore.getSender().getBps()
                     });
+                }, undefined, function () {
+                    self.replaceState({
+                        phase: self.READY
+                    });
                 });
             } else {
-                self.setState({phase: self.IDLE});
+                self.replaceState({phase: self.IDLE});
             }
         });
     },
@@ -86,6 +91,19 @@ module.exports = React.createClass(_.extend(keyMirror({
                     <progressMeter progress={this.state.progress} />
                     <div className='wizard__control' onClick={this.onCancel}>
                         <div className='wizard__control-text'>cancel</div>
+                    </div>
+                </div>
+            );
+        } else if (this.state.phase === this.READY) {
+            return (
+                <div className='wizard wizard_type_send'>
+                    <div className='wizard__title'>Sending completed</div>
+                    <div className='wizard__subtitle'>
+                        <speed Bps={this.state.Bps}/>
+                    </div>
+                    <progressMeter progress={this.state.progress} />
+                    <div className='wizard__control' onClick={this.onCancel}>
+                        <div className='wizard__control-text'>back</div>
                     </div>
                 </div>
             );

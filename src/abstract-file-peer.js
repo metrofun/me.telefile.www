@@ -11,12 +11,15 @@ AbstractFilePeer.prototype = {
         throw new Error('not implemented');
     },
     getProgress: function () {
-        //skip frame containing encoded meta
-        return this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
-            return sum + data.byteLength;
-        }).sample(500/* ms */).combineLatest(Rx.Observable.fromPromise(this.getMeta()), function (size, meta) {
-            return size / meta.size * 100;
-        });
+        if (!this._progress) {
+            //skip frame containing encoded meta
+            this._progress = this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
+                return sum + data.byteLength;
+            }).sample(500/* ms */).combineLatest(Rx.Observable.fromPromise(this.getMeta()), function (size, meta) {
+                return size / meta.size * 100;
+            }).share();
+        }
+        return this._progress;
     },
     getBps: function () {
         //skip frame containing encoded meta

@@ -47,7 +47,6 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
                 return self._readChunk(offset);
             });
 
-
         Rx.Observable
             .fromPromise(this.getMeta())
             .merge(chunksSequence)
@@ -62,6 +61,7 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
             var reader = new FileReader();
 
             reader.onload = function () {
+                console.log(new Uint8Array(this.result));
                 resolve(this.result);
             };
 

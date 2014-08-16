@@ -20,13 +20,20 @@ module.exports = React.createClass(_.extend(keyMirror({
 
         this.subscription = fileStore.subscribe(function (fileState) {
             if (fileState.phase === fileStore.RECEIVE) {
-                self.setState({
+                self.replaceState({
                     phase: self.RECEIVING,
                     progress: fileStore.getReceiver().getProgress(),
                     Bps: fileStore.getReceiver().getBps()
                 });
+
+                fileStore.getReceiver().getBlob().then(function (blob) {
+                    self.replaceState({
+                        phase: self.READY,
+                        blob: blob
+                    });
+                });
             } else {
-                self.setState({phase: self.IDLE});
+                self.replaceState({phase: self.IDLE});
             }
         });
 
@@ -65,6 +72,23 @@ module.exports = React.createClass(_.extend(keyMirror({
                     <progressMeter progress={this.state.progress} />
                     <div className='wizard__control' onClick={this.onCancel}>
                         <div className='wizard__control-text'>cancel</div>
+                    </div>
+                </div>
+            );
+        } else if (this.state.phase === this.READY) {
+            return (
+                <div className='wizard wizard_type_receive'>
+                    <div className='wizard__title'>Receiving completed</div>
+                        <div className='wizard__subtitle'>
+                        <speed Bps={this.state.Bps} />
+                    </div>
+                    <progressMeter progress={this.state.progress} />
+                    <div className='wizard__control'>
+                        <a
+                            download={this.state.blob.name}
+                            href={window.URL.createObjectURL(this.state.blob)}>
+                            get
+                        </a>
                     </div>
                 </div>
             );
