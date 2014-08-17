@@ -27,9 +27,12 @@ module.exports = React.createClass(_.extend(keyMirror({
                 });
 
                 fileStore.getReceiver().getBlob().then(function (blob) {
-                    self.replaceState({
-                        phase: self.READY,
-                        blob: blob
+                    return fileStore.getReceiver().getMeta().then(function (meta) {
+                        return self.replaceState({
+                            phase: self.READY,
+                            blob: blob,
+                            meta: meta
+                        });
                     });
                 });
             } else {
@@ -83,13 +86,12 @@ module.exports = React.createClass(_.extend(keyMirror({
                         <speed Bps={this.state.Bps} />
                     </div>
                     <progressMeter progress={this.state.progress} />
-                    <div className='wizard__control'>
-                        <a
-                            download={this.state.blob.name}
-                            href={window.URL.createObjectURL(this.state.blob)}>
-                            get
-                        </a>
-                    </div>
+                    <a
+                        className='wizard__control'
+                        download={this.state.meta.name}
+                        href={window.URL.createObjectURL(this.state.blob)}>
+                        SAVE
+                    </a>
                 </div>
             );
         }

@@ -61,7 +61,6 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
             var reader = new FileReader();
 
             reader.onload = function () {
-                console.log(new Uint8Array(this.result));
                 resolve(this.result);
             };
 

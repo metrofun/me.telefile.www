@@ -9,6 +9,9 @@ function FileReceiver(id) {
 
     this.id = id;
     this._reactiveWebrtc = new ReactiveWebrtc(id);
+
+    this.getMeta();
+    this.getBlob();
 }
 FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
     constructor: FileReceiver,
@@ -17,14 +20,16 @@ FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
         return this._reactiveWebrtc.getObservable();
     },
     getMeta: function () {
-        return this.getWebrtcSubject().take(1).toPromise();
+        if (!this._metaPromise) {
+            this._metaPromise = this.getWebrtcSubject().take(1).toPromise();
+        }
+        return this._metaPromise;
     },
     getBlob: function () {
         if (!this._blobPromise) {
             var observable = this.getWebrtcSubject(),
                 metaSequence = observable.first(),
                 dataSequence = observable.skip(1).reduce(function (acc, data) {
-                    console.log(data);
                     return new Blob([acc, data]);
                 }, new Blob());
 

@@ -1,7 +1,6 @@
 var Rx = require('rx');
 
 function AbstractFilePeer() {
-    this._startTime = Date.now();
 }
 AbstractFilePeer.prototype = {
     getWebrtcSubject: function () {
@@ -17,25 +16,26 @@ AbstractFilePeer.prototype = {
                 return sum + data.byteLength;
             }).sample(500/* ms */).combineLatest(Rx.Observable.fromPromise(this.getMeta()), function (size, meta) {
                 return size / meta.size * 100;
-            }).share();
+            }).shareReplay(1);
         }
         return this._progress;
     },
     getBps: function () {
-        //skip frame containing encoded meta
-        return Rx.Observable.combineLatest(
-            this.getWebrtcSubject().take(1).map(function () {
-                return Date.now();
-            }),
-
-            this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
-                return sum + data.byteLength;
-            }).sample(500/* ms */),
-
-            function (startTime, sum) {
-                return sum / (Date.now() - startTime) * 1000;
-            }
-        );
+        if (!this._Bps) {
+            this._Bps = Rx.Observable.combineLatest(
+                this.getWebrtcSubject().take(1).map(function () {
+                    return Date.now();
+                }),
+                //skip frame containing encoded meta
+                this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
+                    return sum + data.byteLength;
+                }).sample(500/* ms */),
+                function (startTime, sum) {
+                    return sum / (Date.now() - startTime) * 1000;
+                }
+            ).shareReplay(1);
+        }
+        return this._Bps;
     }
 };
 

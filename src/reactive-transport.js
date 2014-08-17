@@ -29,15 +29,19 @@ ReactiveTransport.prototype = {
 
                 if (message.plane === CONTROL_PLANE) {
                     if (message.payload === NORMAL_TERMINATION) {
+                        console.log('onCompleted');
                         self._observableSubject.onCompleted();
+                        self.terminate();
                     } else if (message.payload === ERROR_TERMINATION) {
                         self._observableSubject.onError(ERROR_TERMINATION);
+                        self.terminate();
                     }
                 } else if (message.plane === DATA_PLANE) {
                     self._observableSubject.onNext(message.payload);
                 }
             };
-            this._transport.onclose = this._transport.onerror = function () {
+            this._transport.onclose = this._transport.onerror = function (e) {
+                console.error(e);
                 // todo
                 self._observableSubject.onError(ERROR_TERMINATION);
             };
@@ -69,6 +73,7 @@ ReactiveTransport.prototype = {
                 console.error(e);
                 self.terminate(ERROR_TERMINATION);
             }, function () {
+                console.log('NORMAL_TERMINATION');
                 self.terminate(NORMAL_TERMINATION);
             });
 
@@ -81,10 +86,12 @@ ReactiveTransport.prototype = {
     },
     terminate: function (reason) {
         if (this._transport) {
-            try {
-                this._transport.send(TransportFrame.encode(CONTROL_PLANE, reason || ERROR_TERMINATION));
-            } catch (e) {
-                console.error(e);
+            if (reason) {
+                try {
+                    this._transport.send(TransportFrame.encode(CONTROL_PLANE, reason));
+                } catch (e) {
+                    console.error(e);
+                }
             }
             this._transport.onclose = this._transport.onerror = null;
             this._transport.close();
