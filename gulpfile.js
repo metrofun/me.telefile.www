@@ -1,13 +1,17 @@
 var gulp = require('gulp'),
     less = require('gulp-less'),
     gutil = require('gulp-util'),
-    uglify = require('gulp-uglify'),
-    streamify = require('gulp-streamify'),
+    replace = require('gulp-replace'),
+    React = require('react'),
+    rename = require('gulp-rename'),
+    // uglify = require('gulp-uglify'),
     nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     reactify = require('reactify'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream');
+
+require('node-jsx').install({extension: '.jsx'});
 
 gulp.task('less', function () {
     gulp.src('./app/index.less')
@@ -81,4 +85,22 @@ gulp.task('signal-server', function () {
     });
 });
 
-gulp.task('default', ['less', 'browserify', 'static-server', 'signal-server', 'watch']);
+gulp.task('renderComponentToString', function(){
+    gulp.src('public/_index.html')
+        .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
+            var component = require('./app/components/' + componentName  + '.jsx');
+
+            return React.renderComponentToString(component());
+        }))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('public'));
+});
+
+gulp.task('default', [
+    'renderComponentToString',
+    'less',
+    'browserify',
+    'static-server',
+    'signal-server',
+    'watch'
+]);

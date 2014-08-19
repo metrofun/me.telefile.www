@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 var React = require('react'),
     d3 = require('d3');
 

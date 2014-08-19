@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 var React = require('react'),
     fileStore = require('../stores/file-store.js'),
     wizardTypeSend = require('./wizard-type-send.jsx'),

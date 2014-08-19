@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 var React = require('react/addons'),
     _ = require('underscore'),
     dispatcher = require('../dispatcher/dispatcher.js'),

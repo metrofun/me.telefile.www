@@ -1,3 +1,4 @@
+/** @jsx React.DOM */
 var React = require('react'),
     dispatcher = require('../dispatcher/dispatcher.js'),
     actions = require('../actions/actions.js'),

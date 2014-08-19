@@ -1,13 +1,11 @@
 var ReactiveSignaller = require('./reactive-signaller.js'),
     ReactiveTransport = require('./reactive-transport.js'),
     Rx = require('rx'),
-    RSVP = require('rsvp'),
-
-    RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection,
-    RTCIceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate,
-    RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
+    RSVP = require('rsvp');
 
 function ReactiveWebrtc(channelId) {
+    var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
     this._channelId = channelId;
     this._isCaller = !!channelId;
     this._pc = new RTCPeerConnection({
@@ -103,6 +101,8 @@ ReactiveWebrtc.prototype = {
         });
 
         observable.pluck('sdp').filter(Boolean).take(1).subscribe(function (sdp) {
+            var RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
+
             self._pc.setRemoteDescription(new RTCSessionDescription(sdp));
 
             if (!self._isCaller) {
@@ -116,6 +116,8 @@ ReactiveWebrtc.prototype = {
             }
         });
         observable.pluck('candidate').filter(Boolean).subscribe(function (candidate) {
+            var RTCIceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
+
             self._pc.addIceCandidate(new RTCIceCandidate(candidate));
         });
 
