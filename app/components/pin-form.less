@@ -1,0 +1,43 @@
+.pin-form {
+    position: relative;
+    height: 32px;
+
+    &__input {
+        padding: 0;
+        line-height: 32px;
+        background: transparent;
+        border: none;
+        outline: none !important;
+        max-width: 15 * @step;
+        .transition(max-width 1s @easingFunction);
+    }
+    &__icon {
+        background: @darkBlue;
+        border: none;
+        outline: none;
+        padding: 0;
+    }
+    &__button {
+        opacity: 1;
+        display: block;
+        .transition(opacity 1s @easingFunction);
+    }
+
+    &_valid_no {
+        border-color: @red;
+    }
+    &_valid_yes {
+        border-color: @green;
+
+        &:after {
+            content: '↺';
+            color: @green;
+            position: relative;
+            margin-right: -@step;
+            .animation(0.5s spin linear infinite);
+        }
+    }
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }

@@ -5,8 +5,8 @@ var React = require('react'),
 
 Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
-require('./debug.js');
-pageView = require('./app/components/page.jsx');
+require('./libs/debug.js');
+pageView = require('./components/page.jsx');
 
 React.renderComponent(
     pageView(),

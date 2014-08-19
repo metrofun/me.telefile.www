@@ -1,5 +1,5 @@
 var Rx = require('rx'),
-    dispatcher = require('../dispatcher.js'),
+    dispatcher = require('../dispatcher/dispatcher.js'),
     ReactiveStore = require('./reactive-store-class'),
     actions =  require('../actions/actions.js');
 

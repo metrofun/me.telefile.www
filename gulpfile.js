@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream');
 
 gulp.task('less', function () {
-    gulp.src('./less/**/*.less')
+    gulp.src('./app/index.less')
         .pipe(less())
         .on('error', function () {
             this.emit('end');
@@ -21,7 +21,7 @@ gulp.task('less', function () {
 });
 
 gulp.task('browserify', function () {
-    var bundler = browserify('./src/index.js');
+    var bundler = browserify('./app/index.js');
 
     bundler.transform({es6: true}, reactify);
 
@@ -40,15 +40,15 @@ gulp.task('browserify', function () {
     gulp.task('browserify-rebundle', rebundle);
 
     gulp.watch([
-        './src/**/*.js',
-        './src/**/*.jsx'
+        './app/**/*.js',
+        './app/**/*.jsx'
     ], ['browserify-rebundle']);
 
     return rebundle();
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./less/**/*.less', ['less']);
+    gulp.watch('./app/**/*.less', ['less']);
     gulp.watch('./public/index.html', function () {
         livereload();
     });

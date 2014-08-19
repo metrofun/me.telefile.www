@@ -1,5 +1,5 @@
 var React = require('react'),
-    dispatcher = require('../dispatcher.js'),
+    dispatcher = require('../dispatcher/dispatcher.js'),
     _ = require('underscore'),
     progressMeter  = require('./progress-meter.jsx'),
     fileStore = require('../stores/file-store.js'),

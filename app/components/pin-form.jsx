@@ -1,6 +1,6 @@
 var React = require('react/addons'),
     _ = require('underscore'),
-    dispatcher = require('../dispatcher.js'),
+    dispatcher = require('../dispatcher/dispatcher.js'),
     actions = require('../actions/actions.js'),
     pinStore = require('../stores/pin-store.js');
 

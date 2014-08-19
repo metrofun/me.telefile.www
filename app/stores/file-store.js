@@ -2,11 +2,11 @@ var Rx = require('rx'),
     keyMirror = require('react/lib/keyMirror'),
 
     _ = require('underscore'),
-    dispatcher = require('../dispatcher.js'),
+    dispatcher = require('../dispatcher/dispatcher.js'),
     ACTIONS =  require('../actions/actions.js'),
     ReactiveStore = require('./reactive-store-class'),
-    FileSender = require('../../file-sender.js'),
-    FileReceiver = require('../../file-receiver.js');
+    FileSender = require('../libs/file-sender.js'),
+    FileReceiver = require('../libs/file-receiver.js');
 
 function FileStore() {
     var self = this;
