@@ -71,12 +71,12 @@ gulp.task('static-server', function (next) {
 
 gulp.task('signal-server', function () {
     nodemon({
-        script: 'signal_server/index.js',
+        script: 'signal-server/index.js',
         options: '--harmony',
         execMap: {
             js: 'node --harmony'
         },
-        watch: ['signal_server'],
+        watch: ['signal-server'],
         ext: 'js'
     });
 });
