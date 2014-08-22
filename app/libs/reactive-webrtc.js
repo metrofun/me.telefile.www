@@ -3,26 +3,43 @@ var ReactiveSignaller = require('./reactive-signaller.js'),
     Rx = require('rx'),
     RSVP = require('rsvp');
 
-function ReactiveWebrtc(channelId) {
+/**
+ * Creates a new WebRTC session,
+ * and offers observer/observable interface
+ * for sending data thought RTCDataChannel medium.
+ *
+ * @constructor
+ *
+ * @param {String|Number} [pin] When present, joins existing peer.
+ */
+function ReactiveWebrtc(pin) {
+    //lazy eveluation, because this code may be
+    //eveluated on server, where window is undefined
     var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 
-    this._channelId = channelId;
-    this._isCaller = !!channelId;
+    this._pin = pin;
+    this._isWebrtcCaller = !!pin;
     this._pc = new RTCPeerConnection({
         iceServers: require('./ice-servers.js')
     });
 
-    //request data channel before creating and offer
+    //we need to request a data channel before creating an offer,
+    //otherwise datachannel won't be negotiated between peers
     this._getDataChannel();
     this._enableSignaller();
 
-    if (this._isCaller) {
+    if (this._isWebrtcCaller) {
         this._pc.createOffer(this._onLocalSdp.bind(this), function (e) {
             console.error(e);
         }, this._mediaConstraints);
     }
 }
 ReactiveWebrtc.prototype = {
+    /**
+     * Returns current session pin
+     *
+     * @returns {RSVP.Promise}
+     */
     getPin: function () {
         return this._reactiveSignaller.getPin();
     },
@@ -36,6 +53,8 @@ ReactiveWebrtc.prototype = {
             observable = new Rx.Subject();
             queue = [];
 
+            //we should buffer all data,
+            //untill RTCDataChannel becomes available
             subscription = observer.subscribe(function (data) {
                 queue.push(data);
             }, function (e) {
@@ -93,7 +112,7 @@ ReactiveWebrtc.prototype = {
     _enableSignaller: function () {
         var self = this, observable;
 
-        this._reactiveSignaller = new ReactiveSignaller(this._channelId);
+        this._reactiveSignaller = new ReactiveSignaller(this._pin);
 
         observable = this._reactiveSignaller.getObservable();
 
@@ -101,8 +120,6 @@ ReactiveWebrtc.prototype = {
             console.log('ReactiveSignaller onError:', e);
             self.getObservable().onError(e);
             self.getObserver().onError(e);
-
-            // return Rx.Observable.empty();
         });
 
         observable.pluck('sdp').filter(Boolean).take(1).subscribe(function (sdp) {
@@ -110,7 +127,7 @@ ReactiveWebrtc.prototype = {
 
             self._pc.setRemoteDescription(new RTCSessionDescription(sdp));
 
-            if (!self._isCaller) {
+            if (!self._isWebrtcCaller) {
                 self._pc.createAnswer(
                     self._onLocalSdp.bind(self),
                     function (e) {
@@ -133,6 +150,11 @@ ReactiveWebrtc.prototype = {
             }
         };
     },
+    /**
+     * Resolves with a RTCDataChannel
+     *
+     * @returns {RSVP.Promise}
+     */
     _getDataChannel: function () {
         var self;
 
@@ -140,7 +162,7 @@ ReactiveWebrtc.prototype = {
             self = this;
 
             this._dataChannelPromise = new RSVP.Promise(function (resolve) {
-                if (self._isCaller) {
+                if (self._isWebrtcCaller) {
                     resolve(self._pc.createDataChannel('default', {
                         ordered: true
                     }));
@@ -160,6 +182,15 @@ ReactiveWebrtc.prototype = {
         }
         return this._dataChannelPromise;
     },
+    /**
+     * Returns data callback,
+     * that returns a promise,
+     * which resolves when dataChannel buffer amount is empty
+     *
+     * @param {RTCDataChannel} dataChannel
+     *
+     * @returns {Function} data callback
+     */
     _deferTillBufferEmpty: function (dataChannel) {
         return function (data) {
             //make things a bit faster, by starting timer only if needed

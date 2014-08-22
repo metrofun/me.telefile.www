@@ -2,6 +2,16 @@ var RSVP = require('rsvp'),
     ReactiveTransport = require('./reactive-transport.js');
 
 
+ /**
+  * Creates a reactive transport  for signalling,
+  * over a websocket connection.
+  * If pin is present joins existing signalling room.
+  * Otherwice creates a new one.
+  *
+  * @constructor
+  *
+  * @param {String|Number} [pin]
+  */
 function ReactiveSignaller(pin) {
     //lazy require, because of server rendering
     var SockJS = require('sockjs-client/lib/sockjs.js');
@@ -35,6 +45,11 @@ ReactiveSignaller.prototype = {
         this._reactiveTransport.terminate();
         this._reactiveTransport = null;
     },
+    /**
+     * Returns current session pin
+     *
+     * @returns {RSVP.Promise}
+     */
     getPin: function () {
         return this._pinPromise;
     },

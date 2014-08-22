@@ -7,6 +7,14 @@ var Rx = require('rx'),
     NORMAL_TERMINATION = 'NORMAL_TERMINATION',
     ERROR_TERMINATION = 'ERROR_TERMINATION';
 
+/**
+ * Reactive abstraction about transport layer.
+ * Supports RTCDataChannel and websocket transports.
+ *
+ * @constructor
+ *
+ * @param {RTCDataChannel|WebSocket} transport
+ */
 function ReactiveTransport(transport) {
     this._transport = transport;
 }
@@ -29,7 +37,6 @@ ReactiveTransport.prototype = {
 
                 if (message.plane === CONTROL_PLANE) {
                     if (message.payload === NORMAL_TERMINATION) {
-                        console.log('onCompleted');
                         self._observableSubject.onCompleted();
                         self.terminate();
                     } else if (message.payload === ERROR_TERMINATION) {
@@ -84,6 +91,12 @@ ReactiveTransport.prototype = {
 
         return this._observerSubject;
     },
+    /**
+     * Silently closes transport,
+     * and optionaly sends termination message
+     *
+     * @param {String} [reason] If present, will be sent by transport
+     */
     terminate: function (reason) {
         if (this._transport) {
             if (reason) {
@@ -97,6 +110,11 @@ ReactiveTransport.prototype = {
             this._transport.close();
         }
     },
+    /**
+     * Resolves, when transport is open
+     *
+     * @returns {RSVP.Promise}
+     */
     _readyStateIsOpen: function () {
         return new RSVP.Promise(function (resolve) {
             //handles WebSocket and WebRTC
