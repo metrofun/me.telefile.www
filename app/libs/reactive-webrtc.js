@@ -95,12 +95,14 @@ ReactiveWebrtc.prototype = {
 
         this._reactiveSignaller = new ReactiveSignaller(this._channelId);
 
-        observable = this._reactiveSignaller.getObservable().catch(function (e) {
+        observable = this._reactiveSignaller.getObservable();
+
+        this._signallerErrorSubscription = observable.subscribe(undefined, function (e) {
             console.log('ReactiveSignaller onError:', e);
             self.getObservable().onError(e);
             self.getObserver().onError(e);
 
-            return Rx.Observable.empty();
+            // return Rx.Observable.empty();
         });
 
         observable.pluck('sdp').filter(Boolean).take(1).subscribe(function (sdp) {
@@ -132,18 +134,29 @@ ReactiveWebrtc.prototype = {
         };
     },
     _getDataChannel: function () {
+        var self;
+
         if (!this._dataChannelPromise) {
+            self = this;
+
             this._dataChannelPromise = new RSVP.Promise(function (resolve) {
-                if (this._isCaller) {
-                    resolve(this._pc.createDataChannel('default', {
+                if (self._isCaller) {
+                    resolve(self._pc.createDataChannel('default', {
                         ordered: true
                     }));
                 } else {
-                    this._pc.ondatachannel = function (e) {
+                    self._pc.ondatachannel = function (e) {
                         resolve(e.channel);
                     };
                 }
-            }.bind(this));
+            });
+            this._dataChannelPromise.then(function () {
+                // after dataChannel established,
+                // we no longer care about signaller
+                // TODO implement signalling over data channel
+                self._signallerErrorSubscription.dispose();
+                delete self._signallerErrorSubscription;
+            });
         }
         return this._dataChannelPromise;
     },
