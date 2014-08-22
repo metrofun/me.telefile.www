@@ -34,7 +34,11 @@ module.exports = React.createClass(_.extend(keyMirror({
                         progress: fileStore.getSender().getProgress(),
                         Bps: fileStore.getSender().getBps()
                     });
-                }, undefined, function () {
+                }, function () {
+                    self.replaceState({
+                        phase: self.IDLE
+                    });
+                }, function () {
                     self.replaceState({
                         phase: self.READY
                     });

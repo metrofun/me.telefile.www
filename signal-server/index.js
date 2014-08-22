@@ -1,14 +1,9 @@
-var koa = require('koa'),
-    app = koa(),
-    createRouter = require('routes'),
-    router = createRouter(),
-    http = require('http'),
-    sockjs = require('sockjs'),
-    DataStreamFrame = require('./reactive-transport-frame.js'),
-    httpServer = http.createServer(app.callback()),
-    sockjsServer = sockjs.createServer(),
+var app = require('koa')(),
+    router = require('routes')(),
     cors = require('koa-cors'),
-
+    DataStreamFrame = require('./reactive-transport-frame.js'),
+    httpServer = require('http').createServer(app.callback()),
+    sockjsServer = require('sockjs').createServer(),
     roomHub = require('./room-hub.js');
 
 router.addRoute('/v1/room/create/*', function (stream) {

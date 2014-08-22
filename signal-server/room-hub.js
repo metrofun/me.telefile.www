@@ -2,10 +2,13 @@ var Room = require('./room.js');
 
 function RoomHub() {
     this._roomByPin = Object.create(null);
+
+    this._enableRoomCollector();
 }
 
 RoomHub.prototype = {
     PIN_LENGTH: 6,
+    ROOM_COLLECTOR_PERIOD: 3000,
 
     createRoom: function (transmitter) {
         var pin = this._getFreePin();
@@ -22,6 +25,20 @@ RoomHub.prototype = {
         } else {
             receiver.close(404);
         }
+    },
+    _enableRoomCollector: function () {
+        var pin, room, now = Date.now();
+
+        for (pin in this._roomByPin) {
+            room = this._roomByPin[pin];
+
+            if (now - room.createdOn > this.ROOM_COLLECTOR_PERIOD) {
+                room.destroy();
+                delete this._roomByPin[pin];
+            }
+        }
+
+        setTimeout(this._enableRoomCollector.bind(this), this.ROOM_COLLECTOR_PERIOD);
     },
     _getFreePin: function () {
         var pin;

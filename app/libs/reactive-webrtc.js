@@ -38,9 +38,12 @@ ReactiveWebrtc.prototype = {
 
             subscription = observer.subscribe(function (data) {
                 queue.push(data);
+            }, function (e) {
+                observable.onError(e);
+            }, function () {
+                observable.onCommpleted();
             });
 
-            // TODO what of cancelled before datachannel acquired ?
             this._getDataChannel().then(function (dataChannel) {
                 this._reactiveTransport = new ReactiveTransport(dataChannel);
                 var transportObserver = this._reactiveTransport.getObserver();
