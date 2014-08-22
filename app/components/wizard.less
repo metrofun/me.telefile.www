@@ -53,6 +53,12 @@
         &:active {
             border-color: @red;
         }
+
+        &:focus, &:hover {
+            .box-shadow(@shadowZ2);
+            position: relative;
+            top: -1px;
+        }
     }
     .progress-meter {
         margin: 80px 0;
