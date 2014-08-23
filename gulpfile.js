@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     React = require('react'),
     rename = require('gulp-rename'),
-    // uglify = require('gulp-uglify'),
+    ghPages = require("gulp-gh-pages"),
+    uglify = require('gulp-uglify'),
     nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     reactify = require('reactify'),
@@ -14,7 +15,7 @@ var gulp = require('gulp'),
 require('node-jsx').install({extension: '.jsx'});
 
 gulp.task('less', function () {
-    gulp.src('./app/index.less')
+    return gulp.src('./app/index.less')
         .pipe(less())
         .on('error', function () {
             this.emit('end');
@@ -36,7 +37,6 @@ gulp.task('browserify', function () {
                 gutil.log.apply(this, arguments);
             })
             .pipe(source('index.js'))
-            // .pipe(streamify(uglify()))
             .pipe(gulp.dest('public'))
             .pipe(livereload());
     }
@@ -53,9 +53,6 @@ gulp.task('browserify', function () {
 
 gulp.task('watch', function () {
     gulp.watch('./app/**/*.less', ['less']);
-    gulp.watch('./public/index.html', function () {
-        livereload();
-    });
 });
 
 gulp.task('static-server', function (next) {
@@ -74,7 +71,7 @@ gulp.task('static-server', function (next) {
 });
 
 gulp.task('signal-server', function () {
-    nodemon({
+    return nodemon({
         script: 'signal-server/index.js',
         options: '--harmony',
         execMap: {
@@ -86,7 +83,7 @@ gulp.task('signal-server', function () {
 });
 
 gulp.task('renderComponentToString', function(){
-    gulp.src('public/_index.html')
+    return gulp.src('app/index.html')
         .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
             var component = require('./app/components/' + componentName  + '.jsx');
 
@@ -94,6 +91,19 @@ gulp.task('renderComponentToString', function(){
         }))
         .pipe(rename('index.html'))
         .pipe(gulp.dest('public'));
+});
+
+gulp.task('uglify', ['browserify'], function () {
+    return gulp.src('public/index.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('public'));
+});
+gulp.task('publish', [
+    'renderComponentToString',
+    'less',
+    'uglify'
+], function () {
+     return gulp.src('public/**/*').pipe(ghPages());
 });
 
 gulp.task('default', [
