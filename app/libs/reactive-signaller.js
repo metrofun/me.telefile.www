@@ -1,6 +1,6 @@
 var RSVP = require('rsvp'),
+    config = require('../config/current.js'),
     ReactiveTransport = require('./reactive-transport.js');
-
 
  /**
   * Creates a reactive transport  for signalling,
@@ -17,7 +17,7 @@ function ReactiveSignaller(pin) {
     var SockJS = require('sockjs-client/lib/sockjs.js');
     window.SockJS = SockJS;
 
-    this._sock = new SockJS('http://127.0.0.1:1111/v1/room/' + (pin || 'create'));
+    this._sock = new SockJS(config.SIGNAL_SERVER + '/v1/room/' + (pin || 'create'));
     this._reactiveTransport = new ReactiveTransport(this._sock);
     this._pinPromise = new RSVP.Promise(function (resolve, reject) {
         if (pin) {

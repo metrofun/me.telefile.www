@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     replace = require('gulp-replace'),
     React = require('react'),
+    symlink = require('gulp-symlink'),
     rename = require('gulp-rename'),
     ghPages = require("gulp-gh-pages"),
     uglify = require('gulp-uglify'),
@@ -93,12 +94,24 @@ gulp.task('renderComponentToString', function(){
         .pipe(gulp.dest('public'));
 });
 
+gulp.task('development', function () {
+    return gulp.src('app/config/development.js')
+        .pipe(symlink('app/config/current.js'));
+});
+
+gulp.task('production', function () {
+    return gulp.src('app/config/production.js')
+        .pipe(symlink('app/config/current.js'));
+});
+
 gulp.task('uglify', ['browserify'], function () {
     return gulp.src('public/index.js')
         .pipe(uglify())
         .pipe(gulp.dest('public'));
 });
+
 gulp.task('publish', [
+    'producation',
     'renderComponentToString',
     'less',
     'uglify'
@@ -107,6 +120,7 @@ gulp.task('publish', [
 });
 
 gulp.task('default', [
+    'development',
     'renderComponentToString',
     'less',
     'browserify',
