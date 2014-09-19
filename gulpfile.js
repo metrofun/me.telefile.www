@@ -111,7 +111,7 @@ gulp.task('uglify', ['browserify'], function () {
 });
 
 gulp.task('publish', [
-    'producation',
+    'production',
     'renderComponentToString',
     'less',
     'uglify'
