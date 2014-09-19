@@ -7,7 +7,7 @@ RSVP.on('error', function (e) {
 
 Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
-require('Rx').Observable.prototype.log = function (ns) {
+require('rx').Observable.prototype.log = function (ns) {
     this.subscribe(function (data) {
         console.log(ns + ' onNext', data);
     }, function (e) {

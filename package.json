@@ -31,7 +31,7 @@
     "routes": "^1.1.0",
     "routes.js": "0.0.1",
     "rsvp": "^3.0.9",
-    "rx": "git://github.com/Reactive-Extensions/RxJS#24f1322cdb9f02d655736fd189490aae400e6cb3",
+    "rx": "^2.3.1",
     "sockjs": "^0.3.9",
     "sockjs-client": "git://github.com/sockjs/sockjs-client",
     "static-server": "~1.0.0",
