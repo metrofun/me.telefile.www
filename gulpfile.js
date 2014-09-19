@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     ghPages = require("gulp-gh-pages"),
     uglify = require('gulp-uglify'),
-    nodemon = require('gulp-nodemon'),
     browserify = require('browserify'),
     reactify = require('reactify'),
     livereload = require('gulp-livereload'),
@@ -74,18 +73,6 @@ gulp.task('static-server', function (next) {
     });
 });
 
-gulp.task('signal-server', function () {
-    return nodemon({
-        script: 'signal-server/index.js',
-        options: '--harmony',
-        execMap: {
-            js: 'node --harmony'
-        },
-        watch: ['signal-server'],
-        ext: 'js'
-    });
-});
-
 gulp.task('renderComponentToString', function(){
     return gulp.src(SRC_DIR + '/index.html')
         .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
@@ -128,6 +115,5 @@ gulp.task('default', [
     'less',
     'browserify',
     'static-server',
-    'signal-server',
     'watch'
 ]);
