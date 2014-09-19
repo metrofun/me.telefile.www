@@ -1,6 +1,6 @@
 **/.DS_Store
 node_modules
 npm-debug.log
-public/index.js
-public/index.css
-public/index.html
+dest/index.js
+dest/index.css
+dest/index.html
