@@ -106,7 +106,9 @@ gulp.task('publish', [
     'less',
     'uglify'
 ], function () {
-     return gulp.src(DEST_DIR + '/**/*').pipe(ghPages());
+     return gulp.src(DEST_DIR + '/**/*').pipe(ghPages({
+        cacheDir: '.gulp-gh-pages'
+     }));
 });
 
 gulp.task('default', [
