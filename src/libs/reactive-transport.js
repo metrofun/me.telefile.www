@@ -67,9 +67,6 @@ ReactiveTransport.prototype = {
 
             observer.pausableBuffered(controller).shareValue('fixme').subscribe(observable);
 
-            // workaround for pausableBuffered, that swallows first item
-            observer.onNext('fixme');
-
             observable.subscribe(function (payload) {
                 try {
                     self._transport.send(TransportFrame.encode(DATA_PLANE, payload));
