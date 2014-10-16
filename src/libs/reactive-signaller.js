@@ -32,7 +32,7 @@ function ReactiveSignaller(pin) {
                 .subscribe(function (message) {
                     resolve(message.id);
                 }, function (e) {
-                    console.log('subscribe', e);
+                    console.log('if you see it – fixme', e);
                 });
         }
     }.bind(this));

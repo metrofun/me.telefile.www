@@ -24,7 +24,9 @@
         "mozRTCSessionDescription",
         "mozRTCPeerConnection",
         "webkitRTCPeerConnection",
-        "angular",
+        "describe",
+        "it",
+        "beforeEach",
         "module",
         "exports",
         "require"

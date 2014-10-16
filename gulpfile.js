@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     browserify = require('browserify'),
     reactify = require('reactify'),
+    mocha = require('gulp-mocha'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream'),
 
@@ -98,6 +99,12 @@ gulp.task('uglify', ['browserify'], function () {
     return gulp.src(DEST_DIR + '/index.js')
         .pipe(uglify())
         .pipe(gulp.dest(DEST_DIR));
+});
+
+gulp.task('test', function () {
+    gulp.src('src/**/*.spec.js').pipe(mocha({
+        useColors: false
+    }));
 });
 
 gulp.task('publish', [

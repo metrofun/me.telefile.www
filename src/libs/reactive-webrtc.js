@@ -116,8 +116,8 @@ ReactiveWebrtc.prototype = {
 
         observable = this._reactiveSignaller.getObservable();
 
+        // After data channel established, we no longer care about errors in signaller
         this._signallerErrorSubscription = observable.subscribe(undefined, function (e) {
-            console.log('ReactiveSignaller onError:', e);
             self.getObservable().onError(e);
             self.getObserver().onError(e);
         });
