@@ -102,7 +102,7 @@ gulp.task('uglify', ['browserify'], function () {
 });
 
 gulp.task('test', function () {
-    gulp.src('src/**/*.spec.js').pipe(mocha({
+    gulp.src('tests/**/*.test.js').pipe(mocha({
         useColors: false
     }));
 });
