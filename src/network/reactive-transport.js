@@ -66,40 +66,34 @@ ReactiveTransport.prototype = {
         };
     },
     _initWriteBus: function () {
-        var inSubject, outSubject, self;
+        var inSubject, outSubject, self = this;
 
-        if (!this._sendingSubject) {
-            self = this;
+        inSubject = new Rx.Subject();
+        outSubject = new Rx.Subject();
+        inSubject.pausableBuffered(this._getOpenStatePauser()).subscribe(function (payload) {
+            try {
+                self._transport.send(Frame.encode(DATA_PLANE, payload));
+                outSubject.onNext(payload);
+            } catch (e) {
+                outSubject.onError(e);
+            }
+        }, function (incomingError) {
+            try {
+                self._terminate(ERROR_TERMINATION);
+                outSubject.onError(incomingError);
+            } catch (e) {
+                outSubject.onError(e);
+            }
+        }, function () {
+            try {
+                self._terminate(NORMAL_TERMINATION);
+                outSubject.onCompleted();
+            } catch (e) {
+                outSubject.onError(e);
+            }
+        });
 
-            inSubject = new Rx.Subject();
-            outSubject = new Rx.Subject();
-            inSubject.pausableBuffered(this._getOpenStatePauser()).subscribe(function (payload) {
-                try {
-                    self._transport.send(Frame.encode(DATA_PLANE, payload));
-                    outSubject.onNext(payload);
-                } catch (e) {
-                    outSubject.onError(e);
-                }
-            }, function (incomingError) {
-                try {
-                    self._terminate(ERROR_TERMINATION);
-                    outSubject.onError(incomingError);
-                } catch (e) {
-                    outSubject.onError(e);
-                }
-            }, function () {
-                try {
-                    self._terminate(NORMAL_TERMINATION);
-                    outSubject.onCompleted();
-                } catch (e) {
-                    outSubject.onError(e);
-                }
-            });
-
-            this._observerSubject = Rx.Subject.create(inSubject, outSubject);
-        }
-
-        return this._observerSubject;
+        this._observerSubject = Rx.Subject.create(inSubject, outSubject);
     },
     _configureTransport: function () {
         var self = this;
