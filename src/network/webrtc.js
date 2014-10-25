@@ -6,6 +6,10 @@ var Signaller = require('./signaller.js'),
     Rx = require('rx'),
     RSVP = require('rsvp');
 
+    RSVP.on('error', function (e) {
+    throw e;
+});
+// window might be undefined
 try {
     RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
     RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
@@ -64,34 +68,30 @@ ReactiveWebrtc.prototype = {
     _initWriteBus: function () {
         var self = this,
             inSubject = new Rx.Subject(),
-            inPausedSubject = new Rx.Subject(),
-            pauser = new Rx.Subject();
+            replaySubject = new Rx.ReplaySubject(),
+            replaySubjectSub = inSubject.subscribe(replaySubject);
 
         this._writeBusOutSubject = new Rx.Subject();
 
-        inSubject.pausableBuffered(pauser).subscribe(inPausedSubject);
-
-        RSVP.all([this._reactiveTransportOpening, this._dataChannelOpening]).then(function () {
-            var transport = arguments[0],
-                dataChannel = arguments[1],
+        RSVP.all([this._reactiveTransportOpening, this._dataChannelOpening]).then(function (data) {
+            var transport = data[0],
+                dataChannel = data[1],
                 transportWriteBus = transport.getWriteBus(),
-                bufferingPauser = self._createBufferingPauser(dataChannel);
+                pauser = self._createBufferingPauser(dataChannel);
 
-            inPausedSubject.subscribe(bufferingPauser);
-            bufferingPauser.subscribe(pauser);
-
-            inPausedSubject.subscribe(function (msg) {
+            inSubject.concat(replaySubject).pausableBuffered(pauser).subscribe(function (msg) {
                 transportWriteBus.onNext(msg);
             }, function (e) {
                 transportWriteBus.onError(e);
+                // signaller might be already disposed
                 self._disposeSignaller();
             }, function () {
                 transportWriteBus.onCompleted();
                 self._disposeSignaller();
             });
-            inPausedSubject.subscribe(transport.getWriteBus());
 
-            transport.getWriteBus().subscribe(self._writeBusOutSubject);
+            replaySubjectSub.dispose();
+            transportWriteBus.subscribe(self._writeBusOutSubject);
         });
 
         this._writeBusSubject = Rx.Subject.create(inSubject, this._writeBusOutSubject);
@@ -162,10 +162,10 @@ ReactiveWebrtc.prototype = {
         // after dataChannel established,
         // we no longer care about signaller
         // TODO implement signalling over data channel
-        this._dataChannelOpening.then(this._disposeSignaller.bind(this));
+        this._dataChannelOpening.doOnCompleted(this._disposeSignaller.bind(this));
     },
     _initReactiveTransport: function () {
-        this._reactiveTransportOpening = this._dataChannelOpening.then(function (dataChannel) {
+        this._reactiveTransportOpening = this._dataChannelOpening.map(function (dataChannel) {
             return new ReactiveTransport(dataChannel);
         });
     },

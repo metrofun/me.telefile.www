@@ -4,6 +4,7 @@
   "description": "",
   "main": "script.js",
   "dependencies": {
+    "bacon": "0.0.1",
     "bootstrap": "^3.2.0",
     "browserify": "^4.2.0",
     "d3": "^3.4.11",

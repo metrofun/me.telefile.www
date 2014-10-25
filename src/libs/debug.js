@@ -8,15 +8,16 @@ RSVP.on('error', function (e) {
 Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
 require('rx').Observable.prototype.log = function (ns) {
+    ns = ns || '';
     this.subscribe(function (data) {
         console.log(ns + ' onNext', data);
     }, function (e) {
-        setTimeout(function () {
-            throw e;
-        });
+        // setTimeout(function () {
+            // throw e;
+        // });
         console.log(ns + ' onError', e);
-    }, function (data) {
-        console.log(ns + ' onCompleted', data);
+    }, function () {
+        console.log(ns + ' onCompleted');
     });
 
     return this;

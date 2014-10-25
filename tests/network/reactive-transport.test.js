@@ -25,7 +25,7 @@ describe('network', function () {
         });
 
         describe('getWriteBus', function () {
-            it('should buffer messaged before opening', function () {
+            it('buffers messages received before transport open', function () {
                 var writeBus = reactiveTransport.getWriteBus();
                 var testSequence = scheduler.createHotObservable(
                     onNext(70, 1),
@@ -53,7 +53,31 @@ describe('network', function () {
                     onCompleted(600)
                 ]);
             });
-            it('should throw error on errored before open', function () {
+            it('should buffer completed sequence before opening', function () {
+                var writeBus = reactiveTransport.getWriteBus();
+                var testSequence = scheduler.createHotObservable(
+                    onNext(70, 1),
+                    onNext(220, 3),
+                    onNext(340, 5),
+                    onCompleted(600)
+                );
+
+                testSequence.subscribe(writeBus);
+                writeBus.subscribe(result);
+                scheduler.scheduleAbsolute(1800, function () {
+                    mockTransport.onopen();
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                    onNext(1800, 1),
+                    onNext(1800, 3),
+                    onNext(1800, 5),
+                    onCompleted(1800)
+                ]);
+            });
+            it('throws an error if transport errored', function () {
                 var writeBus = reactiveTransport.getWriteBus();
                 var testSequence = scheduler.createHotObservable(
                     onNext(70, 1),
@@ -67,18 +91,17 @@ describe('network', function () {
                 testSequence.subscribe(writeBus);
                 writeBus.subscribe(result);
                 scheduler.scheduleAbsolute(200, function () {
-                    mockTransport.onerror();
+                    mockTransport.onerror(new Error());
                 });
 
                 scheduler.start();
 
+                // TODO should be only error
                 expect(result.messages).to.deep.equal([
-                    onNext(200, 1),
-                    onNext(200, 2),
                     onError(200, new Error())
                 ]);
             });
-            it('should throw error if transport closed after succesfull open', function () {
+            it('throws an error if transport closed after succesfull open', function () {
                 var writeBus = reactiveTransport.getWriteBus();
                 var testSequence = scheduler.createHotObservable(
                     onNext(70, 1),
@@ -95,7 +118,7 @@ describe('network', function () {
                     mockTransport.onopen();
                 });
                 scheduler.scheduleAbsolute(300, function () {
-                    mockTransport.onerror();
+                    mockTransport.onerror(new Error());
                 });
 
                 scheduler.start();
@@ -120,6 +143,10 @@ describe('network', function () {
                 );
 
 
+
+                scheduler.scheduleAbsolute(20, function () {
+                    mockTransport.onopen();
+                });
                 testSequence.subscribe(function (value) {
                     mockTransport.onmessage({
                         data: Frame.encode(1, value)

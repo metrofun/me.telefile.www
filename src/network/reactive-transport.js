@@ -21,7 +21,7 @@ var Rx = require('rx'),
 function ReactiveTransport(transport) {
     this._transport = transport;
 
-    this._configureTransport();
+    this._initTransport();
     this._initReadStream();
     this._initWriteBus();
 }
@@ -30,7 +30,7 @@ ReactiveTransport.prototype = {
     constructor: ReactiveTransport,
 
     getReadStream: function () {
-        return this._readStreamSubject.asObservable();
+        return this._readStream;
     },
     /**
      * In order to send something by transport,
@@ -45,32 +45,45 @@ ReactiveTransport.prototype = {
     },
 
     _initReadStream: function () {
-        var self = this;
-
-        this._readStreamSubject = new Rx.Subject();
+        var self = this,
+            subject = new Rx.Subject();
 
         this._transport.onmessage = function (e) {
             var message = Frame.decode(e.data);
 
             if (message.plane === CONTROL_PLANE) {
                 if (message.payload === NORMAL_TERMINATION) {
-                    self._readStreamSubject.onCompleted();
+                    subject.onCompleted();
                     self._closeTransport();
                 } else if (message.payload === ERROR_TERMINATION) {
-                    self._readStreamSubject.onError(new Error(self._transport + ': received an error from a remote peer'));
+                    subject.onError(new Error(self._transport + ': received an error from a remote peer'));
                     self._closeTransport();
                 }
             } else if (message.plane === DATA_PLANE) {
-                self._readStreamSubject.onNext(message.payload);
+                subject.onNext(message.payload);
             }
         };
+
+        this._readStream = subject.merge(this._transportOpening.ignoreElements());
     },
     _initWriteBus: function () {
-        var inSubject, outSubject, self = this;
+        var self = this,
+            inSubject = new Rx.Subject(),
+            outSubject = new Rx.Subject();
 
-        inSubject = new Rx.Subject();
-        outSubject = new Rx.Subject();
-        inSubject.pausableBuffered(this._getOpenStatePauser()).subscribe(function (payload) {
+        // workaround for pausableBuffered,
+        // we subscribe to errors from transport first.
+        // Otherwise pausableBuffered will flush queue before sending error
+        this._transportOpening.ignoreElements().subscribe(outSubject);
+
+        inSubject
+            // workaround for pausableBuffered
+            // pausableBuffered flushes queue when source completes,
+            // so we merge inSubject with a sequence
+            // which completes when tranport opens
+            .merge(this._transportOpening.take(1).ignoreElements())
+            .pausableBuffered(this._transportOpening)
+            .subscribe(function (payload) {
             try {
                 self._transport.send(Frame.encode(DATA_PLANE, payload));
                 outSubject.onNext(payload);
@@ -95,23 +108,31 @@ ReactiveTransport.prototype = {
 
         this._observerSubject = Rx.Subject.create(inSubject, outSubject);
     },
-    _configureTransport: function () {
-        var self = this;
+    _initTransport: function () {
+        var self = this,
+            readyState = this._transport.readyState;
+
+        this._transportOpening = new Rx.ReplaySubject();
         // fix for firefox
         this._transport.binaryType = 'arraybuffer';
 
-        // because we can have only one callback for each event,
-        // we have to put logic fot both getReadStream and getWriteBus in advance
+        // WebSocket and RTCDataChannel different readyState values
+        if (readyState === 1 || readyState === 'open') {
+            this._transportOpening.onNext(true);
+        } else if (readyState === 3 || readyState === 'closed') {
+            this._transportOpening.onError(new Error(OPEN_ERROR_LABEL));
+        }
+
         this._transport.onopen = function () {
-            self._openStatePauser.onNext(true);
+            self._transportOpening.onNext(true);
         };
         this._transport.onclose = function () {
-            self._readStreamSubject.onError(new Error(UNEXPECTED_CLOSE_LABEL + ' : ' + self._transport));
-            self._openStatePauser.onError(new Error(OPEN_ERROR_LABEL));
+            self._transportOpening.onError(
+                new Error(UNEXPECTED_CLOSE_LABEL + ' : ' + self._transport)
+            );
         };
         this._transport.onerror = function (e) {
-            self._readStreamSubject.onError(e);
-            self._openStatePauser.onError(new Error(OPEN_ERROR_LABEL));
+            self._transportOpening.onError(e);
         };
     },
     /**
@@ -126,31 +147,6 @@ ReactiveTransport.prototype = {
         try {
             this._transport.close();
         } catch (e) {}
-    },
-    /**
-     * Resolves, when transport is open
-     *
-     * @returns {Rx.Observable}
-     */
-    _getOpenStatePauser: function () {
-        var self;
-
-        if (!this._openStatePauser) {
-            self = this;
-            this._openStatePauser = new Rx.Subject();
-
-            var readyState = this._transport.readyState,
-            rejectLabel = 'transport connection could not opened';
-
-            // WebSocket and RTCDataChannel different readyState values
-            if (readyState === 1 || readyState === 'open') {
-                this._openStatePauser.onNext(true);
-            } else if (readyState === 3 || readyState === 'closed') {
-                this._openStatePauser.onError(new Error(rejectLabel));
-            }
-        }
-
-        return this._openStatePauser;
     }
 };
 
