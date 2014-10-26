@@ -113,29 +113,32 @@ ReactiveWebrtc.prototype = {
 
         this._signaller = new Signaller(this._pin);
 
-        this._signallerSubscription = this._signaller.getReadStream().subscribe(function (data) {
-            if (data.sdp) {
-                self._pc.setRemoteDescription(
-                    new RTCSessionDescription(data.sdp),
-                    function () {
-                        if (!self._isOffering) {
-                            self._pc.createAnswer(
-                                self._onLocalSdp.bind(self),
-                                self._onInternalError.bind(self),
-                                self._mediaConstraints
-                            );
-                        }
-                    },
-                    self._onInternalError.bind(self)
-                );
-            } else if (data.candidate) {
-                self._pc.addIceCandidate(
-                    new RTCIceCandidate(data.candidate),
-                    undefined,
-                    self._onInternalError.bind(self)
-                );
-            }
-        }, this._onInternalError.bind(this));
+        this._signallerDisposable = new Rx.CompositeDisposable(
+            this._signaller.getReadStream().subscribe(function (data) {
+                if (data.sdp) {
+                    self._pc.setRemoteDescription(
+                        new RTCSessionDescription(data.sdp),
+                        function () {
+                            if (!self._isOffering) {
+                                self._pc.createAnswer(
+                                    self._onLocalSdp.bind(self),
+                                    self._onInternalError.bind(self),
+                                    self._mediaConstraints
+                                );
+                            }
+                        },
+                        self._onInternalError.bind(self)
+                    );
+                } else if (data.candidate) {
+                    self._pc.addIceCandidate(
+                        new RTCIceCandidate(data.candidate),
+                        undefined,
+                        self._onInternalError.bind(self)
+                    );
+                }
+            }, this._onInternalError.bind(this)),
+            this._signaller.getWriteBus().subscribeOnError(this._onInternalError.bind(this))
+        );
 
         this._pc.onicecandidate = function (e) {
             if (e.candidate) {
@@ -170,9 +173,9 @@ ReactiveWebrtc.prototype = {
         }).subscribe(this._reactiveTransportOpening);
     },
     _disposeSignaller: function () {
-        if (this._signallerSubscription) {
-            this._signallerSubscription.dispose();
-            this._signallerSubscription = null;
+        if (this._signallerDisposable) {
+            this._signallerDisposable.dispose();
+            this._signallerDisposable = null;
         }
         if (this._signaller) {
             this._signaller.getWriteBus().onCompleted();
@@ -201,8 +204,8 @@ ReactiveWebrtc.prototype = {
     },
     _onLocalSdp: function (sdp) {
         this._pc.setLocalDescription(sdp, function () {
-            this._signaller.getObserver().onNext({sdp: sdp});
-        }.bind(this), this._onInternalError.bind());
+            this._signaller.getWriteBus().onNext({sdp: sdp});
+        }.bind(this), this._onInternalError.bind(this));
     },
     _mediaConstraints: {
         mandatory: {
