@@ -1,3 +1,4 @@
+Error.stackTraceLimit = Infinity;
 var Signaller = require('./signaller.js'),
     ReactiveTransport = require('./reactive-transport.js'),
     RTCPeerConnection,
@@ -67,41 +68,45 @@ ReactiveWebrtc.prototype = {
     },
     _initWriteBus: function () {
         var self = this,
-            inSubject = new Rx.Subject(),
-            replaySubject = new Rx.ReplaySubject(),
-            replaySubjectSub = inSubject.subscribe(replaySubject);
+            pauser = new Rx.Subject(),
+            proxySubject = new Rx.Subject(),
+            inSubject = new Rx.Subject();
 
         this._writeBusOutSubject = new Rx.Subject();
 
-        RSVP.all([this._reactiveTransportOpening, this._dataChannelOpening]).then(function (data) {
-            var transport = data[0],
-                dataChannel = data[1],
-                transportWriteBus = transport.getWriteBus(),
-                pauser = self._createBufferingPauser(dataChannel);
+        inSubject
+            // workaround for pausableBuffered
+            // pausableBuffered flushes queue when source completes,
+            // so we merge inSubject with a sequence
+            //  which completes after first unpause
+            // .merge(pauser.take(1).ignoreElements())
+            // .pausableBuffered(pauser)
+            // signaller might be already disposed
+            .doOnError(this._disposeSignaller.bind(this))
+            .doOnCompleted(this._disposeSignaller.bind(this))
+            .subscribe(proxySubject);
 
-            inSubject.concat(replaySubject).pausableBuffered(pauser).subscribe(function (msg) {
-                transportWriteBus.onNext(msg);
-            }, function (e) {
-                transportWriteBus.onError(e);
-                // signaller might be already disposed
-                self._disposeSignaller();
-            }, function () {
-                transportWriteBus.onCompleted();
-                self._disposeSignaller();
-            });
 
-            replaySubjectSub.dispose();
-            transportWriteBus.subscribe(self._writeBusOutSubject);
-        });
+        this._reactiveTransportOpening.concatMap(function (reactiveTransport) {
+            var writeBus = reactiveTransport.getWriteBus();
+
+            proxySubject.subscribe(writeBus);
+
+            return writeBus;
+        }).subscribe(this._writeBusOutSubject);
+
+        this._dataChannelOpening.concatMap(function (dataChannel) {
+            return self._createBufferingPauser(dataChannel, inSubject);
+        }).subscribe(pauser);
 
         this._writeBusSubject = Rx.Subject.create(inSubject, this._writeBusOutSubject);
     },
     _initReadStream: function () {
         this._readStreamSubject = new Rx.Subject();
 
-        this._reactiveTransportOpening.then(function (transport) {
-            transport.getReadStream().subscribe(this._readStreamSubject);
-        }.bind(this));
+        this._reactiveTransportOpening.concatMap(function (reactiveTransport) {
+            return reactiveTransport.getReadStream();
+        }).subscribe(this._readStreamSubject);
     },
     _initSignaller: function () {
         var self = this;
@@ -139,35 +144,30 @@ ReactiveWebrtc.prototype = {
         };
     },
     _initDataChannel: function () {
-        var self = this;
+        this._dataChannelOpening = new Rx.ReplaySubject();
 
-        this._dataChannelOpening = new RSVP.Promise(function (resolve, reject) {
-            var errorSubscription;
-
-            if (self._isOffering) {
-                resolve(self._pc.createDataChannel('default', {
-                    ordered: true
-                }));
-            } else {
-                errorSubscription = self.getWriteBus()
-                    .concat(self.getReadStream())
-                    .subscribeOnError(function (e) { reject(e); });
-
-                self._pc.ondatachannel = function (e) {
-                    resolve(e.channel);
-                    errorSubscription.dispose();
-                };
-            }
-        });
+        if (this._isOffering) {
+            this._dataChannelOpening.onNext(this._pc.createDataChannel('default', {
+                ordered: true
+            }));
+            this._dataChannelOpening.onCompleted();
+        } else {
+            this._pc.ondatachannel = function (e) {
+                this._dataChannelOpening.onNext(e.channel);
+                this._dataChannelOpening.onCompleted();
+            }.bind(this);
+        }
         // after dataChannel established,
         // we no longer care about signaller
         // TODO implement signalling over data channel
-        this._dataChannelOpening.doOnCompleted(this._disposeSignaller.bind(this));
+        this._dataChannelOpening.subscribeOnCompleted(this._disposeSignaller.bind(this));
     },
     _initReactiveTransport: function () {
-        this._reactiveTransportOpening = this._dataChannelOpening.map(function (dataChannel) {
+        this._reactiveTransportOpening = new Rx.ReplaySubject();
+
+        this._dataChannelOpening.map(function (dataChannel) {
             return new ReactiveTransport(dataChannel);
-        });
+        }).subscribe(this._reactiveTransportOpening);
     },
     _disposeSignaller: function () {
         if (this._signallerSubscription) {
@@ -183,27 +183,21 @@ ReactiveWebrtc.prototype = {
         this._disposeSignaller();
         this._readStreamSubject.onError(e);
         this._writeBusOutSubject.onError(e);
-        this._reactiveTransportOpening.then(function (reactiveTransport) {
+        this._reactiveTransportOpening.subscribe(function (reactiveTransport) {
             reactiveTransport.getWriteBus().onError(e);
         });
     },
-    _createBufferingPauser: function (dataChannel) {
-        var inSubject = new Rx.Subject(),
-            outSubject = new Rx.Subject();
-
-        inSubject.flatMapLatest(function () {
-            return (dataChannel.bufferedAmount === 0) || Rx.Observable
-                .return(false)
-                .concat(Rx.Observable.timer(0, 300)
-                    .skipWhile(function () {
-                        return dataChannel.bufferedAmount > 0;
-                    })
-                    .map(Boolean)
-                    .take(1)
-                );
-        }).subscribe(outSubject);
-
-        return Rx.Subject.create(inSubject, outSubject);
+    _createBufferingPauser: function (dataChannel, control) {
+        return control.flatMapLatest(function () {
+            return Rx.Observable
+                .timer(0, 300)
+                .map(function () {
+                    return dataChannel.bufferedAmount === 0;
+                })
+                .startWith(Rx.Observable.return(dataChannel.bufferedAmount === 0))
+                .filter(Boolean)
+                .take(1);
+        });
     },
     _onLocalSdp: function (sdp) {
         this._pc.setLocalDescription(sdp, function () {

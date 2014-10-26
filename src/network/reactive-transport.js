@@ -71,9 +71,8 @@ ReactiveTransport.prototype = {
             inSubject = new Rx.Subject(),
             outSubject = new Rx.Subject();
 
-        // workaround for pausableBuffered,
-        // we subscribe to errors from transport first.
-        // Otherwise pausableBuffered will flush queue before sending error
+        // we need to subscribe to errors earlier
+        // then following pausableBuffered will flush its queue on an error
         this._transportOpening.ignoreElements().subscribe(outSubject);
 
         inSubject
@@ -84,27 +83,27 @@ ReactiveTransport.prototype = {
             .merge(this._transportOpening.take(1).ignoreElements())
             .pausableBuffered(this._transportOpening)
             .subscribe(function (payload) {
-            try {
-                self._transport.send(Frame.encode(DATA_PLANE, payload));
-                outSubject.onNext(payload);
-            } catch (e) {
-                outSubject.onError(e);
-            }
-        }, function (incomingError) {
-            try {
-                self._terminate(ERROR_TERMINATION);
-                outSubject.onError(incomingError);
-            } catch (e) {
-                outSubject.onError(e);
-            }
-        }, function () {
-            try {
-                self._terminate(NORMAL_TERMINATION);
-                outSubject.onCompleted();
-            } catch (e) {
-                outSubject.onError(e);
-            }
-        });
+                try {
+                    self._transport.send(Frame.encode(DATA_PLANE, payload));
+                    outSubject.onNext(payload);
+                } catch (e) {
+                    outSubject.onError(e);
+                }
+            }, function (incomingError) {
+                try {
+                    self._terminate(ERROR_TERMINATION);
+                    outSubject.onError(incomingError);
+                } catch (e) {
+                    outSubject.onError(e);
+                }
+            }, function () {
+                try {
+                    self._terminate(NORMAL_TERMINATION);
+                    outSubject.onCompleted();
+                } catch (e) {
+                    outSubject.onError(e);
+                }
+            });
 
         this._observerSubject = Rx.Subject.create(inSubject, outSubject);
     },

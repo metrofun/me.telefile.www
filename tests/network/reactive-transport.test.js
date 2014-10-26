@@ -25,6 +25,30 @@ describe('network', function () {
         });
 
         describe('getWriteBus', function () {
+            it('passes messages received after transport open', function () {
+                var writeBus = reactiveTransport.getWriteBus();
+                var testSequence = scheduler.createHotObservable(
+                    onNext(70, 1),
+                    onNext(110, 2),
+                    onNext(270, 4),
+                    onNext(340, 5)
+                );
+
+                testSequence.subscribe(writeBus);
+                writeBus.subscribe(result);
+                scheduler.scheduleAbsolute(50, function () {
+                    mockTransport.onopen();
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                    onNext(70, 1),
+                    onNext(110, 2),
+                    onNext(270, 4),
+                    onNext(340, 5)
+                ]);
+            });
             it('buffers messages received before transport open', function () {
                 var writeBus = reactiveTransport.getWriteBus();
                 var testSequence = scheduler.createHotObservable(

@@ -9,7 +9,7 @@ Rx.config.Promise = RSVP.Promise.bind(RSVP);
 
 require('rx').Observable.prototype.log = function (ns) {
     ns = ns || '';
-    this.subscribe(function (data) {
+    return this.do(function (data) {
         console.log(ns + ' onNext', data);
     }, function (e) {
         // setTimeout(function () {
@@ -19,6 +19,4 @@ require('rx').Observable.prototype.log = function (ns) {
     }, function () {
         console.log(ns + ' onCompleted');
     });
-
-    return this;
 };
