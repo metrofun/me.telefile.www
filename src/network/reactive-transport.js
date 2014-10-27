@@ -44,6 +44,10 @@ ReactiveTransport.prototype = {
         return this._observerSubject;
     },
 
+    getOpenPauser: function () {
+        return this._openPauser;
+    },
+
     _initReadStream: function () {
         var self = this,
             subject = new Rx.Subject();
@@ -64,7 +68,7 @@ ReactiveTransport.prototype = {
             }
         };
 
-        this._readStream = subject.merge(this._transportOpening.ignoreElements());
+        this._readStream = subject.merge(this._openPauser.ignoreElements());
     },
     _initWriteBus: function () {
         var self = this,
@@ -73,15 +77,15 @@ ReactiveTransport.prototype = {
 
         // we need to subscribe to errors earlier
         // then following pausableBuffered will flush its queue on an error
-        this._transportOpening.ignoreElements().subscribe(outSubject);
+        this._openPauser.ignoreElements().subscribe(outSubject);
 
         inSubject
             // workaround for pausableBuffered
             // pausableBuffered flushes queue when source completes,
             // so we merge inSubject with a sequence
             // which completes when tranport opens
-            .merge(this._transportOpening.take(1).ignoreElements())
-            .pausableBuffered(this._transportOpening)
+            .merge(this._openPauser.take(1).ignoreElements())
+            .pausableBuffered(this._openPauser)
             .subscribe(function (payload) {
                 try {
                     self._transport.send(Frame.encode(DATA_PLANE, payload));
@@ -111,27 +115,27 @@ ReactiveTransport.prototype = {
         var self = this,
             readyState = this._transport.readyState;
 
-        this._transportOpening = new Rx.ReplaySubject();
+        this._openPauser = new Rx.ReplaySubject();
         // fix for firefox
         this._transport.binaryType = 'arraybuffer';
 
         // WebSocket and RTCDataChannel different readyState values
         if (readyState === 1 || readyState === 'open') {
-            this._transportOpening.onNext(true);
+            this._openPauser.onNext(true);
         } else if (readyState === 3 || readyState === 'closed') {
-            this._transportOpening.onError(new Error(OPEN_ERROR_LABEL));
+            this._openPauser.onError(new Error(OPEN_ERROR_LABEL));
         }
 
         this._transport.onopen = function () {
-            self._transportOpening.onNext(true);
+            self._openPauser.onNext(true);
         };
         this._transport.onclose = function () {
-            self._transportOpening.onError(
+            self._openPauser.onError(
                 new Error(UNEXPECTED_CLOSE_LABEL + ' : ' + self._transport)
             );
         };
         this._transport.onerror = function (e) {
-            self._transportOpening.onError(e);
+            self._openPauser.onError(e);
         };
     },
     /**

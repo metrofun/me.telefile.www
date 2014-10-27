@@ -37,9 +37,9 @@ function ReactiveWebrtc(pin) {
 
     //we need to request a data channel before creating an offer,
     //otherwise datachannel won't be negotiated between peers
+    this._initSignaller();
     this._initDataChannel();
     this._initReactiveTransport();
-    this._initSignaller();
     this._initReadStream();
     this._initWriteBus();
 
@@ -67,20 +67,18 @@ ReactiveWebrtc.prototype = {
         return this._readStreamSubject.asObservable();
     },
     _initWriteBus: function () {
-        var self = this,
-            pauser = new Rx.Subject(),
+        var pauser = new Rx.Subject(),
             proxySubject = new Rx.Subject(),
             inSubject = new Rx.Subject();
 
         this._writeBusOutSubject = new Rx.Subject();
 
         inSubject
-            // workaround for pausableBuffered
             // pausableBuffered flushes queue when source completes,
             // so we merge inSubject with a sequence
             //  which completes after first unpause
-            // .merge(pauser.take(1).ignoreElements())
-            // .pausableBuffered(pauser)
+            .merge(pauser.take(1).ignoreElements())
+            .pausableBuffered(pauser)
             // signaller might be already disposed
             .doOnError(this._disposeSignaller.bind(this))
             .doOnCompleted(this._disposeSignaller.bind(this))
@@ -95,9 +93,9 @@ ReactiveWebrtc.prototype = {
             return writeBus;
         }).subscribe(this._writeBusOutSubject);
 
-        this._dataChannelOpening.concatMap(function (dataChannel) {
-            return self._createBufferingPauser(dataChannel, inSubject);
-        }).subscribe(pauser);
+        this._dataChannelCreating.concatMap(function (dataChannel) {
+            return this._createBufferingPauser(dataChannel, inSubject);
+        }.bind(this)).subscribe(pauser);
 
         this._writeBusSubject = Rx.Subject.create(inSubject, this._writeBusOutSubject);
     },
@@ -147,43 +145,45 @@ ReactiveWebrtc.prototype = {
         };
     },
     _initDataChannel: function () {
-        this._dataChannelOpening = new Rx.ReplaySubject();
+        this._dataChannelCreating = new Rx.ReplaySubject();
 
         if (this._isOffering) {
-            this._dataChannelOpening.onNext(this._pc.createDataChannel('default', {
+            this._dataChannelCreating.onNext(this._pc.createDataChannel('default', {
                 ordered: true
             }));
-            this._dataChannelOpening.onCompleted();
+            this._dataChannelCreating.onCompleted();
         } else {
             this._pc.ondatachannel = function (e) {
-                this._dataChannelOpening.onNext(e.channel);
-                this._dataChannelOpening.onCompleted();
+                this._dataChannelCreating.onNext(e.channel);
+                this._dataChannelCreating.onCompleted();
             }.bind(this);
         }
-        // after dataChannel established,
-        // we no longer care about signaller
-        // TODO implement signalling over data channel
-        this._dataChannelOpening.subscribeOnCompleted(this._disposeSignaller.bind(this));
     },
     _initReactiveTransport: function () {
         this._reactiveTransportOpening = new Rx.ReplaySubject();
 
-        this._dataChannelOpening.map(function (dataChannel) {
-            return new ReactiveTransport(dataChannel);
-        }).subscribe(this._reactiveTransportOpening);
+        this._dataChannelCreating.map(function (dataChannel) {
+            var reactiveTransport = new ReactiveTransport(dataChannel);
+
+            // Unsubscribe from Signaller errors,
+            // after dataChannel has been established
+            reactiveTransport
+                .getOpenPauser().take(1)
+                .subscribeOnCompleted(this._disposeSignaller.bind(this));
+
+            return reactiveTransport;
+        }.bind(this)).subscribe(this._reactiveTransportOpening);
     },
-    _disposeSignaller: function () {
-        if (this._signallerDisposable) {
-            this._signallerDisposable.dispose();
-            this._signallerDisposable = null;
-        }
-        if (this._signaller) {
+    _disposeSignaller: function (e) {
+        if (e) {
+            this._signaller.getWriteBus().onError(e);
+        } else {
             this._signaller.getWriteBus().onCompleted();
-            this._signaller = null;
         }
+        this._signallerDisposable.dispose();
     },
     _onInternalError: function (e) {
-        this._disposeSignaller();
+        this._disposeSignaller(e);
         this._readStreamSubject.onError(e);
         this._writeBusOutSubject.onError(e);
         this._reactiveTransportOpening.subscribe(function (reactiveTransport) {

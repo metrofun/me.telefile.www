@@ -51,29 +51,44 @@ describe('network', function () {
             // call successCallback
             pcMock.setLocalDescription.callsArg(1);
 
-            webrtc = new Webrtc('pin123');
         });
 
-        it('sends sdp and icecandidates by signaller', function () {
-            // schedule ice candidates
-            scheduler.scheduleAbsolute(20, function () {
-                pcMock.onicecandidate({candidate: 1});
-            });
-            scheduler.scheduleAbsolute(40, function () {
-                pcMock.onicecandidate({candidate: 2});
-            });
-            signallerWriteBusMock.subscribe(result);
+        describe('signaller', function () {
+            it('sends sdp and icecandidates by signaller', function () {
+                webrtc = new Webrtc('pin123');
+                // schedule ice candidates
+                scheduler.scheduleAbsolute(20, function () {
+                    pcMock.onicecandidate({candidate: 1});
+                });
+                scheduler.scheduleAbsolute(40, function () {
+                    pcMock.onicecandidate({candidate: 2});
+                });
+                signallerWriteBusMock.subscribe(result);
 
-            scheduler.start();
+                scheduler.start();
 
-            expect(result.messages).to.deep.equal([
-                onNext(0, {sdp : 'sample sdp'}),
-                onNext(20, {candidate: 1}),
-                onNext(40, {candidate: 2})
-            ]);
+                expect(result.messages).to.deep.equal([
+                    onNext(0, {sdp : 'sample sdp'}),
+                    onNext(20, {candidate: 1}),
+                    onNext(40, {candidate: 2})
+                ]);
+            });
+            it('sends errors to signaller till dataChannel is not opened', function () {
+                // call failureCallback
+                pcMock.setLocalDescription.callsArgWith(2, new Error());
+
+                webrtc = new Webrtc('pin123');
+
+                signallerWriteBusMock.subscribe(result);
+
+                expect(result.messages).to.deep.equal([
+                    onError(0, new Error())
+                ]);
+            });
         });
         describe('#writeBus', function () {
             it('buffers messages received before transport open', function () {
+                webrtc = new Webrtc('pin123');
                 var testSequence = scheduler.createHotObservable(
                     onNext(70, 1),
                     onNext(110, 2),
@@ -102,6 +117,7 @@ describe('network', function () {
                 ]);
             });
             it('throws an error on signallers read error', function () {
+                webrtc = new Webrtc('pin123');
                 var testSequence = scheduler.createHotObservable(
                     onNext(70, 1),
                     onNext(110, 2),
@@ -127,13 +143,41 @@ describe('network', function () {
                 ]);
             });
             it('errors on peerconnection error', function () {
-                // call RTCSessionDescriptionCallback
-                pcMock.createOffer.callsArgWith(0, 'sample sdp');
                 // call failureCallback
                 pcMock.setLocalDescription.callsArgWith(2, new Error());
 
                 webrtc = new Webrtc('pin123');
                 webrtc.getWriteBus().subscribe(result);
+
+                expect(result.messages).to.deep.equal([
+                    onError(0, new Error())
+                ]);
+            });
+            it('ignores signallers errors after data channel established', function () {
+                webrtc = new Webrtc('pin123');
+
+                webrtc.getWriteBus().subscribe(result);
+
+                scheduler.scheduleAbsolute(200, function () {
+                    dataChannelMock.onopen();
+                });
+                scheduler.scheduleAbsolute(300, function () {
+                    signallerReadStreamMock.onError();
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                ]);
+            });
+        });
+        describe('#readStream', function () {
+            it('errors on peerconnection error', function () {
+                // call RTCPeerConnectionErrorCallback
+                pcMock.createOffer.callsArgWith(1, new Error());
+
+                webrtc = new Webrtc('pin123');
+                webrtc.getReadStream().subscribe(result);
 
                 expect(result.messages).to.deep.equal([
                     onError(0, new Error())
