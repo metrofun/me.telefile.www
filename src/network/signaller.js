@@ -1,6 +1,6 @@
 var RSVP = require('rsvp'),
     SockJS,
-    config = require('../config/current.js'),
+    config = require('../env/current.js'),
     ReactiveTransport = require('./reactive-transport.js');
 
 try {

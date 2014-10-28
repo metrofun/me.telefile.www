@@ -1,9 +1,9 @@
 var Rx = require('rx');
 
-function AbstractFilePeer() {
+function FileTransfer() {
 }
-AbstractFilePeer.prototype = {
-    getWebrtcSubject: function () {
+FileTransfer.prototype = {
+    getTransportBus: function () {
         throw new Error('not implemented');
     },
     getMeta: function () {
@@ -12,7 +12,7 @@ AbstractFilePeer.prototype = {
     getProgress: function () {
         if (!this._progress) {
             //skip frame containing encoded meta
-            this._progress = this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
+            this._progress = this.getTransportBus().skip(1).scan(0, function (sum, data) {
                 return sum + data.byteLength;
             }).sample(500/* ms */).combineLatest(Rx.Observable.fromPromise(this.getMeta()), function (size, meta) {
                 return size / meta.size * 100;
@@ -23,11 +23,11 @@ AbstractFilePeer.prototype = {
     getBps: function () {
         if (!this._Bps) {
             this._Bps = Rx.Observable.combineLatest(
-                this.getWebrtcSubject().take(1).map(function () {
+                this.getTransportBus().take(1).map(function () {
                     return Date.now();
                 }),
                 //skip frame containing encoded meta
-                this.getWebrtcSubject().skip(1).scan(0, function (sum, data) {
+                this.getTransportBus().skip(1).scan(0, function (sum, data) {
                     return sum + data.byteLength;
                 }).sample(500/* ms */),
                 function (startTime, sum) {
@@ -39,4 +39,4 @@ AbstractFilePeer.prototype = {
     }
 };
 
-module.exports = AbstractFilePeer;
+module.exports = FileTransfer;

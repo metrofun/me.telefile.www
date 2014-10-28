@@ -19,7 +19,7 @@ var gulp = require('gulp'),
 require('node-jsx').install({extension: '.jsx'});
 
 gulp.task('less', function () {
-    return gulp.src(SRC_DIR + '/index.less')
+    return gulp.src(SRC_DIR + '/ui/index.less')
         .pipe(less())
         .on('error', function () {
             this.emit('end');
@@ -30,7 +30,7 @@ gulp.task('less', function () {
 });
 
 gulp.task('browserify', function () {
-    var bundler = browserify(SRC_DIR + '/index.js');
+    var bundler = browserify(SRC_DIR + '/ui/index.js');
 
     bundler.transform({es6: true}, reactify);
 
@@ -75,9 +75,9 @@ gulp.task('static-server', function (next) {
 });
 
 gulp.task('renderComponentToString', function(){
-    return gulp.src(SRC_DIR + '/index.html')
+    return gulp.src(SRC_DIR + '/ui/index.html')
         .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
-            var component = require(SRC_DIR + '/components/' + componentName  + '.jsx');
+            var component = require(SRC_DIR + '/ui/components/' + componentName  + '.jsx');
 
             return React.renderComponentToString(component());
         }))
@@ -86,13 +86,13 @@ gulp.task('renderComponentToString', function(){
 });
 
 gulp.task('development', function () {
-    return gulp.src(SRC_DIR + '/config/development.js')
-        .pipe(symlink(SRC_DIR + '/config/current.js'));
+    return gulp.src(SRC_DIR + '/env/development.js')
+        .pipe(symlink(SRC_DIR + '/env/current.js', {force: true}));
 });
 
 gulp.task('production', function () {
-    return gulp.src(SRC_DIR + '/config/production.js')
-        .pipe(symlink(SRC_DIR + '/config/current.js'));
+    return gulp.src(SRC_DIR + '/env/production.js')
+        .pipe(symlink(SRC_DIR + '/env/current.js', {force: true}));
 });
 
 gulp.task('uglify', ['browserify'], function () {

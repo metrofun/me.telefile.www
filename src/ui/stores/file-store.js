@@ -2,11 +2,11 @@ var Rx = require('rx'),
     keyMirror = require('react/lib/keyMirror'),
 
     _ = require('underscore'),
-    dispatcher = require('../dispatcher/dispatcher.js'),
-    ACTIONS =  require('../actions/actions.js'),
+    dispatcher = require('../dispatcher/dispatcher'),
+    ACTIONS =  require('../actions/actions'),
     ReactiveStore = require('./reactive-store-class'),
-    FileSender = require('../libs/file-sender.js'),
-    FileReceiver = require('../libs/file-receiver.js');
+    FileSender = require('../../file/file-sender'),
+    FileReceiver = require('../../file/file-receiver');
 
 function FileStore() {
     var self = this;
@@ -52,7 +52,7 @@ _.extend(FileStore.prototype, keyMirror({
     _clean: function () {
         ['_sender', '_receiver'].forEach(function (prop) {
             if (this[prop]) {
-                this[prop].terminate();
+                this[prop].dispose();
                 this[prop + 'Subscription'].dispose();
                 this[prop] = null;
             }

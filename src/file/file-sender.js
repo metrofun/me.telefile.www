@@ -1,31 +1,33 @@
 var Rx = require('rx'),
     RSVP = require('rsvp'),
     _ = require('underscore'),
-    AbstractFilePeer = require('./abstract-file-peer.js'),
-    ReactiveWebrtc = require('./reactive-webrtc.js');
+    FileTransfer = require('./file-transfer.js'),
+    Webrtc = require('../network/webrtc.js'),
+
+    FILE_SENDER_DISPOSED = 'File sender disposed';
 /**
  * @param {Blob} file
  */
 function FileSender(file) {
-    AbstractFilePeer.call(this);
+    FileTransfer.call(this);
 
     this.file = file;
-    this._reactiveWebrtc = new ReactiveWebrtc();
+    this._webrtc = new Webrtc();
     this._send();
 }
-FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
+FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
     constructor: FileSender,
 
     CHUNK_SIZE: 15000,
 
     getPin: function () {
-        return this._reactiveWebrtc.getPin();
+        return this._webrtc.getPin();
     },
-    getWebrtcSubject: function () {
-        return this._reactiveWebrtc.getObserver();
+    getTransportBus: function () {
+        return this._webrtc.getWriteBus();
     },
-    terminate: function () {
-        this._reactiveWebrtc.terminate();
+    dispose: function () {
+        this._webrtc.getWriteBus().onError(new Error(FILE_SENDER_DISPOSED));
     },
     getMeta: function () {
         return new RSVP.Promise(function (resolve) {
@@ -50,9 +52,9 @@ FileSender.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
         Rx.Observable
             .fromPromise(this.getMeta())
             .merge(chunksSequence)
-            .subscribe(this.getWebrtcSubject());
+            .subscribe(this.getTransportBus());
 
-        this.getWebrtcSubject().subscribe(signalSubject);
+        this.getTransportBus().subscribe(signalSubject);
     },
     _readChunk: function (start)  {
         var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE);

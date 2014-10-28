@@ -167,8 +167,7 @@ describe('network', function () {
 
                 scheduler.start();
 
-                expect(result.messages).to.deep.equal([
-                ]);
+                expect(result.messages).to.deep.equal([]);
             });
         });
         describe('#readStream', function () {
@@ -182,6 +181,22 @@ describe('network', function () {
                 expect(result.messages).to.deep.equal([
                     onError(0, new Error())
                 ]);
+            });
+            it('ignores signallers errors after data channel established', function () {
+                webrtc = new Webrtc('pin123');
+
+                webrtc.getReadStream().subscribe(result);
+
+                scheduler.scheduleAbsolute(200, function () {
+                    dataChannelMock.onopen();
+                });
+                scheduler.scheduleAbsolute(300, function () {
+                    signallerReadStreamMock.onError();
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([]);
             });
         });
     });

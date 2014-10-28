@@ -1,33 +1,35 @@
-var ReactiveWebrtc = require('./reactive-webrtc.js'),
+var Webrtc = require('../network/webrtc'),
     _ = require('underscore'),
-    AbstractFilePeer = require('./abstract-file-peer.js');
-/**
-* @param {Blob} file
-*/
-function FileReceiver(id) {
-    AbstractFilePeer.call(this);
+    FileTransfer = require('./file-transfer.js'),
 
-    this.id = id;
-    this._reactiveWebrtc = new ReactiveWebrtc(id);
+    FILE_RECEIVER_DISPOSED  = 'File receiver disposed';
+/**
+ * @param {String} pin
+ */
+function FileReceiver(pin) {
+    FileTransfer.call(this);
+
+    this.pin = pin;
+    this._webrtc = new Webrtc(pin);
 
     this.getMeta();
     this.getBlob();
 }
-FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
+FileReceiver.prototype = _.extend(Object.create(FileTransfer.prototype), {
     constructor: FileReceiver,
 
-    getWebrtcSubject: function () {
-        return this._reactiveWebrtc.getObservable();
+    getTransportBus: function () {
+        return this._webrtc.getReadStream();
     },
     getMeta: function () {
         if (!this._metaPromise) {
-            this._metaPromise = this.getWebrtcSubject().take(1).toPromise();
+            this._metaPromise = this.getTransportBus().take(1).toPromise();
         }
         return this._metaPromise;
     },
     getBlob: function () {
         if (!this._blobPromise) {
-            var observable = this.getWebrtcSubject(),
+            var observable = this.getTransportBus(),
                 metaSequence = observable.first(),
                 dataSequence = observable.skip(1).reduce(function (acc, data) {
                     return new Blob([acc, data]);
@@ -40,8 +42,8 @@ FileReceiver.prototype = _.extend(Object.create(AbstractFilePeer.prototype), {
 
         return this._blobPromise;
     },
-    terminate: function () {
-        this._reactiveWebrtc.terminate();
+    dispose: function () {
+        this._webrtc.getWriteBus().onError(new Error(FILE_RECEIVER_DISPOSED));
     }
 });
 
