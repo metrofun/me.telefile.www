@@ -131,7 +131,10 @@ ReactiveTransport.prototype = {
         };
         this._transport.onclose = function () {
             self._openPauser.onError(
-                new Error(UNEXPECTED_CLOSE_LABEL + ' : ' + self._transport)
+                new Error([
+                    UNEXPECTED_CLOSE_LABEL,
+                    Object.prototype.toString.call(self._transport)
+                ].join(' : '))
             );
         };
         this._transport.onerror = function (e) {

@@ -1,4 +1,4 @@
-require('../../src/libs/debug.js');
+require('../../src/env/debug.js');
 var expect = require('chai').expect,
     sinon = require('sinon'),
     rewire = require('rewire'),

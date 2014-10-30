@@ -35,9 +35,9 @@ function ReactiveWebrtc(pin) {
         iceServers: require('./ice-servers.js')
     });
 
+    this._initSignaller();
     //we need to request a data channel before creating an offer,
     //otherwise datachannel won't be negotiated between peers
-    this._initSignaller();
     this._initDataChannel();
     this._initReactiveTransport();
     this._initReadStream();
@@ -94,7 +94,10 @@ ReactiveWebrtc.prototype = {
         }).subscribe(this._writeBusOutSubject);
 
         this._dataChannelCreating.concatMap(function (dataChannel) {
-            return this._createBufferingPauser(dataChannel, inSubject);
+            return this._createBufferingPauser(
+                dataChannel,
+                proxySubject.startWith('dummy go')
+            );
         }.bind(this)).subscribe(pauser);
 
         this._writeBusSubject = Rx.Subject.create(inSubject, this._writeBusOutSubject);
@@ -130,7 +133,7 @@ ReactiveWebrtc.prototype = {
                 } else if (data.candidate) {
                     self._pc.addIceCandidate(
                         new RTCIceCandidate(data.candidate),
-                        undefined,
+                        function () {},
                         self._onInternalError.bind(self)
                     );
                 }
