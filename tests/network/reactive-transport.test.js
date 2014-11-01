@@ -175,6 +175,14 @@ describe('network', function () {
                     mockTransport.onmessage({
                         data: Frame.encode(1, value)
                     });
+                }, function () {
+                    mockTransport.onmessage({
+                        data: Frame.encode(2, 'ERROR_TERMINATION')
+                    });
+                }, function () {
+                    mockTransport.onmessage({
+                        data: Frame.encode(2, 'NORMAL_TERMINATION')
+                    });
                 });
                 readStream.subscribe(result);
 
@@ -183,7 +191,8 @@ describe('network', function () {
                 expect(result.messages).to.deep.equal([
                     onNext(70, {a: 1}),
                     onNext(270, {z: 1}),
-                    onNext(340, {a: 2})
+                    onNext(340, {a: 2}),
+                    onCompleted(600)
                 ]);
             });
             it('should error on unexpected close', function () {

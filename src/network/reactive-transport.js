@@ -67,8 +67,10 @@ ReactiveTransport.prototype = {
                 subject.onNext(message.payload);
             }
         };
+        // Subscribe to errors from _openPauser
+        this._openPauser.ignoreElements().subscribe(subject);
 
-        this._readStream = subject.merge(this._openPauser.ignoreElements());
+        this._readStream = subject;
     },
     _initWriteBus: function () {
         var self = this,
