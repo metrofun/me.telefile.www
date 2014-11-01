@@ -115,7 +115,7 @@ ReactiveTransport.prototype = {
         var self = this,
             readyState = this._transport.readyState;
 
-        this._openPauser = new Rx.ReplaySubject();
+        this._openPauser = new Rx.ReplaySubject(1);
         // fix for firefox
         this._transport.binaryType = 'arraybuffer';
 
