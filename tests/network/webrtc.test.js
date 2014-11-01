@@ -116,6 +116,35 @@ describe('network', function () {
                     onCompleted(600)
                 ]);
             });
+            it('buffers sequence completed before transport open', function () {
+                webrtc = new Webrtc('pin123');
+                var testSequence = scheduler.createHotObservable(
+                    onNext(70, 1),
+                    onNext(110, 2),
+                    onNext(220, 3),
+                    onNext(270, 4),
+                    onNext(340, 5),
+                    onCompleted(600)
+                );
+
+                testSequence.subscribe(webrtc.getWriteBus());
+                webrtc.getWriteBus().subscribe(result);
+
+                scheduler.scheduleAbsolute(800, function () {
+                    dataChannelMock.onopen();
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                    onNext(800, 1),
+                    onNext(800, 2),
+                    onNext(800, 3),
+                    onNext(800, 4),
+                    onNext(800, 5),
+                    onCompleted(800)
+                ]);
+            });
             it('throws an error on signallers read error', function () {
                 webrtc = new Webrtc('pin123');
                 var testSequence = scheduler.createHotObservable(
