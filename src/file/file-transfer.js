@@ -25,7 +25,7 @@ FileTransfer.prototype = {
         return this._webrtc;
     },
     getMeta: function () {
-        return this._metaIsLoading.toPromise();
+        return this._metaStream.toPromise();
     },
     getProgress: function () {
         return this._progressStream;

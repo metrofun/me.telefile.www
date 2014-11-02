@@ -63,14 +63,14 @@ _.extend(FileStore.prototype, keyMirror({
         this._sender = sender;
         this._senderSubscription = this._sender
             .getProgress()
-            .subscribe(undefined, this._onError.bind(this));
+            .subscribeOnError(this._onError.bind(this));
     },
     _initReceiver: function (receiver) {
         this._clean();
         this._receiver = receiver;
         this._receiverSubscription = this._receiver
             .getProgress()
-            .subscribe(undefined, this._onError.bind(this));
+            .subscribeOnError(this._onError.bind(this));
     },
     _onError: function () {
         this.subject.onNext({
