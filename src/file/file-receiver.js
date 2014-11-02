@@ -1,49 +1,34 @@
-var Webrtc = require('../network/webrtc'),
-    _ = require('underscore'),
-    FileTransfer = require('./file-transfer.js'),
-
-    FILE_RECEIVER_DISPOSED  = 'File receiver disposed';
+var _ = require('underscore'),
+    FileTransfer = require('./file-transfer.js');
 /**
  * @param {String} pin
  */
 function FileReceiver(pin) {
-    FileTransfer.call(this);
+    FileTransfer.call(this, pin);
 
-    this.pin = pin;
-    this._webrtc = new Webrtc(pin);
-
-    this.getMeta();
-    this.getBlob();
+    this._initBlob();
 }
 FileReceiver.prototype = _.extend(Object.create(FileTransfer.prototype), {
     constructor: FileReceiver,
 
-    getTransportBus: function () {
-        return this._webrtc.getReadStream();
-    },
-    getMeta: function () {
-        if (!this._metaPromise) {
-            this._metaPromise = this.getTransportBus().take(1).toPromise();
-        }
-        return this._metaPromise;
+    /**
+     * @override
+     */
+    getFileStream: function () {
+        return this.getTransport().getReadStream();
     },
     getBlob: function () {
-        if (!this._blobPromise) {
-            var observable = this.getTransportBus(),
-                metaSequence = observable.first(),
-                dataSequence = observable.skip(1).reduce(function (acc, data) {
-                    return new Blob([acc, data]);
-                }, new Blob());
-
-            this._blobPromise = metaSequence.forkJoin(dataSequence, function (meta, data) {
-                return new Blob([data], meta);
-            }).toPromise();
-        }
-
-        return this._blobPromise;
+        return this._blobIsLoading;
     },
-    dispose: function () {
-        this._webrtc.getWriteBus().onError(new Error(FILE_RECEIVER_DISPOSED));
+    _initBlob: function () {
+        var metaSequence = this.getFileStream().first(),
+            dataSequence = this.getFileStream().skip(1).reduce(function (acc, data) {
+                return new Blob([acc, data]);
+            }, new Blob());
+
+        this._blobIsLoading = metaSequence.forkJoin(dataSequence, function (meta, data) {
+            return new Blob([data], meta);
+        }).toPromise();
     }
 });
 

@@ -5,7 +5,7 @@ var Rx = require('rx'),
     CONTROL_PLANE = 1 << 1,
 
     OPEN_ERROR_LABEL ='transport connection could not opened',
-    UNEXPECTED_CLOSE_LABEL = 'connection unexpectedly closed',
+    // UNEXPECTED_CLOSE_LABEL = 'connection unexpectedly closed',
 
     NORMAL_TERMINATION = 'NORMAL_TERMINATION',
     ERROR_TERMINATION = 'ERROR_TERMINATION';
@@ -131,13 +131,13 @@ ReactiveTransport.prototype = {
         this._transport.onopen = function () {
             self._openPauser.onNext(true);
         };
-        this._transport.onclose = function () {
-            self._openPauser.onError(
-                new Error([
-                    UNEXPECTED_CLOSE_LABEL,
-                    Object.prototype.toString.call(self._transport)
-                ].join(' : '))
-            );
+        this._transport.onclose = function (e) {
+            self._openPauser.onError(e);
+                // new Error([
+                    // UNEXPECTED_CLOSE_LABEL,
+                    // Object.prototype.toString.call(self._transport)
+                // ].join(' : '))
+            // );
         };
         this._transport.onerror = function (e) {
             self._openPauser.onError(e);

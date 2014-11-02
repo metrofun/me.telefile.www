@@ -1,41 +1,60 @@
-var Rx = require('rx');
+var Rx = require('rx'),
+    Webrtc = require('../network/webrtc.js'),
 
-function FileTransfer() {
+    FILE_SENDER_DISPOSED = 'File sender disposed';
+
+function FileTransfer(pin) {
+    this._webrtc = new Webrtc(pin);
+
+    this._metaStream = this.getFileStream().first().shareReplay(1);
+    this._initSentSizeStream();
+    this._initProgressStream();
+    this._initBpsStream();
 }
 FileTransfer.prototype = {
-    getTransportBus: function () {
+    getFileStream: function () {
         throw new Error('not implemented');
+    },
+    getBlob: function () {
+        throw new Error('not implemented');
+    },
+    getPin: function () {
+        return this._webrtc.getPin();
+    },
+    getTransport: function () {
+        return this._webrtc;
     },
     getMeta: function () {
-        throw new Error('not implemented');
+        return this._metaIsLoading.toPromise();
     },
     getProgress: function () {
-        if (!this._progress) {
-            //skip frame containing encoded meta
-            this._progress = this.getTransportBus().skip(1).scan(0, function (sum, data) {
-                return sum + data.byteLength;
-            }).sample(500/* ms */).combineLatest(Rx.Observable.fromPromise(this.getMeta()), function (size, meta) {
-                return size / meta.size * 100;
-            }).shareReplay(1);
-        }
-        return this._progress;
+        return this._progressStream;
     },
     getBps: function () {
-        if (!this._Bps) {
-            this._Bps = Rx.Observable.combineLatest(
-                this.getTransportBus().take(1).map(function () {
-                    return Date.now();
-                }),
-                //skip frame containing encoded meta
-                this.getTransportBus().skip(1).scan(0, function (sum, data) {
-                    return sum + data.byteLength;
-                }).sample(500/* ms */),
-                function (startTime, sum) {
-                    return sum / (Date.now() - startTime) * 1000;
-                }
-            ).shareReplay(1);
-        }
-        return this._Bps;
+        return this._bpsStream;
+    },
+    dispose: function () {
+        this._webrtc.getWriteBus().onError(new Error(FILE_SENDER_DISPOSED));
+    },
+    _initSentSizeStream: function () {
+        // First frame always contains a meta information
+        this._sentSizeStream = this.getFileStream().skip(1).scan(0, function (sum, data) {
+            return sum + data.byteLength;
+        }).sample(500/* ms */).shareReplay(1);
+    },
+    _initProgressStream: function () {
+        this._progressStream  = this._sentSizeStream.combineLatest(this._metaStream, function (size, meta) {
+            return size / meta.size * 100;
+        }).shareReplay(1);
+    },
+    _initBpsStream: function () {
+        this._bpsStream = Rx.Observable.combineLatest(
+            this._metaStream.map(function () {return Date.now();}),
+            this._sentSizeStream,
+            function (startTime, sum) {
+                return sum / (Date.now() - startTime) * 1000;
+            }
+        ).shareReplay(1);
     }
 };
 

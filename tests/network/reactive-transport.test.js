@@ -204,7 +204,7 @@ describe('network', function () {
                     });
                 });
                 scheduler.scheduleAbsolute(200, function () {
-                    mockTransport.onclose();
+                    mockTransport.onclose(new Error());
                 });
 
                 readStream.subscribe(result);
