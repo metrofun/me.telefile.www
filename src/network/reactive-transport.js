@@ -144,11 +144,16 @@ ReactiveTransport.prototype = {
         };
     },
     /**
-     * @param {String} [reason] If present, will be sent by transport
+     * @param {String} reason If present, will be sent by transport
      */
     _terminate: function (reason) {
         this._transport.send(Frame.encode(CONTROL_PLANE, reason));
-        this._closeTransport();
+        // When sending from firefox to chrome,
+        // closing of the transport happens earlier then last message is delivered.
+        // Therefore close the transport in the next event loop
+        setTimeout(function () {
+            this._closeTransport();
+        }.bind(this));
     },
     _closeTransport: function () {
         this._transport.onclose = this._transport.onerror = null;

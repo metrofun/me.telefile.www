@@ -29,7 +29,7 @@ describe('network', function () {
             pcMock = {
                 createOffer: sinon.stub(),
                 createDataChannel: sinon.stub().returns(dataChannelMock),
-                setLocalDescription: sinon.stub().returns(dataChannelMock)
+                setLocalDescription: sinon.stub()
             };
             signallerReadStreamMock = new Rx.ReplaySubject();
             signallerWriteBusMock = new Rx.ReplaySubject();
@@ -42,6 +42,7 @@ describe('network', function () {
 
             // override  variables from the scope
             Webrtc.__set__('Signaller', sinon.stub().returns(signallerMock));
+            Webrtc.__set__('scheduler', scheduler);
             Webrtc.__set__('RTCPeerConnection ', sinon.stub().returns(pcMock));
             Webrtc.__set__('RTCSessionDescription', sinon.stub().returns({}));
             Webrtc.__set__('RTCIceCandidate', sinon.stub().returns({}));
@@ -143,6 +144,82 @@ describe('network', function () {
                     onNext(800, 4),
                     onNext(800, 5),
                     onCompleted(800)
+                ]);
+            });
+            it('buffers sequence when bufferedAmount is not 0 ', function () {
+                webrtc = new Webrtc('pin123');
+                var testSequence = scheduler.createHotObservable(
+                    onNext(70, 1),
+                    onNext(200, 2),
+                    onNext(300, 3),
+                    onNext(400, 4),
+                    onNext(450, 5),
+                    onNext(700, 6),
+                    onNext(800, 7),
+                    onNext(850, 8),
+                    onNext(900, 9),
+                    onNext(1000, 10),
+                    onNext(1200, 11),
+                    onNext(1400, 12),
+                    onNext(2000, 13),
+                    onNext(2500, 14),
+                    onNext(3000, 15),
+                    onNext(3400, 16),
+                    onNext(3450, 17),
+                    onCompleted(5000)
+                );
+
+                testSequence.subscribe(webrtc.getWriteBus());
+                webrtc.getWriteBus().subscribe(result);
+
+                scheduler.scheduleAbsolute(50, function () {
+                    dataChannelMock.onopen();
+                });
+                scheduler.scheduleAbsolute(350, function () {
+                    dataChannelMock.bufferedAmount = 1;
+                });
+                scheduler.scheduleAbsolute(430, function () {
+                    dataChannelMock.bufferedAmount = 2;
+                });
+                scheduler.scheduleAbsolute(1000, function () {
+                    dataChannelMock.bufferedAmount = 0;
+                });
+                scheduler.scheduleAbsolute(1300, function () {
+                    dataChannelMock.bufferedAmount = 1;
+                });
+                scheduler.scheduleAbsolute(2000, function () {
+                    dataChannelMock.bufferedAmount = 0;
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                    onNext(70, 1),
+                    onNext(200, 2),
+                    onNext(300, 3),
+                    // Please, take in mind,
+                    // that right now we are sending one more message,
+                    // if buffer is > 0.
+                    // Can be improved
+                    onNext(400, 4),
+                    onNext(1000, 5),
+                    onNext(1000, 6),
+                    onNext(1000, 7),
+                    onNext(1000, 8),
+                    onNext(1000, 9),
+                    onNext(1000, 10),
+                    onNext(1200, 11),
+                    // Please, take in mind,
+                    // that right now we are sending one more message,
+                    // if buffer is > 0
+                    // Can be improved
+                    onNext(1400, 12),
+                    onNext(2000, 13),
+                    onNext(2500, 14),
+                    onNext(3000, 15),
+                    onNext(3400, 16),
+                    onNext(3450, 17),
+                    onCompleted(5000)
                 ]);
             });
             it('throws an error on signallers read error', function () {

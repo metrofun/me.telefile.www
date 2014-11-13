@@ -49,5 +49,7 @@
   "bugs": {
     "url": "https://github.com/metrofun/me.telefile.www/issues"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "browserify-shim": "^3.8.0"
+  }
 }

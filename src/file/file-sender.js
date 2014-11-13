@@ -14,7 +14,7 @@ function FileSender(file) {
 FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
     constructor: FileSender,
 
-    CHUNK_SIZE: 15000,
+    CHUNK_SIZE: 16000,
 
     /**
      * @override

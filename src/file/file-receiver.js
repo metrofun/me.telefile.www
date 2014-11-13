@@ -21,14 +21,14 @@ FileReceiver.prototype = _.extend(Object.create(FileTransfer.prototype), {
         return this._blobIsLoading;
     },
     _initBlob: function () {
-        var metaSequence = this.getFileStream().first(),
-            dataSequence = this.getFileStream().skip(1).reduce(function (acc, data) {
-                return new Blob([acc, data]);
-            }, new Blob());
-
-        this._blobIsLoading = metaSequence.forkJoin(dataSequence, function (meta, data) {
-            return new Blob([data], meta);
-        }).toPromise();
+        this._blobIsLoading = this.getFileStream().first().concatMap(function (meta) {
+            console.log(meta);
+            return this.getFileStream().reduce(function (acc, data) {
+                return new Blob([acc, data], meta);
+            }, new Blob([], meta)).log('blob');
+        }.bind(this)).toPromise().catch(function (err) {
+            console.error(err);
+        });
     }
 });
 

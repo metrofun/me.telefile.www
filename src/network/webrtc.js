@@ -4,12 +4,9 @@ var Signaller = require('./signaller.js'),
     RTCPeerConnection,
     RTCSessionDescription,
     RTCIceCandidate,
-    Rx = require('rx'),
-    RSVP = require('rsvp');
+    scheduler,
+    Rx = require('rx');
 
-    RSVP.on('error', function (e) {
-    throw e;
-});
 // window might be undefined
 try {
     RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
@@ -64,7 +61,7 @@ ReactiveWebrtc.prototype = {
         return this._writeBusSubject;
     },
     getReadStream: function () {
-        return this._readStreamSubject.asObservable();
+        return this._readStreamSubject;
     },
     _initWriteBus: function () {
         var pauser = new Rx.Subject(),
@@ -77,7 +74,7 @@ ReactiveWebrtc.prototype = {
             // pausableBuffered flushes queue when source completes,
             // so we merge inSubject with a sequence
             //  which completes after first unpause
-            .merge(pauser.take(1).ignoreElements())
+            .merge(pauser.filter(Boolean).take(1).ignoreElements())
             .pausableBuffered(pauser)
             // signaller might be already disposed
             .doOnError(this._disposeSignaller.bind(this))
@@ -96,8 +93,8 @@ ReactiveWebrtc.prototype = {
         this._dataChannelCreating.concatMap(function (dataChannel) {
             return this._createBufferingPauser(
                 dataChannel,
-                proxySubject.startWith('dummy go')
-            );
+                proxySubject
+            ).startWith(true);
         }.bind(this)).subscribe(pauser);
 
         this._writeBusSubject = Rx.Subject.create(inSubject, this._writeBusOutSubject);
@@ -196,14 +193,18 @@ ReactiveWebrtc.prototype = {
     _createBufferingPauser: function (dataChannel, control) {
         return control.flatMapLatest(function () {
             return Rx.Observable
-                .timer(0, 300)
+                // scheduler is here for easier testing,
+                // it will be mocked in unit tests
+                .timer(0, 100, scheduler)
+                .startWith('immidiate')
                 .map(function () {
                     return dataChannel.bufferedAmount === 0;
                 })
-                .startWith(Rx.Observable.return(dataChannel.bufferedAmount === 0))
-                .filter(Boolean)
-                .take(1);
-        });
+                .takeWhile(function (isEmpty) {
+                    return !isEmpty;
+                })
+                .concat(Rx.Observable.return(true));
+        }).distinctUntilChanged();
     },
     _onLocalSdp: function (sdp) {
         this._pc.setLocalDescription(sdp, function () {

@@ -2,7 +2,7 @@ var RSVP = require('rsvp'),
     Rx = require('rx');
 
 RSVP.on('error', function (e) {
-    throw e;
+    console.error(e);
 });
 
 Rx.config.Promise = RSVP.Promise.bind(RSVP);

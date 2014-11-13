@@ -103,6 +103,7 @@ gulp.task('uglify', ['browserify'], function () {
 
 gulp.task('test', function () {
     gulp.src('tests/**/*.test.js').pipe(mocha({
+        // grep: 'bufferedAmount',
         bail: true,
         // reporter: 'dot',
         useColors: false
