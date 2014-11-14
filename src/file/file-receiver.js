@@ -22,13 +22,11 @@ FileReceiver.prototype = _.extend(Object.create(FileTransfer.prototype), {
     },
     _initBlob: function () {
         this._blobIsLoading = this.getFileStream().first().concatMap(function (meta) {
-            console.log(meta);
+            var options = {type: meta.type};
             return this.getFileStream().reduce(function (acc, data) {
-                return new Blob([acc, data], meta);
-            }, new Blob([], meta)).log('blob');
-        }.bind(this)).toPromise().catch(function (err) {
-            console.error(err);
-        });
+                return new Blob([acc, data], options);
+            }, new Blob([], options));
+        }.bind(this)).toPromise();
     }
 });
 
