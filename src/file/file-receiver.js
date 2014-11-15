@@ -21,12 +21,15 @@ FileReceiver.prototype = _.extend(Object.create(FileTransfer.prototype), {
         return this._blobIsLoading;
     },
     _initBlob: function () {
-        this._blobIsLoading = this.getFileStream().first().concatMap(function (meta) {
-            var options = {type: meta.type};
-            return this.getFileStream().reduce(function (acc, data) {
-                return new Blob([acc, data], options);
-            }, new Blob([], options));
-        }.bind(this)).toPromise();
+        var options = {type: 'application/octet-stream'};
+
+        // Buffering of blobs allows us to create less blobs,
+        // because Chrome can allocate at most 500MB for all blobs
+        this._blobIsLoading =  this.getFileStream().skip(1).bufferWithCount(2048).map(function (parts) {
+            return new Blob(parts, options);
+        }).bufferWithCount(2048).reduce(function (acc, blobs) {
+            return new Blob([].concat(acc, blobs), options);
+        }, new Blob([], options)).toPromise();
     }
 });
 
