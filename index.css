@@ -813,6 +813,7 @@ body {
 }
 .wizard__image {
   height: 200px;
+  width: 200px;
   margin: 55px 0;
   display: block;
 }
