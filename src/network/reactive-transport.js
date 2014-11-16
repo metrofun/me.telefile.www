@@ -147,19 +147,25 @@ ReactiveTransport.prototype = {
      * @param {String} reason If present, will be sent by transport
      */
     _terminate: function (reason) {
+        var self = this;
         this._transport.send(Frame.encode(CONTROL_PLANE, reason));
-        // When sending from firefox to chrome,
-        // closing of the transport happens earlier then last message is delivered.
-        // Therefore close the transport in the next event loop
-        setTimeout(function () {
-            this._closeTransport();
-        }.bind(this));
+        // after sending a message don't close the transport immidiatly,
+        // otherwise message will be not delivered.
+        // so we wait till remote peer will close it,
+        // or do it ourselfs after 1 second
+        this._closeTransport(1000);
     },
-    _closeTransport: function () {
+    /**
+     * @param {number} [timeout=0]
+     */
+    _closeTransport: function (timeout) {
+        var self = this;
         this._transport.onclose = this._transport.onerror = null;
-        try {
-            this._transport.close();
-        } catch (e) {}
+        setTimeout(function () {
+            try {
+                self._transport.close();
+            } catch (e) {}
+        }, timeout);
     }
 };
 
