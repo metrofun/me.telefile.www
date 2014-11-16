@@ -1,6 +1,8 @@
 var expect = require('chai').expect,
+    sinon = require('sinon'),
     Frame = require('../../src/network/frame.js'),
-    ReactiveTransport = require('../../src/network/reactive-transport.js'),
+    rewire = require('rewire'),
+    ReactiveTransport = rewire('../../src/network/reactive-transport.js'),
     Rx = require('rx'),
     // Shortcuts
     TestScheduler = Rx.TestScheduler,
@@ -10,18 +12,29 @@ var expect = require('chai').expect,
 
 describe('network', function () {
     describe('reactive-transport', function () {
-        var mockTransport, scheduler, result, reactiveTransport;
+        var mockTransport, scheduler, result, reactiveTransport, clock;
 
         beforeEach(function (){
             mockTransport = {
+                close: function () {},
                 send: function () {},
                 onopen: function () {},
                 onerror: function () {},
                 readyState: 'connecting'
             };
+            clock = sinon.useFakeTimers();
+            ReactiveTransport.__set__('setTimeout', setTimeout);
+
             reactiveTransport = new ReactiveTransport(mockTransport);
             scheduler = new TestScheduler();
             result = scheduler.createObserver();
+            sinon.spy(mockTransport, 'close');
+            sinon.spy(mockTransport, 'send');
+        });
+        afterEach(function () {
+            mockTransport.close.restore();
+            mockTransport.send.restore();
+            clock.restore();
         });
 
         describe('getWriteBus', function () {
@@ -215,6 +228,50 @@ describe('network', function () {
                     onNext(100, 'zzz'),
                     onError(200, new Error())
                 ]);
+            });
+            it('should not close transport immidiatly after readStream completed', function () {
+                var readStream = reactiveTransport.getReadStream();
+
+                scheduler.scheduleAbsolute(0, function () {
+                    readStream.onCompleted();
+                });
+
+                scheduler.scheduleAbsolute(100, function () {
+                    readStream.onCompleted();
+                    expect(mockTransport.close.called).to.be.false;
+                });
+
+                scheduler.start();
+            });
+            it('after writebus completed should be closed by a remote peer', function () {
+                // open transport
+                mockTransport.onopen();
+                // complete write stream
+                reactiveTransport.getWriteBus().onCompleted();
+                // should send NORMAL_TERMINATION
+                expect(mockTransport.send.called).to.be.true;
+                // receive NORMAL_TERMINATION from remote peer
+                mockTransport.onmessage({
+                    data: Frame.encode(2, 'NORMAL_TERMINATION')
+                });
+                // wait for next event loop
+                clock.tick(10);
+                // 'close' should be called
+                expect(mockTransport.close.called).to.be.true;
+            });
+            it('closes stream after writebus completed, if remote did not close within second', function () {
+                // open transport
+                mockTransport.onopen();
+                // complete write stream
+                reactiveTransport.getWriteBus().onCompleted();
+                // wait for next event loop
+                clock.tick(10);
+                // 'close' should be not called
+                expect(mockTransport.close.called).to.be.false;
+                // wait for a second
+                clock.tick(1000);
+                // 'close' should be called
+                expect(mockTransport.close.called).to.be.true;
             });
         });
     });

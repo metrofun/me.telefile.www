@@ -164,8 +164,9 @@ ReactiveTransport.prototype = {
         setTimeout(function () {
             try {
                 self._transport.close();
+                console.log('timeout close');
             } catch (e) {}
-        }, timeout);
+        }, timeout || 0);
     }
 };
 
