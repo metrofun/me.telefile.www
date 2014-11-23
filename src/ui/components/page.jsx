@@ -7,10 +7,10 @@ module.exports = React.createClass({
         return (
             <div className="page">
                 <div className="navbar">
-                    <div className="navbar__brand">
+                    <a className="navbar__brand" href="/">
                         <span className="navbar__brand-left">Tele</span>
                         <span className="navbar__brand-right">file</span>
-                    </div>
+                    </a>
                 </div>
                 <mainView />
             </div>
