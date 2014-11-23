@@ -429,27 +429,6 @@ body {
   font-weight: lighter;
   background: #2c3e50;
 }
-.navbar {
-  background: #3e5771;
-  font-size: 45px;
-  line-height: 48px;
-  padding: 16px;
-  -webkit-box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12);
-}
-.navbar__brand-left {
-  color: #3198db;
-}
-.navbar__brand-right {
-  color: #ffd73c;
-}
-@media only screen and (max-width: 520px) {
-  .navbar {
-    line-height: 40px;
-    font-size: 34px;
-    padding: 8px;
-  }
-}
 @keyframes fadeOutRight {
   0% {
     opacity: 1;
@@ -684,6 +663,35 @@ body {
   .main_phase_idle .wizard + .wizard {
     margin-left: 0;
     margin-top: 24px;
+  }
+}
+body {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-weight: lighter;
+  background: #2c3e50;
+}
+.navbar {
+  background: #3e5771;
+  font-size: 45px;
+  line-height: 48px;
+  padding: 16px;
+  -webkit-box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12);
+}
+.navbar__brand {
+  text-decoration: none;
+}
+.navbar__brand-left {
+  color: #3198db;
+}
+.navbar__brand-right {
+  color: #ffd73c;
+}
+@media only screen and (max-width: 520px) {
+  .navbar {
+    line-height: 40px;
+    font-size: 34px;
+    padding: 8px;
   }
 }
 .pin-form {
