@@ -1,24 +1,32 @@
 var React = require('react');
 
 class Particles extends React.Component {
+    constructor() {
+        setInterval(() => this.forceUpdate(), 300);
+    }
+    isOverlapping(pos, takenPositions) {
+        var minDistanceSqr = 10000 / this.props.quantity / 4;
+
+        return takenPositions.some(function(takenPos) {
+            return (Math.pow(takenPos.top - pos.top, 2)
+                + Math.pow(takenPos.left - pos.left, 2)) < minDistanceSqr;
+        });
+    }
     getRandomPosition(takenPositions) {
-        var pos = {},
-            quantity = this.props.quantity;
+        var pos = {};
 
         do {
-            pos.top = Math.floor(Math.random(quantity));
-            pos.left = Math.floor(Math.random(quantity));
-        } while (takenPositions[[pos.top, pos.left]]);
+            pos.top = Math.floor(Math.random() * 100);
+            pos.left = Math.floor(Math.random() * 100);
+        } while (this.isOverlapping(pos, takenPositions));
 
-        takenPositions[[pos.top, pos.left]] = true;
+        takenPositions.push(pos);
 
-        return pos;
+        return {top: pos.top + '%', left: pos.left+ '%'};
     }
     render() {
-        return <div className="particles"></div>;
-
         var items = [], i,
-            takenPositions = Object.create(null),
+            takenPositions = [],
             className = 'particles__item particles__item_type_';
 
         for (i = 0; i < this.props.quantity; i++) {
@@ -29,6 +37,6 @@ class Particles extends React.Component {
         return <div className="particles">{items}</div>;
     }
 }
-Particles.defaultProps = { quantity: 15 };
+Particles.defaultProps = { quantity: 10 };
 
 module.exports = Particles;

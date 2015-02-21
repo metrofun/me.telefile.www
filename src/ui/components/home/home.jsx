@@ -14,6 +14,7 @@ class Page extends React.Component {
                 <div className="lead__text lead__text_align_right">faster, safer, easier</div>
             </div>
             <Mobile />
+            <Particles />
             <Desktop />
             <div className="page__controls">
                 <ButtonTypeSend />
