@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="25px" viewBox="0 0 16 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>facebook</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-1163.000000, -60.000000)" filter="url(#filter-1)" fill="#F5F5F5">
+            <g id="home" sketch:type="MSShapeGroup">
+                <g id="share" transform="translate(1118.000000, 62.000000)">
+                    <g id="1421380158_facebook" transform="translate(47.000000, 0.000000)">
+                        <path d="M11.25,11.2 L12,7.7 L8.25,7.7007 L8.25,4.9 C8.25,3.8192 8.838,3.5 10.5,3.5 L12,3.5 L12,0 L9,0 C5.946,0 3.75,1.7045 3.75,4.9 L3.75,7.7 L0,7.7 L0,11.2 L3.75,11.2 L3.75,21 L8.25,21 L8.25,11.2 L11.25,11.2 L11.25,11.2 Z" id="facebook"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

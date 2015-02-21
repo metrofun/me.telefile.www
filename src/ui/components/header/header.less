@@ -1,0 +1,135 @@
+.header {
+    flex:  0 0 100%;
+}
+
+.brand {
+    font-size: 2rem;
+    line-height: 2rem;
+    text-transform: uppercase;
+    float: left;
+
+    &__tele {
+        color: @yellow;
+        display: inline-block;
+    }
+    &__logo {
+        @width: 423;
+        @height: 291;
+
+        background-image: url(./assets/logo.png);
+        background-size: cover;
+        display: inline-block;
+        height: 0.80em;
+        width: @width / @height * 0.80em;
+        margin: 0 0.2em;
+    }
+    &__file {
+        color: @light-blue;
+        display: inline-block;
+    }
+}
+
+.navbar {
+    list-style-type: none;
+    color: @white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    line-height: 2rem;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+
+    &__item {
+        padding: 0;
+        margin: 0 2vw;
+        display: inline-block;
+        opacity: 0.8;
+        position: relative;
+        transition: opacity 500ms @ease-in-out;
+
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: -4rem;
+            left: 0;
+            right: 0;
+            height: 1rem;
+            background-color: @blue;
+            transition: top 500ms @ease-in-out;
+        }
+
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+
+            &:before {
+                top: -3rem;
+            }
+        }
+
+        &_type_active {
+            opacity: 1;
+
+            &:hover {
+                cursor: default;
+            }
+
+            &:before {
+                background-color: @yellow;
+                top: -3rem;
+            }
+        }
+    }
+}
+
+.share {
+    list-style-type: none;
+    color: @white;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0;
+    float: right;
+    height: 2rem;
+
+    &__item {
+        padding: 0;
+        margin: 0 1vw;
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+    }
+
+    &__twitter {
+        background-image: data-uri('components/page/twitter.svg');
+    }
+
+    &__linkedin {
+        background-image: data-uri('components/page/linkedin.svg');
+    }
+
+    &__facebook {
+        background-image: data-uri('components/page/facebook.svg');
+    }
+}

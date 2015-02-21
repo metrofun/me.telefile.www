@@ -1,9 +1,10 @@
 var gulp = require('gulp'),
     less = require('gulp-less'),
     gutil = require('gulp-util'),
-    replace = require('gulp-replace'),
+    concat = require('gulp-concat'),
     React = require('react'),
     del = require('delete'),
+    replace = require('gulp-replace'),
     symlink = require('gulp-symlink'),
     rename = require('gulp-rename'),
     ghPages = require("gulp-gh-pages"),
@@ -13,18 +14,26 @@ var gulp = require('gulp'),
     mocha = require('gulp-mocha'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream'),
+    LessPluginAutoPrefix = require('less-plugin-autoprefix'),
+    autoprefix = new LessPluginAutoPrefix({browsers: ["last 2 versions"]}),
 
     SRC_DIR = './src',
     DEST_DIR = './dest';
 
-require('node-jsx').install({extension: '.jsx'});
+require('node-jsx').install({extension: '.jsx', harmony: true});
 
 gulp.task('less', function () {
-    return gulp.src(SRC_DIR + '/ui/index.less')
-        .pipe(less())
-        .on('error', function () {
+    return gulp.src([
+            SRC_DIR + '/ui/index.less',
+            SRC_DIR + '/ui/components/**/*.less'
+        ])
+        .pipe(concat('index.less'))
+        .pipe(less({
+            plugins: [autoprefix]
+        }))
+        .on('error', function (e) {
+            gutil.log(e);
             this.emit('end');
-            gutil.log.apply(this, arguments);
         })
         .pipe(gulp.dest(DEST_DIR))
         .pipe(livereload());
@@ -80,7 +89,7 @@ gulp.task('renderComponentToString', function(){
         .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
             var component = require(SRC_DIR + '/ui/components/' + componentName  + '.jsx');
 
-            return React.renderComponentToString(component());
+            return React.renderToString(React.createElement(component));
         }))
         .pipe(rename('index.html'))
         .pipe(gulp.dest(DEST_DIR));

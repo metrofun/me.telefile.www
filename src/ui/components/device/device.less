@@ -1,0 +1,58 @@
+.device {
+    @size: 0.106rem;
+    background-clip: content-box;
+    background-color: @blue;
+    position: relative;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+
+    &:after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    &_type_iphone {
+        @width: 70 * @size;
+        @height: 142 * @size;
+        width: @width;
+        height: @height;
+
+        padding: @width * 0.10 @width * 0.06;
+
+        &:after {
+            background-image: data-uri('components/device/iphone.svg');
+        }
+    }
+
+    &_type_ipad {
+        @width: 121 * @size;
+        @height: 178 * @size;
+        width: @width;
+        height: @height;
+
+        padding: @width * 0.10 @width * 0.06;
+
+        &:after {
+            background-image: data-uri('components/device/ipad.svg');
+        }
+    }
+
+    &_type_laptop {
+        @width: 332 * @size;
+        @height: 185 * @size;
+        width: @width;
+        height: @height;
+
+        padding: @width * 0.05 @width * 0.12;
+
+        &:after {
+            background-image: data-uri('components/device/laptop.svg');
+        }
+    }
+}

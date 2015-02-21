@@ -1,13 +1,8 @@
 var React = require('react'),
-    RSVP = require('rsvp'),
+    Promise = require('bluebird'),
     Rx = require('rx'),
-    pageView;
+    Page = require('./components/page/page.jsx');
 
-Rx.config.Promise = RSVP.Promise.bind(RSVP);
+Rx.config.Promise = Promise;
 
-pageView = require('./components/page.jsx');
-
-React.renderComponent(
-    pageView(),
-    document.body
-);
+React.render(React.createElement(Page), document.body);

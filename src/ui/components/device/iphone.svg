@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="73px" height="145px" viewBox="0 0 73 145" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.1 (9977) - http://www.bohemiancoding.com/sketch -->
+    <title>iphone</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="ipad-+-iphone" sketch:type="MSLayerGroup" transform="translate(-62.000000, -41.000000)">
+            <g id="iphone" transform="translate(63.686435, 42.616324)" sketch:type="MSShapeGroup">
+                <path d="M69.7441321,133.584747 C69.7441321,138.158851 65.8862087,141.866086 61.1269764,141.866086 L8.61769226,141.866086 C3.85845999,141.866086 0.000536493324,138.158851 0.000536493324,133.584747 L0.000536493324,8.32328401 C0.000536493324,3.74918039 3.85845999,0.0419452501 8.61769226,0.0419452501 L61.1269764,0.0419452501 C65.8862087,0.0419452501 69.7441321,3.74918039 69.7441321,8.32328401 L69.7441321,133.584747 Z M4.82843993,18.6423334 L64.8781378,18.6423334 L64.8781378,121.736508 L4.82843993,121.736508 L4.82843993,18.6423334 Z" id="bezel" fill="#F5F5F5"></path>
+                <path d="M41.309986,13.3323754 C41.309986,13.6612055 41.0744653,13.9263409 40.7842225,13.9263409 L29.9996338,13.9263409 C29.7088543,13.9263409 29.4738703,13.6606876 29.4738703,13.3323754 L29.4738703,11.9963415 C29.4738703,11.6675115 29.7093907,11.4023761 29.9996338,11.4023761 L40.7842225,11.4023761 C41.0744653,11.4023761 41.309986,11.6680293 41.309986,11.9963415 L41.309986,13.3323754 L41.309986,13.3323754 Z" id="speaker" stroke="#BDBDBD"></path>
+                <ellipse id="camera" stroke="#BDBDBD" cx="35.4085594" cy="6.21411113" rx="1.60947997" ry="1.55352778"></ellipse>
+                <ellipse id="lock" stroke="#BDBDBD" cx="34.8935258" cy="131.532537" rx="5.38639298" ry="5.17894379"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

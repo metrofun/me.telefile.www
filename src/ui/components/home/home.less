@@ -1,0 +1,43 @@
+.home {
+    position: relative;
+    /* flex:  0 0 100%; */
+
+    .lead {
+        align-self: center;
+        color: @white;
+        display: inline-block;
+        text-shadow: @shadowZ1;
+        padding-bottom: 9rem;
+
+        &__hero {
+            font-weight: bold;
+            font-size: 6.7rem;
+            line-height: 6.7rem;
+            letter-spacing: 1px;
+        }
+
+        &__text {
+            font-size: 2.8rem;
+
+            &_align_right {
+                text-align: right;
+            }
+        }
+    }
+
+    .desktop {
+        position: absolute;
+        top: 0;
+        bottom: 5.6rem;
+        margin: auto;
+        left: calc(~'100% + 10vw + 22rem');
+    }
+
+    .mobile {
+        position: absolute;
+        top: 0;
+        bottom: 5.6rem;
+        margin: auto;
+        left: calc(~'100% + 10vw');
+    }
+}

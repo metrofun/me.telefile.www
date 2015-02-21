@@ -1,0 +1,51 @@
+.button {
+    background: rgba(0,0,0,0.10);
+    border: 3px solid @white;
+    box-shadow: @shadowZ1;
+    font-size: 2.2rem;
+    letter-spacing: 0.64px;
+    line-height: 3rem;
+    cursor: pointer;
+    padding: 1rem 0;
+    width: 18.2rem;
+
+    &__label {
+        display: block;
+        text-transform: uppercase;
+        font-style: normal;
+        text-shadow: @shadowZ1;
+        text-align: center;
+    }
+
+    &_type_send {
+        position: relative;
+
+        .button__input {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1;
+            outline: none;
+            display: block;
+            border: none;
+            padding: 0;
+            background: transparent;
+            text-align: center;
+            opacity: 0;
+            cursor: pointer;
+
+            &:focus {
+                opacity: 1;
+            }
+        }
+        .button__label {
+            /* width: 100%; */
+        }
+        .button__input:focus + .button__label {
+            opacity: 0;
+        }
+    }
+}
