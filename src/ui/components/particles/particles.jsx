@@ -1,11 +1,14 @@
 var React = require('react');
 
 class Particles extends React.Component {
-    constructor() {
-        setInterval(() => this.forceUpdate(), 300);
+    componentDidMount() {
+        this.intervalId = setInterval(() => this.forceUpdate(), 300);
+    }
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
     }
     isOverlapping(pos, takenPositions) {
-        var minDistanceSqr = 10000 / this.props.quantity / 4;
+        var minDistanceSqr = 10000 / this.props.quantity / 3;
 
         return takenPositions.some(function(takenPos) {
             return (Math.pow(takenPos.top - pos.top, 2)
@@ -37,6 +40,6 @@ class Particles extends React.Component {
         return <div className="particles">{items}</div>;
     }
 }
-Particles.defaultProps = { quantity: 10 };
+Particles.defaultProps = { quantity: 13 };
 
 module.exports = Particles;

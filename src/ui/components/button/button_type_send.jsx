@@ -2,9 +2,9 @@ var React = require('react');
 
 class Button extends React.Component {
     render() {
-        return <div className="button button_type_send">
-            <input className="button__input" type="text" placeholder="INPUT PIN"/>
-            <i className="button__label">SEND</i>
+        return <div onClick={this.onClick} className="button button_type_send">
+            <span className="button__label">SEND</span>
+            <span className="button__icon"></span>
         </div>;
     }
 }

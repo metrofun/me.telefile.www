@@ -46,7 +46,7 @@
         display: inline-block;
         opacity: 0.8;
         position: relative;
-        transition: opacity 500ms @ease-in-out;
+        transition: opacity @duration @ease-in-out;
 
         &:first-child {
             margin-left: 0;
@@ -63,7 +63,7 @@
             right: 0;
             height: 1rem;
             background-color: @blue;
-            transition: top 500ms @ease-in-out;
+            transition: top @duration @ease-in-out;
         }
 
         &:hover {
