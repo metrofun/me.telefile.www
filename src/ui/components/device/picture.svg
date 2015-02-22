@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="741px" height="247px" viewBox="0 0 741 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.1 (9977) - http://www.bohemiancoding.com/sketch -->
+    <title>picture</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M0.799002788,64.3317629 L41.8236019,0.705739343 L59.2870943,0.705739343 L103.104056,72.4056837 L0.799002788,64.3317629 Z"></path>
+        <circle id="path-3" cx="25" cy="25" r="25"></circle>
+        <path id="path-5" d="M0.875783637,0.752277393 L102.247791,142.717441 L37.6852547,147.069133 L0.875783637,0.752277393 Z"></path>
+        <path id="path-7" d="M87.2149964,0.204871406 L157.830977,165.657402 L0.375783236,121.171936 L87.2149964,0.204871406 Z"></path>
+        <path id="path-9" d="M0.875783637,0.752277393 L101.527883,127.52763 L37.6852547,147.069133 L0.875783637,0.752277393 Z"></path>
+        <path id="path-11" d="M87.2149964,0.204871406 L157.830977,165.657402 L0.375783236,121.171936 L87.2149964,0.204871406 Z"></path>
+        <path id="path-13" d="M53.4435639,0.568111956 L11.0877861,73.2991682 L0.471967107,53.982664 L53.4435639,0.568111956 Z"></path>
+        <path id="path-15" d="M0.999026658,78.9322247 L49.1289829,0.359187742 L90.0525747,55.0828215 L114.226151,18.480455 L204.041505,113.009284 L0.999026658,78.9322247 Z"></path>
+        <path id="path-17" d="M51.058546,0.691367111 L26.6175884,62.1986303 L0.208687165,40.2885671 L51.058546,0.691367111 Z"></path>
+        <circle id="path-19" cx="28.5" cy="28.5" r="28.5"></circle>
+        <circle id="path-21" cx="17" cy="17" r="17"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="picture" sketch:type="MSLayerGroup">
+            <rect id="bg" fill="#02D1AA" sketch:type="MSShapeGroup" x="0" y="0" width="741" height="247"></rect>
+            <circle id="Oval-25" stroke="#FCFFBE" stroke-width="20" fill="#FDDA2A" sketch:type="MSShapeGroup" cx="458.5" cy="112.5" r="49.5"></circle>
+            <g id="vulkan" transform="translate(329.000000, 104.000000)">
+                <path d="M0.799002788,64.3317629 L41.8236019,0.705739343 L59.2870943,0.705739343 L103.104056,72.4056837 L0.799002788,64.3317629 Z" id="Path-48" fill="#8787AC" sketch:type="MSShapeGroup"></path>
+                <g id="Path-49">
+                    <mask id="mask-2" sketch:name="Mask" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                    <path d="M50.879199,8.20960175 L50.879199,81.530254 L134.382128,68.4038415 L103.179193,-10.3034101 L61.7168409,8.35987501 L57.8309705,7.07111849 L50.879199,8.20960175 Z" fill="#576C8E" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+            <g id="centered-tree" transform="translate(316.000000, 126.000000)">
+                <circle id="Oval-8" fill="#00B951" sketch:type="MSShapeGroup" cx="25" cy="25" r="25"></circle>
+                <circle id="Oval-9" fill="#53DF74" sketch:type="MSShapeGroup" cx="25.5" cy="25.5" r="12.5"></circle>
+                <g id="Rectangle-4">
+                    <mask id="mask-4" sketch:name="Mask" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-3"></use>
+                    <rect opacity="0.370335821" fill="#000000" sketch:type="MSShapeGroup" mask="url(#mask-4)" x="25" y="-7" width="45" height="63"></rect>
+                </g>
+            </g>
+            <g id="mountains" transform="translate(109.000000, 67.000000)">
+                <g id="mountain" transform="translate(3.000000, 0.000000)">
+                    <path d="M87.8757836,0.752277393 L181.580847,134.290134 L121.675504,134.290134 L87.8757836,0.752277393 Z" id="Path-20" fill="#8987B3" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-21" transform="translate(87.000000, 0.000000)">
+                        <mask id="mask-6" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-5"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-5"></use>
+                        <path d="M5.84526589,40.7819548 L33.5598602,29.7160312 L-11.9077342,-17.7158213 L5.84526589,40.7819548 Z" fill="#E1DDD9" sketch:type="MSShapeGroup" mask="url(#mask-6)"></path>
+                    </g>
+                    <path d="M87.2149964,1.20487141 L144.463613,136.833717 L0.375783236,122.171936 L87.2149964,1.20487141 Z" id="Path-17" fill="#A5CFEC" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-18" transform="translate(0.000000, 1.000000)">
+                        <mask id="mask-8" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-7"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-7"></use>
+                        <path d="M49.3509813,39.4108277 L69.6204041,34.8328393 L79.9056031,40.4155864 L91.8812406,32.8210589 L99.8559471,37.6253443 L128.679397,26.1815047 L93.7708206,-15.3191032 L49.3509813,39.4108277 Z" fill="#FFFFFF" sketch:type="MSShapeGroup" mask="url(#mask-8)"></path>
+                    </g>
+                </g>
+                <g id="mountain" transform="translate(79.000000, 25.000000)">
+                    <path d="M87.8757836,0.752277393 L171.116644,107.233768 L112.107427,112.446453 L87.8757836,0.752277393 Z" id="Path-20" fill="#8987B3" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-21" transform="translate(87.000000, 0.000000)">
+                        <mask id="mask-10" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-9"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-9"></use>
+                        <path d="M5.95255056,42.4012709 L21.0135419,8.32773112 L-11.9077342,-17.7158213 L5.95255056,42.4012709 Z" fill="#E1DDD9" sketch:type="MSShapeGroup" mask="url(#mask-10)"></path>
+                    </g>
+                    <path d="M87.2149964,1.20487141 L133.088414,109.310828 L11.3366092,109.310828 L87.2149964,1.20487141 Z" id="Path-17" fill="#A5CFEC" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-18" transform="translate(0.000000, 1.000000)">
+                        <mask id="mask-12" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-11"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-11"></use>
+                        <path d="M64.3540598,12.0458622 L75.0895897,24.5919304 L82.991881,21.0503807 L89.0151888,21.0503807 L98.8620897,28.5657044 L107.963755,12.0458622 L93.7708206,-15.3191032 L64.3540598,12.0458622 Z" fill="#FFFFFF" sketch:type="MSShapeGroup" mask="url(#mask-12)"></path>
+                    </g>
+                </g>
+                <g id="mountain" transform="translate(61.000000, 67.000000)" sketch:type="MSShapeGroup">
+                    <path d="M113.581842,1.20563877 L53.0069943,5.83532753 L0.487805103,56.6662236 L81.7758802,58.3452574 L113.581842,1.20563877 Z" id="Path-29" fill="#A5CFEC"></path>
+                    <path d="M114.976922,0.986500171 L178.638228,33.3665433 L204.63856,51.6167764 L67.0997669,50.1784864 L114.976922,0.986500171 Z" id="Path-30" fill="#8987B3"></path>
+                </g>
+                <g id="mountain" transform="translate(0.000000, 81.000000)" sketch:type="MSShapeGroup">
+                    <path d="M74.8219473,0.591561105 L0.833348051,50.4965194 L48.4790182,55.4379405 L74.8219473,0.591561105 Z" id="Path-32" fill="#F9FFFB"></path>
+                    <path d="M75.5225735,0.526732692 L29.2472912,52.3545551 L137.776455,51.8051653 L75.5225735,0.526732692 Z" id="Path-31" fill="#8C88B5"></path>
+                </g>
+                <g id="mountain" transform="translate(50.000000, 77.000000)" sketch:type="MSShapeGroup">
+                    <path d="M74.8219473,0.591561105 L0.833348051,50.4965194 L48.4790182,55.4379405 L74.8219473,0.591561105 Z" id="Path-32" fill="#F9FFFB"></path>
+                    <path d="M75.5225735,0.526732692 L29.2472912,52.3545551 L137.776455,51.8051653 L75.5225735,0.526732692 Z" id="Path-31" fill="#8C88B5"></path>
+                </g>
+                <g id="mountain" transform="translate(339.000000, 18.000000)">
+                    <path d="M77.4435639,0.568111956 L59.4115962,77.0732416 L24.4719671,53.982664 L77.4435639,0.568111956 Z" id="Path-43" fill="#A9CFED" sketch:type="MSShapeGroup"></path>
+                    <path d="M142.43032,19.9417991 L120.277947,73.7839259 L87.220877,53.2726395 L142.43032,19.9417991 Z" id="Path-42" fill="#D7D0E0" sketch:type="MSShapeGroup"></path>
+                    <path d="M0.618403556,124.7663 L77.1289829,1.35918774 L118.052575,56.0828215 L142.226151,19.480455 L232.041505,114.009284 L0.618403556,124.7663 Z" id="Path-41" fill="#8987B3" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-47" transform="translate(23.000000, 1.000000)">
+                        <mask id="mask-14" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-13"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-13"></use>
+                        <path d="M30.3640273,19.0017826 L39.3554026,34.5559697 L85.7964863,-10.2271082 L29.204346,-5.30538377 L30.3640273,19.0017826 Z" fill="#FCFCFE" sketch:type="MSShapeGroup" mask="url(#mask-14)"></path>
+                    </g>
+                    <g id="Path-45" transform="translate(28.000000, 1.000000)">
+                        <mask id="mask-16" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-15"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-15"></use>
+                        <path d="M27.54189,31.2584145 L46.9411747,23.6728066 L57.044552,31.7721193 L60.7035465,22.7976625 L74.0537239,31.2584144 L41.8164292,-9.33504561 L27.54189,31.2584145 Z" fill="#DFE1DA" sketch:type="MSShapeGroup" mask="url(#mask-16)"></path>
+                    </g>
+                </g>
+                <g id="mountain" transform="translate(310.000000, 47.000000)">
+                    <path d="M6.71945964,71.3328221 L51.2045956,0.155987238 L110.443006,71.7402347 L132.909343,36.4404012 L165.354202,57.020911 L183.465544,45.190513 L249.460214,75.8884359 L12.0003913,80.036637 L6.71945964,71.3328221 Z" id="Path-35" fill="#5B6B8F" sketch:type="MSShapeGroup"></path>
+                    <path d="M41.3051027,15.9953134 L51.2045956,0.155987238 L60.7784105,11.7250743 L56.6367765,16.9493988 L49.8434799,18.0450918 L45.3310774,20.3352606 L41.3051027,15.9953134 Z" id="Path-36" fill="#E4E1D5" sketch:type="MSShapeGroup"></path>
+                    <path d="M51.058546,0.691367111 L26.6175884,62.1986303 L0.208687165,40.2885671 L51.058546,0.691367111 Z" id="Path-39" fill="#888AB7" sketch:type="MSShapeGroup"></path>
+                    <g id="Path-40">
+                        <mask id="mask-18" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-17"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-17"></use>
+                        <path d="M33.967723,8.24327392 L43.9917165,17.7300111 L61.1169869,-2.82667755 L47.5632736,-5.51009353 L33.967723,8.24327392 Z" fill="#FFFEFB" sketch:type="MSShapeGroup" mask="url(#mask-18)"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="trees" transform="translate(71.000000, 129.000000)">
+                <g id="centered-tree-2" transform="translate(8.000000, 0.000000)">
+                    <circle id="Oval-8" fill="#00B951" sketch:type="MSShapeGroup" cx="28.5" cy="28.5" r="28.5"></circle>
+                    <circle id="Oval-9" fill="#53DF74" sketch:type="MSShapeGroup" cx="29.07" cy="29.07" r="14.25"></circle>
+                    <g id="Rectangle-4">
+                        <mask id="mask-20" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-19"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-19"></use>
+                        <rect opacity="0.370335821" fill="#000000" sketch:type="MSShapeGroup" mask="url(#mask-20)" x="28.5" y="-7.98" width="51.3" height="71.82"></rect>
+                    </g>
+                </g>
+                <g id="centered-tree" transform="translate(288.000000, 17.000000)">
+                    <circle id="Oval-8" fill="#00B951" sketch:type="MSShapeGroup" cx="17" cy="17" r="17"></circle>
+                    <g id="Rectangle-4">
+                        <mask id="mask-22" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-21"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-21"></use>
+                        <rect opacity="0.370335821" fill="#000000" sketch:type="MSShapeGroup" mask="url(#mask-22)" x="17" y="-4.76" width="30.6" height="42.84"></rect>
+                    </g>
+                    <circle id="Oval-9" fill="#53DF74" sketch:type="MSShapeGroup" cx="17.34" cy="17.34" r="8.5"></circle>
+                </g>
+                <circle id="tree" fill="#00BA55" sketch:type="MSShapeGroup" cx="73" cy="53" r="17"></circle>
+                <circle id="tree" fill="#0C9056" sketch:type="MSShapeGroup" cx="124" cy="54" r="13"></circle>
+                <circle id="tree" fill="#6BD558" sketch:type="MSShapeGroup" cx="574.5" cy="54.5" r="19.5"></circle>
+                <circle id="tree" fill="#0C9056" sketch:type="MSShapeGroup" cx="290.5" cy="52.5" r="18.5"></circle>
+                <circle id="tree" fill="#00BA55" sketch:type="MSShapeGroup" cx="330.5" cy="55.5" r="27.5"></circle>
+                <g id="oval-tree" transform="translate(0.000000, 17.000000)" sketch:type="MSShapeGroup">
+                    <path d="M13,0.675527784 C5.25261296,5.77190456 0,15.6498642 0,27 C0,38.3501358 5.25261296,48.2280954 13,53.3244722 L13,0.675527784 Z" id="Oval-17" fill="#7EEC96"></path>
+                    <path d="M26,0.351055568 C18.252613,5.44743234 13,15.325392 13,26.6755278 C13,38.0256636 18.252613,47.9036232 26,53 L26,0.351055568 Z" id="Oval-18" fill="#366A4F" transform="translate(19.500000, 26.675528) rotate(-180.000000) translate(-19.500000, -26.675528) "></path>
+                </g>
+                <g id="oval-tree" transform="translate(245.000000, 15.000000)" sketch:type="MSShapeGroup">
+                    <path d="M13,0.675527784 C5.25261296,5.77190456 0,15.6498642 0,27 C0,38.3501358 5.25261296,48.2280954 13,53.3244722 L13,0.675527784 Z" id="Oval-17" fill="#7EEC96"></path>
+                    <path d="M26,0.351055568 C18.252613,5.44743234 13,15.325392 13,26.6755278 C13,38.0256636 18.252613,47.9036232 26,53 L26,0.351055568 Z" id="Oval-18" fill="#366A4F" transform="translate(19.500000, 26.675528) rotate(-180.000000) translate(-19.500000, -26.675528) "></path>
+                </g>
+                <g id="oval-tree" transform="translate(484.000000, 14.000000)" sketch:type="MSShapeGroup">
+                    <path d="M13,0.675527784 C5.25261296,5.77190456 0,15.6498642 0,27 C0,38.3501358 5.25261296,48.2280954 13,53.3244722 L13,0.675527784 Z" id="Oval-17" fill="#7EEC96"></path>
+                    <path d="M26,0.351055568 C18.252613,5.44743234 13,15.325392 13,26.6755278 C13,38.0256636 18.252613,47.9036232 26,53 L26,0.351055568 Z" id="Oval-18" fill="#366A4F" transform="translate(19.500000, 26.675528) rotate(-180.000000) translate(-19.500000, -26.675528) "></path>
+                </g>
+                <g id="oval-tree" transform="translate(264.000000, 29.000000)" sketch:type="MSShapeGroup">
+                    <path d="M8.66666667,0.18810152 C3.50174197,3.80189596 0,10.8062673 0,18.8545455 C0,26.9028236 3.50174197,33.9071949 8.66666667,37.5209894 L8.66666667,0.18810152 Z" id="Oval-17" fill="#7EEC96"></path>
+                    <path d="M9.16666667,39.75 C14.6295678,35.9277174 18.3333333,28.5192477 18.3333333,20.0066458 C18.3333333,11.494044 14.6295678,4.08557426 9.16666667,0.263291676 L9.16666667,39.75 L9.16666667,39.75 Z" id="Oval-18" fill="#366A4F"></path>
+                </g>
+                <g id="oval-tree-2" transform="translate(507.000000, 35.000000)" fill="#7EEC96" sketch:type="MSShapeGroup">
+                    <path d="M6.25925926,0.035780812 C2.52903587,3.18626827 0,9.29264331 0,16.3090909 C0,23.3255385 2.52903587,29.4319135 6.25925926,32.582401 L6.25925926,0.035780812 Z" id="Oval-17"></path>
+                    <path d="M5.62037037,34.6538462 C9.56579895,31.3215998 12.2407407,24.8629339 12.2407407,17.4416912 C12.2407407,10.0204486 9.56579895,3.56178269 5.62037037,0.229536333 L5.62037037,34.6538462 L5.62037037,34.6538462 Z" id="Oval-18"></path>
+                </g>
+                <circle id="tree" fill="#356951" sketch:type="MSShapeGroup" cx="229.5" cy="53.5" r="25.5"></circle>
+            </g>
+            <rect id="sand" fill="#FFEBB2" sketch:type="MSShapeGroup" x="55" y="182" width="637" height="11"></rect>
+            <g id="stones" transform="translate(165.000000, 174.000000)" sketch:type="MSShapeGroup">
+                <path d="M400.065607,22.6457702 L405.774145,12.2092244 L410.692339,10.3169854 L418.718629,23.4753361 L400.065607,22.6457702 Z" id="stone" fill="#A18C46"></path>
+                <path d="M11.8936958,21.132964 L16.7438668,12.8639566 L32.566593,10.6483809 L38.0229406,22.8848145 L11.8936958,21.132964 Z" id="stone" fill="#93611D"></path>
+                <path d="M0.246343212,21.5941304 L3.94895089,14.134476 L11.9576864,14.134476 L18.4890333,20.6658229 L0.246343212,21.5941304 Z" id="stone" fill="#E19C49"></path>
+                <path d="M148.604728,21.0650974 L155.567292,12.6092707 L166.010608,12.8918372 L178.335584,24.3468895 L148.604728,21.0650974 Z" id="stone" fill="#DF9C42"></path>
+                <path d="M197.825259,20.3105286 L200.083674,13.5479839 L205.141295,13.5479839 L213.105012,16.5810752 L209.71739,23.8854701 L197.825259,20.3105286 Z" id="Path-6" fill="#95611F"></path>
+                <path d="M446.653761,23.2733098 L453.02018,11.6519871 L460.520314,11.6519871 L470.496565,22.6228295 L446.653761,23.2733098 Z" id="Path-8" fill="#CBAC6A"></path>
+                <g id="shadowed-stone" transform="translate(406.000000, 0.000000)">
+                    <path d="M0.574110253,24.5853707 L15.0400818,0.572361241 L35.9035529,6.25425858 L42.2353957,25.7875693 L0.574110253,24.5853707 Z" id="Path-9" fill="#CAAA6A"></path>
+                    <path d="M35.8105046,6.27833135 L55.8146144,21.4564431 L38.163915,19.7693086 L35.8105046,6.27833135 Z" id="Path-10" fill="#A58B4B"></path>
+                </g>
+            </g>
+            <rect id="sea" fill="#09F0F0" sketch:type="MSShapeGroup" x="34" y="193" width="675" height="20" rx="8"></rect>
+            <g id="ship" transform="translate(239.000000, 144.000000)" sketch:type="MSShapeGroup">
+                <path d="M3.65242726,43.5715919 L24.0150439,0.550968905 L23.5159162,37.4505528 L3.65242726,43.5715919 Z" id="Path-1" fill="#FF86BE"></path>
+                <path d="M0.642204323,45.3262258 L50.5010922,45.3262258 L50.5010922,51.3567512 L6.37911961,51.3567512 L0.642204323,45.3262258 Z" id="Path-3" fill="#7B584B"></path>
+                <path d="M50.8050284,43.3205056 C45.9676311,25.0435599 36.6929248,9.82097818 25,0.229699233 L25,43.3205056 L50.8050284,43.3205056 Z" id="Oval-1" fill="#FFFFFF"></path>
+            </g>
+            <g id="house" transform="translate(403.000000, 132.000000)" sketch:type="MSShapeGroup">
+                <g id="roof">
+                    <path d="M0.465053069,27.9579993 L27.7459725,0.677079914 L54.8913024,27.8224099 L0.465053069,27.9579993 Z" id="Path-13" fill="#FFEE9C"></path>
+                    <path d="M27.7459731,27.8224103 L27.7459725,0.677079914 L54.8913024,27.8224099 L27.7459731,27.8224103 Z" id="Path-14" fill="#FFBE48"></path>
+                    <rect id="Rectangle-15" fill="#FFEE9C" x="0" y="27" width="55" height="2"></rect>
+                    <rect id="Rectangle-23" fill="#FFEE9C" x="2" y="28" width="52" height="2"></rect>
+                </g>
+                <g id="walls" transform="translate(2.000000, 29.000000)">
+                    <rect id="Rectangle-16" fill="#8A5D35" x="0" y="0" width="52" height="19"></rect>
+                    <rect id="Rectangle-17" fill="#8A5D35" x="0" y="17" width="5" height="15"></rect>
+                    <rect id="Rectangle-18" fill="#8A5D35" x="47" y="17" width="5" height="15"></rect>
+                    <rect id="Rectangle-24" fill="#FEAD29" x="0" y="2" width="52" height="14"></rect>
+                </g>
+                <g id="window" transform="translate(12.000000, 32.000000)">
+                    <rect id="Rectangle-25" fill="#845533" x="0" y="0" width="11" height="11"></rect>
+                    <rect id="Rectangle-26" fill="#E7C9A0" x="2" y="2" width="7" height="7"></rect>
+                </g>
+                <g id="window" transform="translate(33.000000, 32.000000)">
+                    <rect id="Rectangle-25" fill="#845533" x="0" y="0" width="11" height="11"></rect>
+                    <rect id="Rectangle-26" fill="#FFFBF4" x="2" y="2" width="7" height="7"></rect>
+                </g>
+                <g id="stairs" transform="translate(18.000000, 47.000000)" fill="#8A5D35">
+                    <rect id="Rectangle-19" x="1" y="0" width="2" height="14"></rect>
+                    <rect id="Rectangle-21" x="0" y="3" width="20" height="2"></rect>
+                    <rect id="Rectangle-22" x="0" y="9" width="20" height="2"></rect>
+                    <rect id="Rectangle-20" x="17" y="0" width="2" height="14"></rect>
+                </g>
+            </g>
+            <g id="house" transform="translate(492.000000, 132.000000)" sketch:type="MSShapeGroup">
+                <g id="roof">
+                    <path d="M0.465053069,27.9579993 L27.7459725,0.677079914 L54.8913024,27.8224099 L0.465053069,27.9579993 Z" id="Path-13" fill="#FFEE9C"></path>
+                    <path d="M27.7459731,27.8224103 L27.7459725,0.677079914 L54.8913024,27.8224099 L27.7459731,27.8224103 Z" id="Path-14" fill="#FFBE48"></path>
+                    <rect id="Rectangle-15" fill="#FFEE9C" x="0" y="27" width="55" height="2"></rect>
+                    <rect id="Rectangle-23" fill="#FFEE9C" x="2" y="28" width="52" height="2"></rect>
+                </g>
+                <g id="walls" transform="translate(2.000000, 29.000000)">
+                    <rect id="Rectangle-16" fill="#8A5D35" x="0" y="0" width="52" height="19"></rect>
+                    <rect id="Rectangle-17" fill="#8A5D35" x="0" y="17" width="5" height="15"></rect>
+                    <rect id="Rectangle-18" fill="#8A5D35" x="47" y="17" width="5" height="15"></rect>
+                    <rect id="Rectangle-24" fill="#DF8C2F" x="0" y="2" width="52" height="14"></rect>
+                </g>
+                <g id="window" transform="translate(33.000000, 32.000000)">
+                    <rect id="Rectangle-25" fill="#845533" x="0" y="0" width="11" height="11"></rect>
+                    <rect id="Rectangle-26" fill="#E7C9A0" x="2" y="2" width="7" height="7"></rect>
+                </g>
+                <g id="window" transform="translate(13.000000, 32.000000)">
+                    <rect id="Rectangle-25" fill="#845533" x="0" y="0" width="11" height="11"></rect>
+                    <rect id="Rectangle-26" fill="#FFFBF4" x="2" y="2" width="7" height="7"></rect>
+                </g>
+                <g id="stairs" transform="translate(18.000000, 47.000000)" fill="#8A5D35">
+                    <rect id="Rectangle-19" x="1" y="0" width="2" height="14"></rect>
+                    <rect id="Rectangle-21" x="0" y="3" width="20" height="2"></rect>
+                    <rect id="Rectangle-22" x="0" y="9" width="20" height="2"></rect>
+                    <rect id="Rectangle-20" x="17" y="0" width="2" height="14"></rect>
+                </g>
+            </g>
+            <g id="clouds" transform="translate(243.000000, 36.000000)" fill="#FFFFFF" sketch:type="MSShapeGroup">
+                <rect id="Rectangle-43" x="0" y="23" width="92" height="18" rx="8"></rect>
+                <rect id="Rectangle-44" x="103" y="0" width="92" height="20" rx="8"></rect>
+                <rect id="Rectangle-45" x="281" y="23" width="70" height="18" rx="8"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

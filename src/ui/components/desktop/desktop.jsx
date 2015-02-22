@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    Device = require('../device/device.jsx');
 
 module.exports = class Desktop extends React.Component {
     constructor(props) {
@@ -6,6 +7,6 @@ module.exports = class Desktop extends React.Component {
         this.state = {progress: props.progress};
     }
     render() {
-        return <div className="desktop device device_type_laptop" />;
+        return <Device className="desktop" type="laptop" />;
     }
 };

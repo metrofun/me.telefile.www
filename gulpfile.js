@@ -29,6 +29,7 @@ gulp.task('less', function () {
         ])
         .pipe(concat('index.less'))
         .pipe(less({
+            ieCompat: false,
             plugins: [autoprefix]
         }))
         .on('error', function (e) {

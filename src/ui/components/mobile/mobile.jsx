@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    Device = require('../device/device.jsx');
 
 module.exports = class Mobile extends React.Component {
     constructor(props) {
@@ -7,8 +8,8 @@ module.exports = class Mobile extends React.Component {
     }
     render() {
         return <div className="mobile">
-            <div className="device device_type_ipad " />
-            <div className="device device_type_iphone" />
+            <Device type="ipad"/>
+            <Device type="iphone"/>
         </div>;
     }
 };

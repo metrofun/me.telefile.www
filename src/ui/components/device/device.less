@@ -1,10 +1,16 @@
+.translate(@p, @angle, @offsetX, @offsetY) {
+    transform: rotate(@angle) translate(cos(@angle) * @p + @offsetX, sin(@angle) * @p + @offsetY);
+}
+
 .device {
     @size: 0.106rem;
+    @image-angle: -5deg;
+
     background-clip: content-box;
-    background-color: @blue;
     position: relative;
     box-sizing: border-box;
     flex: 0 0 auto;
+    overflow: hidden;
 
     &:after {
         position: absolute;
@@ -17,13 +23,44 @@
         background-repeat: no-repeat;
     }
 
+    &__background {
+        position: absolute;
+        background-color: @blue;
+        overflow: hidden;
+
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            background-image: data-uri('components/device/picture.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: 0.2rem solid @white;
+
+            @width: 325;
+            @height: 107.5;
+
+            width: @width * 0.08rem;
+            height: @height * 0.08rem;
+        }
+    }
+
     &_type_iphone {
         @width: 70 * @size;
         @height: 142 * @size;
         width: @width;
         height: @height;
 
-        padding: @width * 0.10 @width * 0.06;
+        .device__background {
+            top: @width * 0.11;
+            left: @width * 0.06;
+            bottom: @width * 0.11;
+            right: @width * 0.06;
+
+            &:before {
+                .translate(4rem, @image-angle, 0, 0);
+            }
+        }
 
         &:after {
             background-image: data-uri('components/device/iphone.svg');
@@ -36,11 +73,21 @@
         width: @width;
         height: @height;
 
-        padding: @width * 0.10 @width * 0.06;
+        .device__background {
+            top: @width * 0.10;
+            left: @width * 0.06;
+            bottom: @width * 0.10;
+            right: @width * 0.06;
+
+            &:before {
+                .translate(3rem, @image-angle, 0, 2rem);
+            }
+        }
 
         &:after {
             background-image: data-uri('components/device/ipad.svg');
         }
+
     }
 
     &_type_laptop {
@@ -49,7 +96,16 @@
         width: @width;
         height: @height;
 
-        padding: @width * 0.05 @width * 0.12;
+        .device__background {
+            top: @width * 0.05;
+            left: @width * 0.12;
+            bottom: @width * 0.05;
+            right: @width * 0.12;
+
+            &:before {
+                .translate(-5rem, @image-angle, 0, 0);
+            }
+        }
 
         &:after {
             background-image: data-uri('components/device/laptop.svg');
