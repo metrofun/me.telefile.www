@@ -4,9 +4,14 @@ var React = require('react'),
 
 class Page extends React.Component {
     render() {
+        var stars = Array.apply([], {length: 10}).map(function(value, i) {
+            return <div className={'page__star page__star_type_' + i} />;
+        });
+
         return (
             <div className="page">
                 <div className="page__shadow"></div>
+                {stars}
                 <Header />
                 <Home />
                 <div className="footer">

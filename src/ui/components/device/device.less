@@ -1,10 +1,28 @@
+@image-angle: -5deg;
+
 .translate(@p, @angle, @offsetX, @offsetY) {
     transform: rotate(@angle) translate(cos(@angle) * @p + @offsetX, sin(@angle) * @p + @offsetY);
 }
 
+.offset(@p, @offsetX, @offsetY) {
+    left: cos(@image-angle) * @p + @offsetX;
+    top: sin(@image-angle) * @p + @offsetY;
+
+    animation: hovering 1s @ease-in-out 0.2s  1 alternate both;
+}
+
+@keyframes hovering {
+    from {
+        .translate(-25rem, @image-angle, 0, 0);
+    }
+
+    to {
+        .translate(5rem, @image-angle, 0, 0);
+    }
+}
+
 .device {
     @size: 0.106rem;
-    @image-angle: -5deg;
 
     background-clip: content-box;
     position: relative;
@@ -58,7 +76,7 @@
             right: @width * 0.06;
 
             &:before {
-                .translate(4rem, @image-angle, 0, 0);
+                .offset(4rem, 0, 0rem);
             }
         }
 
@@ -80,7 +98,7 @@
             right: @width * 0.06;
 
             &:before {
-                .translate(3rem, @image-angle, 0, 2rem);
+                .offset(3rem, 0, 5.5rem);
             }
         }
 
@@ -103,7 +121,7 @@
             right: @width * 0.12;
 
             &:before {
-                .translate(-5rem, @image-angle, 0, 0);
+                .offset(-5rem, 0, 2rem);
             }
         }
 

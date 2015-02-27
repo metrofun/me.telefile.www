@@ -1,8 +1,21 @@
 .home {
     position: relative;
-    /* flex:  0 0 100%; */
+
+    @media screen and (orientation:landscape) {
+    }
+
+    @media screen and (orientation:portrait) {
+        height: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
 
     .lead {
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+
         align-self: center;
         color: @white;
         display: inline-block;

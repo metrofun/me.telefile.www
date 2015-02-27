@@ -87,7 +87,7 @@ gulp.task('static-server', function (next) {
 
 gulp.task('renderComponentToString', function(){
     return gulp.src(SRC_DIR + '/ui/index.html')
-        .pipe(replace(/<!-- renderComponentToString ([a-z0-9]+) -->/g, function (matched, componentName) {
+        .pipe(replace(/<!-- renderComponentToString ([a-z/0-9]+) -->/g, function (matched, componentName) {
             var component = require(SRC_DIR + '/ui/components/' + componentName  + '.jsx');
 
             return React.renderToString(React.createElement(component));

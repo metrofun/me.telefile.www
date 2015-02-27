@@ -5,8 +5,21 @@ var React = require('react'),
     ButtonTypeSend = require('../button/button_type_send.jsx'),
     Particles = require('../particles/particles.jsx');
 
-class Page extends React.Component {
+class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            animated: this.props.animated
+        };
+    }
+    componentDidMount() {
+        setTimeout(this.setState.bind(this, {
+            animated: false
+        }), 700);
+    }
     render() {
+        console.log('Home');
         return <div className="home">
             <div className="lead">
                 <div className="lead__text">no limits, no cloud</div>
@@ -14,7 +27,7 @@ class Page extends React.Component {
                 <div className="lead__text lead__text_align_right">faster, safer, easier</div>
             </div>
             <Mobile />
-            <Particles />
+            <Particles animated={this.state.animated} />
             <Desktop />
             <div className="page__controls">
                 <ButtonTypeSend />
@@ -24,4 +37,6 @@ class Page extends React.Component {
     }
 }
 
-module.exports = Page;
+Home.defaultProps = { animated: true };
+
+module.exports = Home;

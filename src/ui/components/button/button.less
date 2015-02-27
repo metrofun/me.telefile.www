@@ -27,32 +27,53 @@
 
 .button {
     overflow: hidden;
-    background-color: rgba(0,0,0,0.10);
-    border: 3px solid @white;
-    box-shadow: @shadowZ1;
-    font-size: 2.2rem;
     letter-spacing: 0.64px;
-    line-height: 3rem;
     cursor: pointer;
-    padding: 1rem 0;
-    width: 18.2rem;
     transition: all 100ms @ease-in-out;
 
-    &:hover {
-        background-color: rgba(255,255,255,0.1);
+    @media screen and (orientation:landscape) {
+        font-size: 2.2rem;
+        width: 18.2rem;
+        border: 3px solid @white;
+        box-shadow: @shadowZ1;
+        background-color: rgba(0,0,0,0.10);
+        padding: 1rem 0;
+        line-height: 3rem;
+
+        &:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+    }
+
+    @media screen and (orientation:portrait) {
+        height: 57vw / 3;
+        font-size: 2rem;
+        line-height: 56vw / 3;
+        text-align: center;
     }
 
     &__label {
-        display: block;
         text-transform: uppercase;
         font-style: normal;
         text-shadow: @shadowZ1;
         text-align: center;
         .ripple;
+
+        @media screen and (orientation:landscape) {
+            display: block;
+        }
+
+        @media screen and (orientation:portrait) {
+            vertical-align: middle;
+        }
     }
 
     &_type_send {
         position: relative;
+
+        @media screen and (orientation:portrait) {
+            background: fade(black, 20);
+        }
 
         .button__icon {
             .ripple;
@@ -60,7 +81,6 @@
             border: 0.5rem solid transparent;
             background-image: data-uri('components/button/camera.svg');
             position: absolute;
-            right: 1.5rem;
             top: 0;
             bottom: 0;
             margin: auto;
@@ -69,11 +89,23 @@
             background-repeat: no-repeat;
             width: 2.4rem;
             height: 2rem;
+
+            @media screen and (orientation:landscape) {
+                right: 1.5rem;
+            }
+
+            @media screen and (orientation:portrait) {
+                right: calc(~'2.5vw + 1.2rem');
+            }
         }
     }
 
     &_type_receive {
         position: relative;
+
+        @media screen and (orientation:portrait) {
+            background: overlay(fade(black, 20), fade(black, 20));
+        }
 
         .button__input {
             position: absolute;

@@ -2,7 +2,16 @@ var React = require('react');
 
 class Particles extends React.Component {
     componentDidMount() {
-        this.intervalId = setInterval(() => this.forceUpdate(), 300);
+        if (this.props.animated) {
+            this.intervalId = setInterval(() => this.forceUpdate(), Particles.INTERVAL);
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.animated) {
+            this.intervalId = setInterval(() => this.forceUpdate(), Particles.INTERVAL);
+        } else {
+            clearInterval(this.intervalId);
+        }
     }
     componentWillUnmount() {
         clearInterval(this.intervalId);
@@ -33,7 +42,7 @@ class Particles extends React.Component {
             className = 'particles__item particles__item_type_';
 
         for (i = 0; i < this.props.quantity; i++) {
-            items.push(<div className={className + i % 5}
+            items.push(<div key={i} className={className + i % 5}
                 style={this.getRandomPosition(takenPositions)} />);
         }
 
@@ -41,5 +50,6 @@ class Particles extends React.Component {
     }
 }
 Particles.defaultProps = { quantity: 13 };
+Particles.INTERVAL = 100;
 
 module.exports = Particles;
