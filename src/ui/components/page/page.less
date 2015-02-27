@@ -2,6 +2,7 @@
     overflow: hidden;
     height: 100%;
     color: @white;
+    -webkit-tap-highlight-color: transparent;
 
     @media screen and (orientation:landscape) {
         padding: 2.4rem 10vw;
@@ -75,28 +76,68 @@
         position: absolute;
         z-index: -1;
 
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+
         &_type_0 {
             opacity: 0.1;
-            top: 0.5rem;
-            left: 2vw;
+
+            @media screen and (orientation:landscape) {
+                top: 0.5rem;
+                left: 2vw;
+            }
+
+            @media screen and (orientation:portrait) {
+                display: block;
+                left: 8vw;
+                top: 1.8vh;
+            }
         }
 
         &_type_1 {
             opacity: 0.25;
-            top: 1.5rem;
-            left: 7vw;
+
+            @media screen and (orientation:landscape) {
+                top: 1.5rem;
+                left: 7vw;
+            }
+
+            @media screen and (orientation:portrait) {
+                display: block;
+                left: 21vw;
+                top: 3.7vh;
+            }
         }
 
         &_type_2 {
-            opacity: 0.5;
-            top: 1.1rem;
-            left: 17vw;
+            @media screen and (orientation:landscape) {
+                opacity: 0.5;
+                top: 1.1rem;
+                left: 17vw;
+            }
+
+            @media screen and (orientation:portrait) {
+                opacity: 0.3;
+                display: block;
+                left: 35vw;
+                top: 1.7vh;
+            }
         }
 
         &_type_3 {
-            opacity: 0.1;
-            top: 0.7rem;
-            left: 30vw;
+            @media screen and (orientation:landscape) {
+                opacity: 0.1;
+                top: 0.7rem;
+                left: 30vw;
+            }
+
+            @media screen and (orientation:portrait) {
+                opacity: 0.5;
+                display: block;
+                left: 75vw;
+                top: 2vh;
+            }
         }
 
         &_type_4 {

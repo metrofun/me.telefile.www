@@ -3,10 +3,24 @@
 }
 
 .brand {
-    font-size: 2rem;
-    line-height: 2rem;
     text-transform: uppercase;
-    float: left;
+    vertical-align: middle;
+
+    @media screen and (orientation:landscape) {
+        font-size: 2rem;
+        line-height: 2rem;
+        float: left;
+    }
+
+    @media screen and (orientation:portrait) {
+        position: absolute;
+        font-size: 1.6rem;
+        line-height: 1.6rem;
+        text-align: center;
+        top: 3.6vh;
+        left: 0;
+        right: 0;
+    }
 
     &__tele {
         color: @yellow;
@@ -39,6 +53,10 @@
     margin: 0;
     position: absolute;
     left: 50%;
+
+    @media screen and (orientation:portrait) {
+        display: none;
+    }
 
     &__item {
         padding: 0;
@@ -98,6 +116,10 @@
     margin: 0;
     float: right;
     height: 2rem;
+
+    @media screen and (orientation:portrait) {
+        display: none;
+    }
 
     &__item {
         padding: 0;
