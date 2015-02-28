@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="123px" height="180px" viewBox="0 0 123 180" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-    <!-- Generator: Sketch 3.2.1 (9977) - http://www.bohemiancoding.com/sketch -->
-    <title>ipad</title>
+<svg width="120px" height="178px" viewBox="0 0 120 178" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>bezel 2 + lock 2 + camera 2</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="ipad-+-iphone" sketch:type="MSLayerGroup" transform="translate(1.000000, 1.000000)">
-            <g id="ipad" transform="translate(0.054599, 0.000000)" sketch:type="MSShapeGroup">
-                <path d="M113.332039,177.134162 L6.75405038,177.134162 C3.04956792,177.134162 0.0463409259,174.129586 0.0463409259,170.42318 L0.0463409259,6.75736094 C0.0463409259,3.05095433 3.0490096,0.0463789763 6.75405038,0.0463789763 L113.332039,0.0463789763 C117.037079,0.0463789763 120.039748,3.05095433 120.039748,6.75736094 L120.039748,170.42318 C120.039748,174.129586 117.037079,177.134162 113.332039,177.134162 Z M9.49151496,17.8810511 L111.105999,17.8810511 L111.105999,159.206732 L9.49151496,159.206732 L9.49151496,17.8810511 Z" id="bezel" fill="#2B3E50"></path>
-                <ellipse id="lock" stroke="#F5F5F5" cx="60.3107609" cy="167.646588" rx="4.47832009" ry="4.48199721"></ellipse>
-                <ellipse id="camera" stroke="#F5F5F5" cx="59.7351286" cy="9.49372055" rx="1.66938998" ry="1.6707607"></ellipse>
-            </g>
+        <g id="bezel-2-+-lock-2-+-camera-2" sketch:type="MSLayerGroup">
+            <path d="M113.292291,177.134162 L6.71430238,177.134162 C3.00981992,177.134162 0.0065929259,174.129586 0.0065929259,170.42318 L0.0065929259,6.75736094 C0.0065929259,3.05095433 3.0092616,0.0463789763 6.71430238,0.0463789763 L113.292291,0.0463789763 C116.997331,0.0463789763 120,3.05095433 120,6.75736094 L120,170.42318 C120,174.129586 116.997331,177.134162 113.292291,177.134162 L113.292291,177.134162 Z M9.45176696,17.8810511 L111.066251,17.8810511 L111.066251,159.206732 L9.45176696,159.206732 L9.45176696,17.8810511 L9.45176696,17.8810511 Z" id="bezel-2" fill="#2B3E50" sketch:type="MSShapeGroup"></path>
+            <ellipse id="lock-2" stroke="#F5F5F5" sketch:type="MSShapeGroup" cx="60.2710129" cy="167.646588" rx="4.47832009" ry="4.48199721"></ellipse>
+            <ellipse id="camera-2" stroke="#F5F5F5" sketch:type="MSShapeGroup" cx="59.6953806" cy="11.4937206" rx="1.66938998" ry="1.6707607"></ellipse>
         </g>
     </g>
 </svg>

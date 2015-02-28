@@ -1,15 +1,31 @@
 .particles {
-    position: relative;
-    width: 10rem;
-    height: 7rem;
+    @media screen and (orientation:landscape) {
+        width: 10rem;
+        height: 7rem;
+    }
 
+    @media screen and (orientation:portrait) {
+        width: 14vh;
+        height: 10vh;
+    }
+
+    position: relative;
     animation: fade-in 0.5s @ease-in-out 0.2s 1 alternate both;
     opacity: 0;
 
     &__item {
+        @media screen and (orientation:landscape) {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            width: 1.3vh;
+            height: 1.3vh;
+        }
+
         position: absolute;
-        width: 1rem;
-        height: 1rem;
+        transform: translate(-50%, -50%);
 
         &_type_0 {
             background: @white;

@@ -13,16 +13,22 @@
 
 @keyframes hovering {
     from {
-        .translate(-25rem, @image-angle, 0, 0);
+        .translate(-200em, @image-angle, 0, 0);
     }
 
     to {
-        .translate(5rem, @image-angle, 0, 0);
+        .translate(-20em, @image-angle, 0, 0);
     }
 }
 
 .device {
-    @size: 0.106rem;
+    @media screen and (orientation:landscape) {
+        font-size: 0.106rem;
+    }
+
+    @media screen and (orientation:portrait) {
+        font-size: 0.15vh;
+    }
 
     background-clip: content-box;
     position: relative;
@@ -53,19 +59,19 @@
             background-image: data-uri('components/device/picture.svg');
             background-size: cover;
             background-repeat: no-repeat;
-            border: 0.2rem solid @white;
+            border: 2px solid @white;
 
             @width: 325;
             @height: 107.5;
 
-            width: @width * 0.08rem;
-            height: @height * 0.08rem;
+            width: @width * 0.8em;
+            height: @height * 0.8em;
         }
     }
 
     &_type_iphone {
-        @width: 70 * @size;
-        @height: 142 * @size;
+        @width: 70em;
+        @height: 142em;
         width: @width;
         height: @height;
 
@@ -76,7 +82,7 @@
             right: @width * 0.06;
 
             &:before {
-                .offset(4rem, 0, 0rem);
+                .offset(50em, 0, 0);
             }
         }
 
@@ -86,8 +92,8 @@
     }
 
     &_type_ipad {
-        @width: 121 * @size;
-        @height: 178 * @size;
+        @width: 121em;
+        @height: 178em;
         width: @width;
         height: @height;
 
@@ -98,7 +104,7 @@
             right: @width * 0.06;
 
             &:before {
-                .offset(3rem, 0, 5.5rem);
+                .offset(30em, 0, 33em);
             }
         }
 
@@ -109,8 +115,8 @@
     }
 
     &_type_laptop {
-        @width: 332 * @size;
-        @height: 185 * @size;
+        @width: 332em;
+        @height: 185em;
         width: @width;
         height: @height;
 
@@ -121,7 +127,7 @@
             right: @width * 0.12;
 
             &:before {
-                .offset(-5rem, 0, 2rem);
+                .offset(-50em, 0, 20em);
             }
         }
 
