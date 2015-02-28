@@ -1,5 +1,11 @@
 .header {
-    flex:  0 0 100%;
+    @media screen and (orientation:landscape) {
+        flex:  0 0 100%;
+    }
+
+    @media screen and (orientation:portrait) {
+        flex:  0 0 auto;
+    }
 }
 
 .brand {
@@ -13,13 +19,13 @@
     }
 
     @media screen and (orientation:portrait) {
-        position: absolute;
+        /* position: absolute; */
         font-size: 1.6rem;
         line-height: 1.6rem;
         text-align: center;
-        top: 3.6vh;
-        left: 0;
-        right: 0;
+        padding-top: 3.6vh;
+        /* left: 0; */
+        /* right: 0; */
     }
 
     &__tele {

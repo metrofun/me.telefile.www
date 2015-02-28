@@ -1,16 +1,4 @@
 .home {
-    position: relative;
-
-    @media screen and (orientation:landscape) {
-    }
-
-    @media screen and (orientation:portrait) {
-        height: 100%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-
     .lead {
         @media screen and (orientation:portrait) {
             display: none;
@@ -41,17 +29,30 @@
     .desktop {
         position: absolute;
         top: 0;
-        bottom: 5.6rem;
         margin: auto;
-        left: calc(~'100% + 10vw + 22rem');
+
+        @media screen and (orientation:landscape) {
+            left: calc(~'100% + 10vw + 22rem');
+            bottom: 5.6rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            bottom: 0;
+        }
     }
 
     .mobile {
         position: absolute;
         top: 0;
-        bottom: 5.6rem;
         margin: auto;
-        left: calc(~'100% + 10vw');
+
+        @media screen and (orientation:landscape) {
+            left: calc(~'100% + 10vw');
+            bottom: 5.6rem;
+        }
+
+        @media screen and (orientation:landscape) {
+        }
     }
 
     .particles {

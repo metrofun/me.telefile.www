@@ -19,16 +19,17 @@ class Home extends React.Component {
         }), 700);
     }
     render() {
-        console.log('Home');
-        return <div className="home">
-            <div className="lead">
-                <div className="lead__text">no limits, no cloud</div>
-                <div className="lead__hero">Send a File<br />in Two Clicks</div>
-                <div className="lead__text lead__text_align_right">faster, safer, easier</div>
+        return <div className="page__content home">
+            <div className="page__main">
+                <div className="lead">
+                    <div className="lead__text">no limits, no cloud</div>
+                    <div className="lead__hero">Send a File<br />in Two Clicks</div>
+                    <div className="lead__text lead__text_align_right">faster, safer, easier</div>
+                </div>
+                <Mobile />
+                <Particles animated={this.state.animated} />
+                <Desktop />
             </div>
-            <Mobile />
-            <Particles animated={this.state.animated} />
-            <Desktop />
             <div className="page__controls">
                 <ButtonTypeSend />
                 <ButtonTypeReceive />

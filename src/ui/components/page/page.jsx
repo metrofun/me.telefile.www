@@ -15,7 +15,7 @@ class Page extends React.Component {
                 <Header />
                 <Home />
                 <div className="footer">
-                    <div className="docs">from Berlin<i className="docs__heart">❤</i>with Love</div>
+                    <div className="info">from Berlin<i className="info__heart">❤</i>with Love</div>
                 </div>
             </div>
         );
