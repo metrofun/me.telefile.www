@@ -22,6 +22,7 @@ var gulp = require('gulp'),
     DEST_DIR = './dest';
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
+require("babel/register");
 
 gulp.task('less', function () {
     return gulp.src([
@@ -137,7 +138,7 @@ gulp.task('publish', [
 
 gulp.task('default', [
     'development',
-    // 'renderComponentToString',
+    'renderComponentToString',
     'less',
     'browserify',
     'static-server',
