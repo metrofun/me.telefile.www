@@ -99,6 +99,7 @@
         position: absolute;
         z-index: -1;
         background-size: 100%;
+        background-repeat: no-repeat;
 
         @media screen and (orientation:portrait) {
             display: none;
@@ -202,20 +203,33 @@
     }
 
     &__controls {
+        @color: fade(black, 20);
+        @rowHeight: 57vw / 3;
+
         @media screen and (orientation:landscape) {
             display: flex;
             justify-content: space-between;
         }
 
         @media screen and (orientation:portrait) {
-            /* position: absolute; */
-            /* bottom: 0; */
-            /* left: 0; */
-            /* right: 0; */
-
-            @color: fade(black, 20);
-            border-bottom: 57vw  / 3 solid overlay(@color, overlay(@color, @color));
             width: 100%;
+
+            .button {
+                height: @rowHeight;
+                line-height: @rowHeight;
+
+                &:last-child {
+                    border-bottom: @rowHeight  solid @color;
+                }
+            }
+
+            .button:first-child {
+                background-color: @color;
+            }
+
+            .button:nth-child(2) {
+                background-color: overlay(@color, @color);
+            }
         }
     }
 }

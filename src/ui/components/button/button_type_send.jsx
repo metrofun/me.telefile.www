@@ -1,10 +1,25 @@
-var React = require('react');
+var React = require('react'),
+    dispatcher = require('../../dispatcher/dispatcher.js'),
+    actions = require('../../actions/actions.js');
 
 class Button extends React.Component {
+    onFileSelect_(e) {
+        var file = e.target.files[0];
+
+        dispatcher.onNext({
+            type: actions.SEND_FILE,
+            file: file
+        });
+    }
     render() {
-        return <div onClick={this.onClick} className="button button_type_send">
-            <span className="button__label">SEND</span>
-            <span className="button__icon"></span>
+        return <div className="button button_type_send">
+            <label className="button__label">
+                SEND
+                <input onChange={this.onFileSelect_} className="button__input" type="file" />
+            </label>
+            <label className="button__icon">
+                <input onChange={this.onFileSelect_} className="button__input" type="file" accept="image/*;capture=camera" />
+            </label>
         </div>;
     }
 }

@@ -10,6 +10,7 @@ var gulp = require('gulp'),
     ghPages = require("gulp-gh-pages"),
     uglify = require('gulp-uglify'),
     browserify = require('browserify'),
+    babelify = require("babelify"),
     reactify = require('reactify'),
     mocha = require('gulp-mocha'),
     livereload = require('gulp-livereload'),
@@ -43,7 +44,7 @@ gulp.task('less', function () {
 gulp.task('browserify', function () {
     var bundler = browserify(SRC_DIR + '/ui/index.js');
 
-    bundler.transform({es6: true}, reactify);
+    bundler.transform(reactify).transform(babelify);
 
     function rebundle () {
         return bundler.bundle({debug: true})
@@ -136,7 +137,7 @@ gulp.task('publish', [
 
 gulp.task('default', [
     'development',
-    'renderComponentToString',
+    // 'renderComponentToString',
     'less',
     'browserify',
     'static-server',
