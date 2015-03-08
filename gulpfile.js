@@ -138,7 +138,7 @@ gulp.task('publish', [
 
 gulp.task('default', [
     'development',
-    'renderComponentToString',
+    // 'renderComponentToString',
     'less',
     'browserify',
     'static-server',

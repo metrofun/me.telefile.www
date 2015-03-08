@@ -1,0 +1,40 @@
+.send {
+    width: 100%;
+    text-align: center;
+
+    .desktop {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: -17.5rem;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+
+    .mobile {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        left: 1.5vw;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+
+    .process {
+        @media screen and (orientation:landscape) {
+            margin: 10vh auto;
+        }
+    }
+
+    .page__controls {
+        @media screen and (orientation:landscape) {
+            display: inline-flex;
+        }
+    }
+}

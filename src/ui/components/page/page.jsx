@@ -14,7 +14,6 @@ class Page extends React.Component {
     }
     componentWillMount() {
         this.setState(routerStore.getState());
-        console.log(routerStore.getState());
 
         this.routerSubscription_ = routerStore.subscribeOnNext(function(state) {
             this.setState(state);

@@ -16,8 +16,8 @@ class Router extends Store {
     }
     getDefaultState() {
         return {
-            // pathname: '/'
-            pathname: '/send'
+            pathname: '/'
+            // pathname: '/send'
         };
     }
 }

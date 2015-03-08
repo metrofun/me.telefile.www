@@ -5,6 +5,17 @@
     -webkit-tap-highlight-color: transparent;
     display: flex;
 
+    &__title {
+        font-size: 2.8rem;
+        letter-spacing: 1em / 100;
+        text-shadow: @shadowZ1;
+        color: @white;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+
     &__content {
         position: relative;
 
@@ -18,8 +29,9 @@
     }
 
     &__main {
+        position: relative;
+
         @media screen and (orientation:portrait) {
-            position: relative;
             flex-grow: 1;
         }
     }

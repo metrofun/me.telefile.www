@@ -1,7 +1,7 @@
 var React = require('react'),
     Mobile = require('../mobile/mobile.jsx'),
     Desktop = require('../desktop/desktop.jsx'),
-    ButtonTypeReceive= require('../button/button_type_receive.jsx'),
+    ButtonTypeReceive = require('../button/button_type_receive.jsx'),
     ButtonTypeSend = require('../button/button_type_send.jsx'),
     Particles = require('../particles/particles.jsx');
 
@@ -13,7 +13,7 @@ class Home extends React.Component {
             animated: this.props.animated
         };
     }
-    componentDidMount() {
+    componentWillMount() {
         setTimeout(this.setState.bind(this, {
             animated: false
         }), 700);
