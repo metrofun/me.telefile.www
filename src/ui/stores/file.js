@@ -9,7 +9,6 @@ var Rx = require('rx'),
 
 class File extends Store {
     constructor() {
-        var isPinValid;
         super();
 
         dispatcher.subscribeOnNext(function(action) {
@@ -18,21 +17,15 @@ class File extends Store {
                     state: 'SENDING',
                     sender: new FileSender(action.file)
                 });
-            } else if (action.type === actions.PIN_CHANGED) {
-                isPinValid = this.isPinValid_(action.pin);
+            }
+        }, this);
 
-                pinStore.setState({
-                    pin: action.pin,
-                    isValid: isPinValid
+        pinStore.subscribeOnNext(function(state) {
+            if (state.isValid) {
+                this.setState({
+                    state: 'RECEIVING',
+                    receiver: new FileReceiver(state.pin)
                 });
-
-                console.log('isPinValid', isPinValid);
-                if (isPinValid) {
-                    this.setState({
-                        state: 'RECEIVING',
-                        receiver: new FileReceiver(action.pin)
-                    });
-                }
             }
         }, this);
     }
@@ -41,10 +34,10 @@ class File extends Store {
             state: 'PENDING'
         };
     }
-    isPinValid_(pin) {
-        return /^[a-zA-Z0-9]{6}$/.test(pin);
-    }
     onError_() {
+        pinStore.setState({
+            isValid: false
+        });
         this.setState({
             state: 'ERROR'
         });
