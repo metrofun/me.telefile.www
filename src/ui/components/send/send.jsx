@@ -16,7 +16,6 @@ module.exports = class extends React.Component {
             title: '----'
         });
 
-        console.log(fileStore.getState());
         fileStore.getState().sender.getPin().then(function(pin) {
             that.setState({
                 title: pin
@@ -56,4 +55,3 @@ module.exports = class extends React.Component {
 
     }
 };
-
