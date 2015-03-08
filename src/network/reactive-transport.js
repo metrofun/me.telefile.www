@@ -85,7 +85,7 @@ ReactiveTransport.prototype = {
             // workaround for pausableBuffered
             // pausableBuffered flushes queue when source completes,
             // so we merge inSubject with a sequence
-            // which completes when tranport opens
+            // which completes when transport opens
             .merge(this._openPauser.take(1).ignoreElements())
             .pausableBuffered(this._openPauser)
             .subscribe(function (payload) {
@@ -147,12 +147,11 @@ ReactiveTransport.prototype = {
      * @param {String} reason If present, will be sent by transport
      */
     _terminate: function (reason) {
-        var self = this;
         this._transport.send(Frame.encode(CONTROL_PLANE, reason));
-        // after sending a message don't close the transport immidiatly,
+        // after sending a message don't close the transport immediately,
         // otherwise message will be not delivered.
         // so we wait till remote peer will close it,
-        // or do it ourselfs after 1 second
+        // or do it ourselves after 1 second
         this._closeTransport(1000);
     },
     /**
@@ -164,7 +163,6 @@ ReactiveTransport.prototype = {
         setTimeout(function () {
             try {
                 self._transport.close();
-                console.log('timeout close');
             } catch (e) {}
         }, timeout || 0);
     }

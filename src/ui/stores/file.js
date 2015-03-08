@@ -3,11 +3,13 @@ var Rx = require('rx'),
     serialDisposable = new Rx.SerialDisposable(),
     dispatcher = require('../dispatcher/dispatcher.js'),
     Store = require('./store.js'),
+    pinStore = require('../stores/pin.js'),
     FileSender = require('../../file/file-sender'),
     FileReceiver = require('../../file/file-receiver');
 
 class File extends Store {
     constructor() {
+        var isPinValid;
         super();
 
         dispatcher.subscribeOnNext(function(action) {
@@ -16,6 +18,21 @@ class File extends Store {
                     state: 'SENDING',
                     sender: new FileSender(action.file)
                 });
+            } else if (action.type === actions.PIN_CHANGED) {
+                isPinValid = this.isPinValid_(action.pin);
+
+                pinStore.setState({
+                    pin: action.pin,
+                    isValid: isPinValid
+                });
+
+                console.log('isPinValid', isPinValid);
+                if (isPinValid) {
+                    this.setState({
+                        state: 'RECEIVING',
+                        receiver: new FileReceiver(action.pin)
+                    });
+                }
             }
         }, this);
     }
@@ -23,6 +40,9 @@ class File extends Store {
         return {
             state: 'PENDING'
         };
+    }
+    isPinValid_(pin) {
+        return /^[a-zA-Z0-9]{6}$/.test(pin);
     }
     onError_() {
         this.setState({

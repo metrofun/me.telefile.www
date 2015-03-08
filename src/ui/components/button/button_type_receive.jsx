@@ -9,6 +9,7 @@ class Button extends React.Component {
     componentWillMount() {
         this.setState(pinStore.getState());
         this.onKeyDown_ = this.onKeyDown_.bind(this);
+        this.reset_ = this.reset_.bind(this);
 
         serialDisposable.setDisposable(pinStore.subscribeOnNext(function(state) {
             this.setState(state);
@@ -16,7 +17,7 @@ class Button extends React.Component {
     }
     onKeyDown_(e) {
         if (e.keyCode === 27) {
-            this.refs.input.getDOMNode().blur();
+            this.reset_();
         } else {
             dispatcher.onNext({
                 type: actions.PIN_CHANGED,
@@ -24,12 +25,20 @@ class Button extends React.Component {
             });
         }
     }
+    reset_() {
+        this.refs.input.getDOMNode().blur();
+        dispatcher.onNext({
+            type: actions.PIN_CHANGED,
+            pin: ''
+        });
+    }
     render() {
         return <div className="button button_type_receive">
             <input className="button__input"
+                ref="input"
+                onBlur={this.reset_}
                 onKeyDown={this.onKeyDown_}
                 onChange={this.onKeyDown_}
-                ref="input"
                 value={this.state.pin}
                 type="text" placeholder="INPUT PIN"/>
             <span className="button__label">RECEIVE</span>
