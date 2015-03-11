@@ -8,16 +8,16 @@ class Router extends Store {
 
         dispatcher.subscribeOnNext(function(action) {
             if (action.type === actions.SEND_FILE) {
-                this.setState({
-                    pathname: '/send'
-                });
+                this.setState({ pathname: '/send' });
+            } else if (action.type === actions.FILE_ERROR) {
+                this.setState({ pathname: '/error' });
             }
         }, this);
     }
     getDefaultState() {
         return {
-            pathname: '/'
-            // pathname: '/send'
+            // pathname: '/'
+            pathname: '/error'
         };
     }
 }

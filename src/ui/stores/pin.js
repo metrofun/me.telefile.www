@@ -9,13 +9,19 @@ class Pin extends Store {
         super();
 
         dispatcher.subscribeOnNext(function(action) {
+            var isValid, pin = action.pin;
+
             if (action.type === actions.PIN_CHANGED) {
-                if (action.pin.length <= PIN_LENGTH) {
-                    this.setState({
-                        pin: action.pin,
-                        isValid: this.isValid_(action.pin)
-                    });
+                if (pin.length <= PIN_LENGTH) {
+                    isValid = this.isValid_(action.pin);
+                    this.setState({ pin, isValid });
+
+                    if (isValid) {
+                        dispatcher.onNext({ type: actions.PIN_VALID, pin});
+                    }
                 }
+            } else if (action.type === actions.PIN_CHANGED) {
+                this.setState({ isValid: false });
             }
         }, this);
     }

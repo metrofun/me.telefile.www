@@ -1,0 +1,87 @@
+.layout {
+    position: relative;
+    width: 100%;
+    text-align: center;
+
+    @media screen and (orientation:portrait) {
+        box-sizing: border-box;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    &__title {
+        font-size: 2.8rem;
+        letter-spacing: 1em / 100;
+        text-shadow: @shadowZ1;
+        color: @white;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+
+    &__main {
+        position: relative;
+
+        @media screen and (orientation:portrait) {
+            flex-grow: 1;
+        }
+    }
+
+    &__controls {
+        @color: fade(black, 20);
+        @rowHeight: 57vw / 3;
+
+        @media screen and (orientation:landscape) {
+            display: inline-flex;
+            justify-content: space-between;
+        }
+
+        @media screen and (orientation:portrait) {
+            width: 100%;
+
+            .button {
+                height: @rowHeight;
+                line-height: @rowHeight;
+
+                &:last-child {
+                    border-bottom: @rowHeight  solid @color;
+                }
+            }
+
+            .button:first-child {
+                background-color: @color;
+            }
+
+            .button:nth-child(2) {
+                background-color: overlay(@color, @color);
+            }
+        }
+    }
+
+    .desktop {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: -17.5rem;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+
+    .mobile {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        left: 1.5vw;
+
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+    }
+}

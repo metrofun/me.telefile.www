@@ -6,7 +6,7 @@ module.exports = class Store extends Rx.AnonymousObservable {
         this.subject_ = new Rx.ReplaySubject(1);
         this.replaceState(this.getDefaultState());
 
-        super((observer) => this.subject_.distinctUntilChanged().subscribe(observer) );
+        super((observer) => this.subject_.subscribe(observer) );
     }
     getDefaultState() {
         return {};

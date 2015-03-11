@@ -2,15 +2,18 @@ var React = require('react'),
     routerStore = require('../../stores/router.js'),
     Home = require('../home/home.jsx'),
     Send = require('../send/send.jsx'),
+    ErrorComponent = require('../error/error.jsx'),
     Header = require('../header/header.jsx');
 
 class Page extends React.Component {
     constructor() {
         super();
 
-        this.stars_ = Array.apply([], {length: 10}).map(function(value, i) {
-            return <div className={'page__star page__star_type_' + i} />;
-        });
+        this.stars_ = <div className="page__stars">
+            {Array.apply([], {length: 10}).map(function(value, i) {
+                return <div className={'page__star page__star_type_' + i} />;
+            })}
+        </div>;
     }
     componentWillMount() {
         this.setState(routerStore.getState());
@@ -26,6 +29,8 @@ class Page extends React.Component {
         switch (this.state.pathname) {
             case '/send':
                 return <Send />;
+            case '/error':
+                return <ErrorComponent />;
             default :
                 return <Home />;
         }
