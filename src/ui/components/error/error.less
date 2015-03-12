@@ -1,0 +1,50 @@
+.error {
+    &__death-star {
+        background-image: data-uri('components/error/death-star.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: relative;
+        margin: auto;
+
+        @media screen and (orientation:portrait) {
+            height: 66vw;
+            width: 66vw;
+            max-height: 41vh;
+            max-width: 41vh;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        @media screen and (orientation:landscape) {
+            width: 25rem;
+            height: 25rem;
+        }
+
+    }
+
+    .bubble-1,
+    .bubble-2 {
+        text-transform: uppercase;
+        font-style: italic;
+        font-size: 1.4rem;
+        color: @navy;
+        font-family: "Comic Sans MS", "Comic Sans", cursive;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .bubble-1 {
+        background-image: data-uri('components/error/bubble-1.svg');
+        padding: 4.5rem 1rem 2rem;
+    }
+
+    .bubble-2 {
+        background-image: data-uri('components/error/bubble-2.svg');
+        padding: 1rem 1rem 3rem;
+    }
+}

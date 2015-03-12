@@ -16,6 +16,10 @@
         letter-spacing: 1em / 100;
         text-shadow: @shadowZ1;
         color: @white;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: -10vh;
 
         @media screen and (orientation:portrait) {
             display: none;
@@ -24,6 +28,10 @@
 
     &__main {
         position: relative;
+
+        @media screen and (orientation:landscape) {
+            margin: 10vh 0;
+        }
 
         @media screen and (orientation:portrait) {
             flex-grow: 1;
@@ -35,8 +43,12 @@
         @rowHeight: 57vw / 3;
 
         @media screen and (orientation:landscape) {
-            display: inline-flex;
-            justify-content: space-between;
+            left: 0;
+            right: 0;
+            margin: auto;
+            bottom: -10vh;
+            display: flex;
+            justify-content: center;
         }
 
         @media screen and (orientation:portrait) {

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="233px" height="225px" viewBox="0 0 233 225" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>Death Star 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-1881.000000, -2189.000000)" stroke="#00446A" stroke-width="9">
+            <g id="Death-Star-2" transform="translate(1886.000000, 2192.000000)" sketch:type="MSShapeGroup">
+                <path d="M108,2.00113825 C107.833423,2.00037969 107.666756,2 107.5,2 C48.1293894,2 0,50.1293894 0,109.5 C0,168.870611 48.1293894,217 107.5,217 C107.666756,217 107.833423,216.99962 108,216.998862 L108,216.998862 L108,108.997712 C107.833514,108.999236 107.666846,109 107.5,109 C77.9527659,109 54,85.0472341 54,55.5 C54,25.9527659 77.9527659,2 107.5,2 C107.666846,2 107.833514,2.00076376 108,2.00228796 Z" id="Oval-14"></path>
+                <path d="M52.0053642,111 C52.4241494,169.520331 77.3107681,216.743754 108,216.998961 L108,111 L52.0053642,111 Z" id="Oval-15"></path>
+                <path d="M9.67906999e-09,110.5 L215.507431,110.5" id="Path-387"></path>
+                <circle id="Oval-73" cx="107.5" cy="55.5" r="53.5"></circle>
+                <circle id="Oval-74" cx="107.5" cy="55.5" r="13.5"></circle>
+                <path d="M108.239921,217.5 L146.499999,217.5" id="Path-387"></path>
+                <path d="M109.826704,2 L161.500002,2" id="Path-388"></path>
+                <path d="M157.413217,55.5 L227.759809,55.5" id="Path-389"></path>
+                <path d="M107.826704,164 L191.499998,164" id="Path-390"></path>
+                <path d="M107.826704,190 L178.173296,190" id="Path-391"></path>
+                <path d="M107.826704,138 L178.173296,138" id="Path-392"></path>
+                <path d="M149.826704,86 L194.500002,86" id="Path-393"></path>
+                <path d="M155.826704,29.5 L206.500002,29.5" id="Path-394"></path>
+            </g>
+        </g>
+    </g>
+</svg>
