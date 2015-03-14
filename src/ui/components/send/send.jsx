@@ -1,4 +1,6 @@
 var React = require('react'),
+    dispatcher = require('../../dispatcher/dispatcher.js'),
+    actions = require('../../actions/actions.js'),
     fileStore = require('../../stores/file.js'),
     Process = require('../process/process.jsx'),
     Button = require('../button/button.jsx'),
@@ -9,7 +11,7 @@ var React = require('react'),
 
 module.exports = class extends React.Component {
     componentWillMount() {
-        var that = this;
+        var self = this;
 
         this.setState({
             timeleft: MAX_TIME,
@@ -17,13 +19,18 @@ module.exports = class extends React.Component {
         });
 
         fileStore.getState().sender.getPin().then(function(pin) {
-            that.setState({
+            self.setState({
                 title: pin
             });
         });
 
         this.intervalId_ = setInterval(function() {
-            that.setState({timeleft: that.state.timeleft - 1});
+            if (self.state.timeleft) {
+                self.setState({timeleft: self.state.timeleft - 1});
+            } else {
+                dispatcher.onNext({ type: actions.FILE_SEND_TIMEOUT });
+                clearInterval(self.intervalId_);
+            }
         }, 1000);
     }
     componentWillUnmount() {

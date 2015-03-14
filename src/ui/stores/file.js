@@ -14,7 +14,7 @@ class File extends Store {
         dispatcher.subscribeOnNext(function(action) {
             if (action.type === actions.FILE_SEND) {
                 this.onFileSend_(action.file);
-            } else if (action.type === action.PIN_VALID) {
+            } else if (action.type === actions.PIN_VALID) {
                 this.onValidPin_(action.pin);
             }
         }, this);
@@ -36,7 +36,7 @@ class File extends Store {
 
         this.serialDisposable_.setDisposable(new Rx.CompositeDisposable(
             // pick first message to check whether PIN is valid
-            receiver.first().subscribe(function() {
+            receiver.getProgress().first().subscribe(function() {
                 dispatcher.onNext({ type: actions.FILE_RECEIVE});
             }, function() {
                 dispatcher.onNext({ type: actions.PIN_INVALID });

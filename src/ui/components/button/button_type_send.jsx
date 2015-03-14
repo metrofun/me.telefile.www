@@ -7,7 +7,7 @@ class Button extends React.Component {
         var file = e.target.files[0];
 
         dispatcher.onNext({
-            type: actions.SEND_FILE,
+            type: actions.FILE_SEND,
             file: file
         });
     }

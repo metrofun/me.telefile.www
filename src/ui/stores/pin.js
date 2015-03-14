@@ -20,7 +20,7 @@ class Pin extends Store {
                         dispatcher.onNext({ type: actions.PIN_VALID, pin});
                     }
                 }
-            } else if (action.type === actions.PIN_CHANGED) {
+            } else if (action.type === actions.PIN_INVALID) {
                 this.setState({ isValid: false });
             }
         }, this);

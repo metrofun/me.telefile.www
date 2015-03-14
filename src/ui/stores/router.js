@@ -7,17 +7,19 @@ class Router extends Store {
         super();
 
         dispatcher.subscribeOnNext(function(action) {
-            if (action.type === actions.SEND_FILE) {
+            if (action.type === actions.FILE_SEND) {
                 this.setState({ pathname: '/send' });
             } else if (action.type === actions.FILE_ERROR) {
                 this.setState({ pathname: '/error' });
+            } else if (action.type === actions.FILE_SEND_TIMEOUT) {
+                this.setState({ pathname: '/' });
             }
         }, this);
     }
     getDefaultState() {
         return {
-            // pathname: '/'
-            pathname: '/error'
+            pathname: '/'
+            // pathname: '/error'
         };
     }
 }
