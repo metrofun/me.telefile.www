@@ -1,10 +1,14 @@
 var React = require('react'),
+    dispatcher = require('../../dispatcher/dispatcher.js'),
+    actions = require('../../actions/actions.js'),
     Button = require('../button/button.jsx'),
     Mobile = require('../mobile/mobile.jsx'),
     Desktop = require('../desktop/desktop.jsx');
-    // Layout = require('../layout/layout.jsx');
 
 class ErrorComponent extends React.Component {
+    reset_() {
+        dispatcher.onNext({ type: actions.RESET });
+    }
     render() {
         return <div className="layout error">
             <div className="layout__title">Something went wrong</div>
@@ -17,7 +21,7 @@ class ErrorComponent extends React.Component {
                 <Desktop />
             </div>
             <div className="layout__controls">
-                <Button>Try again</Button>
+                <Button onClick={this.reset_}>Try again</Button>
             </div>
         </div>;
     }

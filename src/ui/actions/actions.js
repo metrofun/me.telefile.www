@@ -8,5 +8,6 @@ module.exports = keyMirror({
     FILE_ERROR: null,
     PIN_CHANGED: null,
     PIN_INVALID: null,
-    PIN_VALID: null
+    PIN_VALID: null,
+    RESET: null
 });
