@@ -13,6 +13,8 @@ class Router extends Store {
                 this.setState({ pathname: '/error' });
             } else if (action.type === actions.FILE_SEND_TIMEOUT) {
                 this.setState({ pathname: '/' });
+            } else if (action.type === actions.FILE_TRANSFER_CANCEL) {
+                this.setState({ pathname: '/' });
             }
         }, this);
     }

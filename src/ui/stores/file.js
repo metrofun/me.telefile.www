@@ -5,7 +5,7 @@ var Rx = require('rx'),
     FileSender = require('../../file/file-sender'),
     FileReceiver = require('../../file/file-receiver');
 
-class File extends Store {
+class FileStore extends Store {
     constructor() {
         super();
 
@@ -16,6 +16,8 @@ class File extends Store {
                 this.onFileSend_(action.file);
             } else if (action.type === actions.PIN_VALID) {
                 this.onValidPin_(action.pin);
+            } else if (action.type === actions.FILE_TRANSFER_CANCEL) {
+                this.cancel_();
             }
         }, this);
     }
@@ -23,13 +25,13 @@ class File extends Store {
         return { state: 'PENDING' };
     }
     onError_() {
-        this.setState({ state: 'ERROR' });
+        this.replaceState({ state: 'ERROR' });
         dispatcher.onNext({ type: actions.FILE_ERROR});
     }
     onValidPin_(pin) {
         var receiver = new FileReceiver(pin);
 
-        this.setState({
+        this.replaceState({
             state: 'RECEIVING',
             receiver: receiver
         });
@@ -46,10 +48,20 @@ class File extends Store {
             receiver.getProgress().skip(1).subscribeOnError(this.onError_, this)
         ));
     }
+    cancel_() {
+        var state = this.getState(),
+            transferer = state.sender || state.receiver;
+
+        if (transferer) {
+            transferer.dispose();
+        }
+
+        this.replaceState({state: 'PENDING'});
+    }
     onFileSend_(file) {
         var sender = new FileSender(file);
 
-        this.setState({
+        this.replaceState({
             state: 'SENDING',
             sender: sender
         });
@@ -59,4 +71,4 @@ class File extends Store {
     }
 }
 
-module.exports = new File();
+module.exports = new FileStore();

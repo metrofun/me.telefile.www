@@ -42,6 +42,9 @@ module.exports = class extends React.Component {
     secondsToTimeLabel_(seconds) {
         return this.pad_(Math.floor(seconds / 60) % 60) + ':' + this.pad_(seconds % 60);
     }
+    onCacel_() {
+        dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
+    }
     render() {
         return <div className="page__content send content">
             <div className="page__title">Waiting for receiver</div>
@@ -56,7 +59,7 @@ module.exports = class extends React.Component {
                     <Desktop />
                 </div>
                 <div className="page__controls">
-                    <Button>Cancel</Button>
+                    <Button onClick={this.onCacel_}>Cancel</Button>
                 </div>
         </div>;
 
