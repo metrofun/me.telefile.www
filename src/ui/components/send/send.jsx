@@ -1,59 +1,74 @@
 var React = require('react'),
     dispatcher = require('../../dispatcher/dispatcher.js'),
+    common = require('../common/common.js'),
     actions = require('../../actions/actions.js'),
     fileStore = require('../../stores/file.js'),
     Process = require('../process/process.jsx'),
     Button = require('../button/button.jsx'),
     Mobile = require('../mobile/mobile.jsx'),
     Desktop = require('../desktop/desktop.jsx'),
+    Transfer = require('../transfer/transfer.jsx'),
 
-    MAX_TIME = 10 * 60;
+    WAIT_MODE = 'wait mode',
+    SEND_MODE = 'send mode',
+    WAITING_TIME_STEP = 1000,
+    MAX_WAITING_TIME = 10 * 60;
 
 module.exports = class extends React.Component {
     componentWillMount() {
-        this.setState({ timeleft: MAX_TIME, title: '----' });
+        var sender = fileStore.getState().sender;
 
-        fileStore.getState().sender.getPin().then((pin) => this.setState({
-            title: pin
-        }));
+        this.setState({
+            mode: WAIT_MODE,
+            timeleft: MAX_WAITING_TIME,
+            title: '----'
+        });
+        sender.getPin().then((pin) => this.setState({ title: pin }));
 
-        this.intervalId_ = setInterval(() => {
-            if (this.state.timeleft) {
-                this.setState({timeleft: this.state.timeleft - 1});
-            } else {
-                dispatcher.onNext({ type: actions.FILE_SEND_TIMEOUT });
-                clearInterval(this.intervalId_);
-            }
-        }, 1000);
+        sender.getProgress().first().subscribeOnNext(() => {
+            this.setState({ mode: SEND_MODE });
+            this._clearWaitingTick();
+        });
+
+        this._intervalId = setInterval(this._waitingTick.bind(this), WAITING_TIME_STEP);
     }
     componentWillUnmount() {
-        clearInterval(this.intervalId_);
+        this._clearWaitingTick();
     }
-    _pad(value) {
-        return value < 10 ? '0' + value:value;
+    _waitingTick() {
+        if (this.state.timeleft) {
+            this.setState({timeleft: this.state.timeleft - 1});
+        } else {
+            dispatcher.onNext({ type: actions.FILE_SEND_TIMEOUT });
+            this._clearWaitingTick();
+        }
     }
-    _secondsToTimeLabel(seconds) {
-        return this._pad(Math.floor(seconds / 60) % 60) + ':' + this._pad(seconds % 60);
+    _clearWaitingTick() {
+        clearInterval(this._intervalId);
     }
     _cancel() {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
     render() {
-        return <div className="page__content send content">
-            <div className="page__title">Waiting for receiver</div>
+        if (this.state.mode === WAIT_MODE) {
+            return <div className="page__content send content">
+                <div className="page__title">Waiting for receiver</div>
                 <div className="page__main">
                     <Mobile />
                     <Process
-                        progress={1 - this.state.timeleft / MAX_TIME}
+                        progress={1 - this.state.timeleft / MAX_WAITING_TIME}
                         title={this.state.title}
                         subtitle="copy above pin on another device"
-                        footer={this._secondsToTimeLabel(this.state.timeleft)}
+                        footer={common.formatTimeleft(this.state.timeleft)}
                     />
                     <Desktop />
                 </div>
                 <div className="page__controls">
                     <Button onClick={this._cancel}>Cancel</Button>
                 </div>
-        </div>;
+            </div>;
+        } else if (this.state.mode === SEND_MODE) {
+            return <Transfer source={fileStore.getState().sender}/>;
+        }
     }
 };

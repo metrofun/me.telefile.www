@@ -18,5 +18,15 @@ module.exports = {
      */
     formatProgress: function(progress) {
         return Number(progress).toFixed(Number(progress < 10));
+    },
+    pad(value) {
+        return value < 10 ? '0' + value:value;
+    },
+    /**
+     * Format seconds to "mm:ss"
+     * @param {number} seconds
+     */
+    formatTimeleft: function(seconds) {
+        return this.pad(Math.floor(seconds / 60) % 60) + ':' + this.pad(seconds % 60);
     }
 };

@@ -2,29 +2,26 @@ var React = require('react'),
     common = require('../common/common.js'),
     dispatcher = require('../../dispatcher/dispatcher.js'),
     actions = require('../../actions/actions.js'),
-    fileStore = require('../../stores/file.js'),
     Process = require('../process/process.jsx'),
     Button = require('../button/button.jsx'),
     Mobile = require('../mobile/mobile.jsx'),
     Desktop = require('../desktop/desktop.jsx');
 
-class ReceiveComponent extends React.Component {
+class TransferComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = props;
     }
     componentWillMount() {
-        var receiver = fileStore.getState().receiver;
+        var source = this.props.source;
 
-        receiver.getProgress().subscribeOnNext((progress) => this.setState({ progress }));
-        receiver.getBps().subscribeOnNext((Bps) => {
+        source.getProgress().subscribeOnNext((progress) => this.setState({ progress }));
+        source.getBps().subscribeOnNext((Bps) => {
             this.setState({
                 subtitle: 'Average speed is ' + common.BpsToHuman(Bps)
             });
         });
-    }
-    componentWillUnmount() {
     }
     _cancel() {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
@@ -49,6 +46,6 @@ class ReceiveComponent extends React.Component {
     }
 }
 
-ReceiveComponent.defaultProps = { progress: '0', subtitle: 'Average speed is estimating' };
+TransferComponent.defaultProps = { progress: '0', subtitle: 'Average speed is estimating' };
 
-module.exports = ReceiveComponent;
+module.exports = TransferComponent;
