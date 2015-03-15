@@ -13,22 +13,22 @@ class FileStore extends Store {
 
         dispatcher.subscribeOnNext(function(action) {
             if (action.type === actions.FILE_SEND) {
-                this.onFileSend_(action.file);
+                this._onFileSend(action.file);
             } else if (action.type === actions.PIN_VALID) {
-                this.onValidPin_(action.pin);
+                this._onValidPin(action.pin);
             } else if (action.type === actions.FILE_TRANSFER_CANCEL) {
-                this.cancel_();
+                this._cancel();
             }
         }, this);
     }
     getDefaultState() {
         return { state: 'PENDING' };
     }
-    onError_() {
+    _onError() {
         this.replaceState({ state: 'ERROR' });
         dispatcher.onNext({ type: actions.FILE_ERROR});
     }
-    onValidPin_(pin) {
+    _onValidPin(pin) {
         var receiver = new FileReceiver(pin);
 
         this.replaceState({
@@ -39,16 +39,18 @@ class FileStore extends Store {
         this.serialDisposable_.setDisposable(new Rx.CompositeDisposable(
             // pick first message to check whether PIN is valid
             receiver.getProgress().first().subscribe(function() {
+                console.log(1);
                 dispatcher.onNext({ type: actions.FILE_RECEIVE});
             }, function() {
+                console.log(2);
                 dispatcher.onNext({ type: actions.PIN_INVALID });
             }),
             // don't switch to ERROR state, of first message errored.
             // This case is covered by previous line
-            receiver.getProgress().skip(1).subscribeOnError(this.onError_, this)
+            receiver.getProgress().skip(1).subscribeOnError(this._onError, this)
         ));
     }
-    cancel_() {
+    _cancel() {
         var state = this.getState(),
             transferer = state.sender || state.receiver;
 
@@ -58,7 +60,7 @@ class FileStore extends Store {
 
         this.replaceState({state: 'PENDING'});
     }
-    onFileSend_(file) {
+    _onFileSend(file) {
         var sender = new FileSender(file);
 
         this.replaceState({
@@ -67,7 +69,7 @@ class FileStore extends Store {
         });
 
         this.serialDisposable_.setDisposable(
-            sender.getProgress().subscribeOnError(this.onError_, this));
+            sender.getProgress().subscribeOnError(this._onError, this));
     }
 }
 

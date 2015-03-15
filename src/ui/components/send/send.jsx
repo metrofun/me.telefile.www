@@ -11,38 +11,31 @@ var React = require('react'),
 
 module.exports = class extends React.Component {
     componentWillMount() {
-        var self = this;
+        this.setState({ timeleft: MAX_TIME, title: '----' });
 
-        this.setState({
-            timeleft: MAX_TIME,
-            title: '----'
-        });
+        fileStore.getState().sender.getPin().then((pin) => this.setState({
+            title: pin
+        }));
 
-        fileStore.getState().sender.getPin().then(function(pin) {
-            self.setState({
-                title: pin
-            });
-        });
-
-        this.intervalId_ = setInterval(function() {
-            if (self.state.timeleft) {
-                self.setState({timeleft: self.state.timeleft - 1});
+        this.intervalId_ = setInterval(() => {
+            if (this.state.timeleft) {
+                this.setState({timeleft: this.state.timeleft - 1});
             } else {
                 dispatcher.onNext({ type: actions.FILE_SEND_TIMEOUT });
-                clearInterval(self.intervalId_);
+                clearInterval(this.intervalId_);
             }
         }, 1000);
     }
     componentWillUnmount() {
         clearInterval(this.intervalId_);
     }
-    pad_(value) {
+    _pad(value) {
         return value < 10 ? '0' + value:value;
     }
-    secondsToTimeLabel_(seconds) {
-        return this.pad_(Math.floor(seconds / 60) % 60) + ':' + this.pad_(seconds % 60);
+    _secondsToTimeLabel(seconds) {
+        return this._pad(Math.floor(seconds / 60) % 60) + ':' + this._pad(seconds % 60);
     }
-    onCacel_() {
+    _cancel() {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
     render() {
@@ -54,14 +47,13 @@ module.exports = class extends React.Component {
                         progress={1 - this.state.timeleft / MAX_TIME}
                         title={this.state.title}
                         subtitle="copy above pin on another device"
-                        footer={this.secondsToTimeLabel_(this.state.timeleft)}
+                        footer={this._secondsToTimeLabel(this.state.timeleft)}
                     />
                     <Desktop />
                 </div>
                 <div className="page__controls">
-                    <Button onClick={this.onCacel_}>Cancel</Button>
+                    <Button onClick={this._cancel}>Cancel</Button>
                 </div>
         </div>;
-
     }
 };

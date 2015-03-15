@@ -2,6 +2,7 @@ var React = require('react'),
     routerStore = require('../../stores/router.js'),
     Home = require('../home/home.jsx'),
     Send = require('../send/send.jsx'),
+    Receive = require('../receive/receive.jsx'),
     ErrorComponent = require('../error/error.jsx'),
     Header = require('../header/header.jsx');
 
@@ -29,6 +30,9 @@ class Page extends React.Component {
         switch (this.state.pathname) {
             case '/send':
                 return <Send />;
+            case '/receive':
+                console.log('receive');
+                return <Receive />;
             case '/error':
                 return <ErrorComponent />;
             default :
