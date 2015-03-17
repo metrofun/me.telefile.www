@@ -51,9 +51,9 @@ module.exports = class extends React.Component {
     }
     render() {
         if (this.state.mode === WAIT_MODE) {
-            return <div className="page__content send content">
-                <div className="page__title">Waiting for receiver</div>
-                <div className="page__main">
+            return <div className="layout">
+                <div className="layout__title">Waiting for receiver</div>
+                <div className="layout__main">
                     <Mobile />
                     <Process
                         progress={1 - this.state.timeleft / MAX_WAITING_TIME}
@@ -63,7 +63,7 @@ module.exports = class extends React.Component {
                     />
                     <Desktop />
                 </div>
-                <div className="page__controls">
+                <div className="layout__controls">
                     <Button onClick={this._cancel}>Cancel</Button>
                 </div>
             </div>;
