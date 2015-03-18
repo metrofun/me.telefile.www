@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="48px" height="62px" viewBox="0 0 48 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>file 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-412.000000, -2271.000000)">
+            <g id="completed" transform="translate(0.000000, 1920.000000)" sketch:type="MSShapeGroup">
+                <g id="file-list" transform="translate(410.000000, 271.000000)">
+                    <g id="downloaded-file-2" transform="translate(2.000000, 79.454545)">
+                        <g id="file-3" transform="translate(0.355140, 1.000000)">
+                            <path d="M32.1280056,0.137980596 L2.99039262,0.137980596 C1.33747379,0.137980596 0,1.4819657 0,3.13985535 L0,58.0890343 C0,59.7467832 1.33884438,61.0909091 2.99039262,61.0909091 L44.2414094,61.0909091 C45.8943282,61.0909091 47.231802,59.746924 47.231802,58.0890343 L47.231802,12.8115706 L32.1280056,0.137980596 Z" id="Rectangle-26" fill="#0291FF"></path>
+                            <path d="M32.1280056,0.137980596 L31.9509249,0.137980596 L31.9509249,9.88192853 C31.9509249,11.5295477 33.2909324,12.8826838 34.9439154,12.8826838 L47.231802,12.8826838 L47.231802,12.8826838 L47.231802,12.8115706 L32.1280056,0.137980596 Z" id="Rectangle-25" opacity="0.75" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

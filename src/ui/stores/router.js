@@ -10,6 +10,8 @@ class Router extends Store {
             switch (action.type) {
                 case actions.FILE_SEND:
                     return this.setState({ pathname: '/send' });
+                case actions.FILE_COMPLETED:
+                    return this.setState({ pathname: '/completed' });
                 case actions.FILE_RECEIVE:
                     return this.setState({ pathname: '/receive' });
                 case actions.FILE_ERROR:
@@ -23,7 +25,7 @@ class Router extends Store {
     }
     getDefaultState() {
         return {
-            pathname: '/'
+            pathname: '/completed'
             // pathname: '/error'
         };
     }

@@ -2,6 +2,7 @@ var React = require('react'),
     routerStore = require('../../stores/router.js'),
     Home = require('../home/home.jsx'),
     Send = require('../send/send.jsx'),
+    Completed = require('../completed/completed.jsx'),
     fileStore = require('../../stores/file.js'),
     Transfer = require('../transfer/transfer.jsx'),
     ErrorComponent = require('../error/error.jsx'),
@@ -33,6 +34,8 @@ class Page extends React.Component {
                 return <Send />;
             case '/receive':
                 return <Transfer source={fileStore.getState().receiver}/>;
+            case '/completed':
+                return <Completed />;
             case '/error':
                 return <ErrorComponent />;
             default :

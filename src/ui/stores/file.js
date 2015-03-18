@@ -39,11 +39,11 @@ class FileStore extends Store {
         this.serialDisposable_.setDisposable(new Rx.CompositeDisposable(
             // pick first message to check whether PIN is valid
             receiver.getProgress().first().subscribe(function() {
-                console.log(1);
                 dispatcher.onNext({ type: actions.FILE_RECEIVE});
             }, function() {
-                console.log(2);
                 dispatcher.onNext({ type: actions.PIN_INVALID });
+            }, function() {
+                dispatcher.onNext({ type: actions.FILE_COMPLETED});
             }),
             // don't switch to ERROR state, of first message errored.
             // This case is covered by previous line
@@ -68,8 +68,11 @@ class FileStore extends Store {
             sender: sender
         });
 
-        this.serialDisposable_.setDisposable(
-            sender.getProgress().subscribeOnError(this._onError, this));
+        this.serialDisposable_.setDisposable(sender.getProgress().subscribe(
+            null,
+            () => this._onError,
+            () => dispatcher.onNext({ type: actions.FILE_COMPLETED})
+        ));
     }
 }
 

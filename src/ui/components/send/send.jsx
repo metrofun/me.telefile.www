@@ -23,7 +23,7 @@ module.exports = class extends React.Component {
             timeleft: MAX_WAITING_TIME,
             title: '----'
         });
-        sender.getPin().then((pin) => this.setState({ title: pin }));
+        sender.getPin().then((title) => this.setState({ title }));
 
         sender.getProgress().first().subscribeOnNext(() => {
             this.setState({ mode: SEND_MODE });

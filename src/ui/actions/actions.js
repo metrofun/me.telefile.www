@@ -6,6 +6,7 @@ module.exports = keyMirror({
     FILE_RECEIVE: null,
     FILE_TRANSFER_CANCEL: null,
     FILE_ERROR: null,
+    FILE_COMPLETED: null,
     PIN_CHANGED: null,
     PIN_INVALID: null,
     PIN_VALID: null,
