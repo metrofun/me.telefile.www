@@ -25,8 +25,9 @@ class Router extends Store {
     }
     getDefaultState() {
         return {
-            pathname: '/completed'
+            // pathname: '/completed'
             // pathname: '/error'
+            pathname: '/'
         };
     }
 }

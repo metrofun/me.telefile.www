@@ -6,14 +6,28 @@ var React = require('react'),
     actions = require('../../actions/actions.js');
 
 class Completed extends React.Component {
-    componentWillMount() {
-    }
-    componentWillUnmount() {
-    }
     _cancel() {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
+    _formatSize(bytes) {
+        if(bytes == 0) return '0 Byte';
+        var k = 1000;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(2) + ' ' + sizes[i];
+    }
     render() {
+        var tokens = this.props.meta.name.split('.'),
+            filename, extension;
+
+        if (tokens.length > 1) {
+            extension = tokens.pop().substr(0, 3);
+            filename = tokens.join('');
+        } else {
+            extension = '';
+            filename = this.props.meta.name;
+        }
+
         return <div className="layout completed">
             <div className="layout__title">Transfer completed!</div>
             <div className="layout__main">
@@ -21,11 +35,16 @@ class Completed extends React.Component {
                 <div className="file-list">
                     <div className="file-list__item">
                         <div className="file-list__icon">
-                            <span className="file-list__icon-text">PDF</span>
+                            <span className="file-list__icon-text">{extension}</span>
                         </div>
-                        <div className="file-list__title">Jeff Morrison JavaScript Unit Testing with Jest JSConf2014</div>
-                        <div className="file-list__subtitle">392.2MB</div>
-                        <div className="file-list__action"></div>
+                        <div className="file-list__title">{filename}</div>
+                        <div className="file-list__subtitle">
+                            {this._formatSize(this.props.blob.size)}
+                        </div>
+                        <a className="file-list__action"
+                            download={this.props.meta.name}
+                            href={window.URL.createObjectURL(this.props.blob)}>
+                        </a>
                     </div>
                 </div>
                 <Desktop />

@@ -68,10 +68,11 @@ class FileStore extends Store {
             sender: sender
         });
 
-        this.serialDisposable_.setDisposable(sender.getProgress().subscribe(
-            null,
-            () => this._onError,
-            () => dispatcher.onNext({ type: actions.FILE_COMPLETED})
+        this.serialDisposable_.setDisposable(new Rx.CompositeDisposable(
+            sender.getProgress().subscribeOnError(() => this._onError),
+            sender.getProgress().subscribeOnCompleted(() => dispatcher.onNext({
+                type: actions.FILE_COMPLETED
+            }))
         ));
     }
 }

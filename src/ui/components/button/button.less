@@ -1,4 +1,4 @@
-.ripple {
+.ripple(@scale: 10) {
     &:before {
         content: '';
         display: block;
@@ -13,9 +13,9 @@
         margin: auto;
         background-color: rgba(255,255,255,0.2);
         pointer-events: none;
-        transform: scale(10);
+        transform: scale(@scale);
         opacity: 0;
-        transition: all 500ms linear;
+        transition: all (@scale / 10 * 500ms) linear;
     }
 
     &:active:before {
@@ -57,7 +57,7 @@
         text-shadow: @shadowZ1;
         text-align: center;
         padding: 1rem 0;
-        .ripple;
+        .ripple();
 
         @media screen and (orientation:landscape) {
             display: block;
@@ -82,7 +82,7 @@
         }
 
         .button__icon {
-            .ripple;
+            .ripple();
             background-clip: content-box;
             border: 0.5rem solid transparent;
             background-image: data-uri('components/button/camera.svg');

@@ -13,16 +13,26 @@ class Page extends React.Component {
         super();
 
         this.stars_ = <div className="page__stars">
-            {Array.apply([], {length: 10}).map(function(value, i) {
-                return <div className={'page__star page__star_type_' + i} />;
-            })}
+            {Array.apply([], {length: 10}).map((value, i) =>
+                <div className={'page__star page__star_type_' + i} />)}
         </div>;
     }
     componentWillMount() {
         this.setState(routerStore.getState());
 
         this.routerSubscription_ = routerStore.subscribeOnNext(function(state) {
-            this.setState(state);
+            var source;
+
+            if (state.pathname === '/completed') {
+                source = fileStore.getState().receiver || fileStore.getState().sender;
+                Promise.all([source.getBlob(), source.getMeta()]).then(values => this.setState({
+                    blob: values[0],
+                    meta: values[1],
+                    pathname: state.pathname
+                }));
+            } else {
+                this.setState(state);
+            }
         }, this);
     }
     componentWillUnmount() {
@@ -35,7 +45,7 @@ class Page extends React.Component {
             case '/receive':
                 return <Transfer source={fileStore.getState().receiver}/>;
             case '/completed':
-                return <Completed />;
+                return <Completed blob={this.state.blob} meta={this.state.meta}/>;
             case '/error':
                 return <ErrorComponent />;
             default :

@@ -7,30 +7,32 @@
         height: 5rem;
         padding: 0.25rem 2rem;
         box-sizing: border-box;
-        margin: 0 5rem;
+        margin-right: 5rem;
+        margin-left: 4rem;
         position: relative;
     }
 
     &__icon {
         background-image: data-uri('components/completed/file.svg');
         height: 5rem;
-        width: 5rem;
+        width: 4rem;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
         position: absolute;
-        left: -5rem;
+        left: -4rem;
         top: 0;
         display: flex;
         justify-content: center;
         align-items: center;
 
         &-text {
+            font-family: Helvetica, Arial, sans-serif;
             display: block;
             color: @white;
             text-transform: uppercase;
-            font-size: 1.9rem;
-            opacity: 0.5;
+            font-size: 1.5rem;
+            opacity: 0.75;
         }
     }
 
@@ -46,7 +48,7 @@
 
     &__subtitle {
         position: absolute;
-        bottom: 0.25rem;
+        bottom: 0;
         left: 2rem;
         font-size: 1.6rem;
         line-height: 1.6rem;
@@ -54,6 +56,9 @@
     }
 
     &__action {
+        user-select: none;
+        .ripple(5);
+        cursor: pointer;
         background-image: data-uri('components/completed/download.svg');
         height: 5rem;
         width: 5rem;
