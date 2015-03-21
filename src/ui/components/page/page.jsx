@@ -23,16 +23,16 @@ class Page extends React.Component {
         this.routerSubscription_ = routerStore.subscribeOnNext(function(state) {
             var source;
 
-            if (state.pathname === '/completed') {
-                source = fileStore.getState().receiver || fileStore.getState().sender;
-                Promise.all([source.getBlob(), source.getMeta()]).then(values => this.setState({
-                    blob: values[0],
-                    meta: values[1],
-                    pathname: state.pathname
-                }));
-            } else {
+            // if (state.pathname === '/completed') {
+                // source = fileStore.getState().receiver || fileStore.getState().sender;
+                // Promise.all([source.getBlob(), source.getMeta()]).then(values => this.setState({
+                    // blob: values[0],
+                    // meta: values[1],
+                    // pathname: state.pathname
+                // }));
+            // } else {
                 this.setState(state);
-            }
+            // }
         }, this);
     }
     componentWillUnmount() {
@@ -53,8 +53,14 @@ class Page extends React.Component {
         }
     }
     render() {
+        var className = 'page';
+
+        if (this.state.pathname === '/completed') {
+            className += ' page_type_completed';
+        }
+
         return (
-            <div className="page">
+            <div className={className}>
                 <div className="page__shadow"></div>
                 {this.stars_}
                 <Header />

@@ -1,15 +1,51 @@
+.completed {
+    &__caption {
+
+        @media screen and (orientation:portrait) {
+            font-size: 1.6rem;
+            line-height: 1.6rem;
+            text-shadow: @shadowZ1;
+            color: @yellow;
+            text-transform: uppercase;
+
+            position: fixed;
+            top: 3.6vh;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        @media screen and (orientation:landscape) {
+            display: none;
+        }
+    }
+}
 .file-list {
-    max-width: 40vw;
     margin: auto;
+    display: inline-block;
+
+    @media screen and (orientation:portrait) {
+        margin: 5vw;
+    }
+    @media screen and (orientation:landscape) {
+        max-width: 40vw;
+        min-width: 25vw;
+    }
 
     &__item {
         text-align: left;
         height: 5rem;
         padding: 0.25rem 2rem;
         box-sizing: border-box;
-        margin-right: 5rem;
         margin-left: 4rem;
         position: relative;
+
+        @media screen and (orientation:portrait) {
+            margin-right: 2rem;
+        }
+        @media screen and (orientation:landscape) {
+            margin-right: 5rem;
+        }
     }
 
     &__icon {
@@ -41,9 +77,11 @@
         line-height: 2.3rem;
         color: @white;
         text-shadow: @shadowZ1;
+        text-decoration: none;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        cursor: pointer;
     }
 
     &__subtitle {
@@ -59,14 +97,24 @@
         user-select: none;
         .ripple(5);
         cursor: pointer;
-        background-image: data-uri('components/completed/download.svg');
         height: 5rem;
-        width: 5rem;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
         position: absolute;
-        right: -5rem;
         top: 0;
+        text-shadow: @shadowZ1;
+
+        @media screen and (orientation:landscape) {
+            background-image: data-uri('components/completed/download.svg');
+            width: 5rem;
+            right: -5rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            background-image: data-uri('components/completed/arrow.svg');
+            width: 2rem;
+            right: -2rem;
+        }
     }
 }

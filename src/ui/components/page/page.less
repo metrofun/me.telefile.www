@@ -5,6 +5,24 @@
     -webkit-tap-highlight-color: transparent;
     display: flex;
 
+
+    &_type_completed {
+        @media screen and (orientation:portrait) {
+            .brand {
+                visibility: hidden;
+            }
+
+            .header {
+                padding-bottom: 3.6vh;
+            }
+
+            .page__shadow {
+                height: calc(~'7.2vh + 1.6rem');
+                background-size: 100% 31vh;
+            }
+        }
+    }
+
     &__title {
         font-size: 2.8rem;
         letter-spacing: 1em / 100;

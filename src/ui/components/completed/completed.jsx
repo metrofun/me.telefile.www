@@ -10,7 +10,9 @@ class Completed extends React.Component {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
     _formatSize(bytes) {
-        if(bytes == 0) return '0 Byte';
+        if(bytes === 0) {
+            return '0 Byte';
+        }
         var k = 1000;
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         var i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -30,6 +32,7 @@ class Completed extends React.Component {
 
         return <div className="layout completed">
             <div className="layout__title">Transfer completed!</div>
+            <div className="completed__caption">Completed</div>
             <div className="layout__main">
                 <Mobile />
                 <div className="file-list">
@@ -37,7 +40,11 @@ class Completed extends React.Component {
                         <div className="file-list__icon">
                             <span className="file-list__icon-text">{extension}</span>
                         </div>
-                        <div className="file-list__title">{filename}</div>
+                        <a className="file-list__title"
+                            download={this.props.meta.name}
+                            href={window.URL.createObjectURL(this.props.blob)}>
+                            {filename}
+                        </a>
                         <div className="file-list__subtitle">
                             {this._formatSize(this.props.blob.size)}
                         </div>
@@ -55,5 +62,14 @@ class Completed extends React.Component {
         </div>;
     }
 }
+
+Completed.defaultProps = {
+    meta: {
+        name: 'test name'
+    },
+    blob: new Blob([123, 123, 123])
+};
+
+
 
 module.exports = Completed;

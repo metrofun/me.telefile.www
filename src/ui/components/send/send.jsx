@@ -1,6 +1,5 @@
 var React = require('react'),
     dispatcher = require('../../dispatcher/dispatcher.js'),
-    common = require('../common/common.js'),
     actions = require('../../actions/actions.js'),
     fileStore = require('../../stores/file.js'),
     Process = require('../process/process.jsx'),
@@ -35,6 +34,16 @@ module.exports = class extends React.Component {
     componentWillUnmount() {
         this._clearWaitingTick();
     }
+    _pad(value) {
+        return value < 10 ? '0' + value:value;
+    }
+    /**
+     * Format seconds to "mm:ss"
+     * @param {number} seconds
+     */
+    _formatTimeleft(seconds) {
+        return this._pad(Math.floor(seconds / 60) % 60) + ':' + this._pad(seconds % 60);
+    }
     _waitingTick() {
         if (this.state.timeleft) {
             this.setState({timeleft: this.state.timeleft - 1});
@@ -59,7 +68,7 @@ module.exports = class extends React.Component {
                         progress={1 - this.state.timeleft / MAX_WAITING_TIME}
                         title={this.state.title}
                         subtitle="copy above pin on another device"
-                        footer={common.formatTimeleft(this.state.timeleft)}
+                        footer={this._formatTimeleft(this.state.timeleft)}
                     />
                     <Desktop />
                 </div>
