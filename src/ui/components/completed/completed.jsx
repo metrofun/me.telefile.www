@@ -56,7 +56,7 @@ class Completed extends React.Component {
                 </div>
                 <Desktop />
             </div>
-            <div className="layout__controls">
+            <div className="controls">
                 <Button onClick={this._cancel}>Back</Button>
             </div>
         </div>;

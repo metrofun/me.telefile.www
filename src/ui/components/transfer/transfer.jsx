@@ -58,7 +58,7 @@ class TransferComponent extends React.Component {
                 />
                 <Desktop />
             </div>
-            <div className="layout__controls">
+            <div className="controls">
                 <Button onClick={this._cancel}>Cancel</Button>
             </div>
         </div>;

@@ -28,7 +28,8 @@ class Router extends Store {
         return {
             // pathname: '/completed'
             // pathname: '/error'
-            pathname: '/'
+            pathname: '/not-supported'
+            // pathname: '/'
         };
     }
 }

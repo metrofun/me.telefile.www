@@ -6,7 +6,7 @@ var React = require('react'),
     Desktop = require('../desktop/desktop.jsx');
 
 class ErrorComponent extends React.Component {
-    reset_() {
+    _reset() {
         dispatcher.onNext({ type: actions.RESET });
     }
     render() {
@@ -20,8 +20,8 @@ class ErrorComponent extends React.Component {
                 </div>
                 <Desktop />
             </div>
-            <div className="layout__controls">
-                <Button onClick={this.reset_}>Try again</Button>
+            <div className="controls">
+                <Button onClick={this._reset}>Try again</Button>
             </div>
         </div>;
     }

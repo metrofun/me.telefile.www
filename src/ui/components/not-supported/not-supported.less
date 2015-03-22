@@ -1,0 +1,41 @@
+.not-supported {
+    padding-top: 10rem;
+
+    &__logo {
+        width: 15rem;
+        height: 15rem;
+        background-image: data-uri('components/page/logo.svg');
+        background-size: 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: white;
+        border-radius: 100%;
+        margin: auto;
+    }
+
+    &__message {
+        text-shadow: @shadowZ1;
+        margin: 3rem 0;
+    }
+
+    @media screen and (orientation:landscape) {
+        &__message {
+            font-size: 3rem;
+            line-height: 4rem;
+
+            p {
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        &__mobile-only {
+            display: none;
+        }
+    }
+    @media screen and (orientation:portrait) {
+        &__desktop-only {
+            display: none;
+        }
+    }
+}

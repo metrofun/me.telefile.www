@@ -5,6 +5,7 @@ var React = require('react'),
     Completed = require('../completed/completed.jsx'),
     fileStore = require('../../stores/file.js'),
     Transfer = require('../transfer/transfer.jsx'),
+    NotSupported = require('../not-supported/not-supported.jsx'),
     ErrorComponent = require('../error/error.jsx'),
     Header = require('../header/header.jsx');
 
@@ -48,16 +49,16 @@ class Page extends React.Component {
                 return <Completed blob={this.state.blob} meta={this.state.meta}/>;
             case '/error':
                 return <ErrorComponent />;
+            case '/not-supported':
+                return <NotSupported />;
             default :
                 return <Home />;
         }
     }
     render() {
-        var className = 'page';
-
-        if (this.state.pathname === '/completed') {
-            className += ' page_type_completed';
-        }
+        var className = 'page page_type_' +
+            // skip slash
+            this.state.pathname.substr(1);
 
         return (
             <div className={className}>

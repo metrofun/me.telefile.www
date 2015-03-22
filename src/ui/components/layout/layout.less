@@ -39,41 +39,6 @@
         }
     }
 
-    &__controls {
-        @color: fade(black, 20);
-        @rowHeight: 57vw / 3;
-
-        @media screen and (orientation:landscape) {
-            left: 0;
-            right: 0;
-            margin: auto;
-            bottom: -10vh;
-            display: flex;
-            justify-content: center;
-        }
-
-        @media screen and (orientation:portrait) {
-            width: 100%;
-
-            .button {
-                height: @rowHeight;
-                line-height: @rowHeight;
-
-                &:last-child {
-                    border-bottom: @rowHeight  solid @color;
-                }
-            }
-
-            .button:first-child {
-                background-color: @color;
-            }
-
-            .button:nth-child(2) {
-                background-color: overlay(@color, @color);
-            }
-        }
-    }
-
     .desktop {
         position: absolute;
         top: 0;
