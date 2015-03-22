@@ -13,7 +13,7 @@ class Home extends React.Component {
             animated: this.props.animated
         };
     }
-    componentWillMount() {
+    componentDidMount() {
         setTimeout(this.setState.bind(this, {
             animated: false
         }), 700);

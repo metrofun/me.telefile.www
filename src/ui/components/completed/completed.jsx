@@ -63,13 +63,11 @@ class Completed extends React.Component {
     }
 }
 
-Completed.defaultProps = {
-    meta: {
-        name: 'test name'
-    },
-    blob: new Blob([123, 123, 123])
-};
-
-
+// Completed.defaultProps = {
+    // meta: {
+        // name: 'test name'
+    // },
+    // blob: new Blob([123, 123, 123])
+// };
 
 module.exports = Completed;

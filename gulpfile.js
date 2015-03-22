@@ -100,12 +100,14 @@ gulp.task('renderComponentToString', function(){
 
 gulp.task('development', function () {
     del.sync(SRC_DIR + '/env/current.js');
+
     return gulp.src(SRC_DIR + '/env/development.js')
         .pipe(symlink(SRC_DIR + '/env/current.js', {force: true}));
 });
 
 gulp.task('production', function () {
     del.sync(SRC_DIR + '/env/current.js');
+
     return gulp.src(SRC_DIR + '/env/production.js')
         .pipe(symlink(SRC_DIR + '/env/current.js', {force: true}));
 });
@@ -137,8 +139,7 @@ gulp.task('publish', [
 });
 
 gulp.task('default', [
-    'development',
-    // 'renderComponentToString',
+    'renderComponentToString',
     'less',
     'browserify',
     'static-server',

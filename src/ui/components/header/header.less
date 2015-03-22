@@ -59,6 +59,7 @@
     margin: 0;
     position: absolute;
     left: 50%;
+    display: block;
 
     @media screen and (orientation:portrait) {
         display: none;
@@ -83,8 +84,8 @@
             content: '';
             position: absolute;
             top: -4rem;
-            left: 0;
-            right: 0;
+            left: 0rem;
+            right: 0rem;
             height: 1rem;
             background-color: @blue;
             transition: top @duration @ease-in-out;
@@ -95,7 +96,7 @@
             cursor: pointer;
 
             &:before {
-                top: -3rem;
+                top: -3.1rem;
             }
         }
 
@@ -108,7 +109,7 @@
 
             &:before {
                 background-color: @yellow;
-                top: -3rem;
+                top: -3.1rem;
             }
         }
     }
