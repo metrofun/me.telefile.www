@@ -24,8 +24,14 @@
     }
 
     &_type_not-supported {
-        .header, .footer {
+        .header {
             display: none;
+        }
+
+        @media screen and (orientation:landscape) {
+            .footer {
+                display: none;
+            }
         }
     }
 

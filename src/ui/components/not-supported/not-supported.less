@@ -1,9 +1,5 @@
 .not-supported {
-    padding-top: 10rem;
-
     &__logo {
-        width: 15rem;
-        height: 15rem;
         background-image: data-uri('components/page/logo.svg');
         background-size: 70%;
         background-position: center;
@@ -11,30 +7,48 @@
         background-color: white;
         border-radius: 100%;
         margin: auto;
+
+        @media screen and (orientation:landscape) {
+            width: 15rem;
+            height: 15rem;
+            margin-top: 10rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            width: 12rem;
+            height: 12rem;
+        }
     }
 
     &__message {
         text-shadow: @shadowZ1;
-        margin: 3rem 0;
-    }
 
-    @media screen and (orientation:landscape) {
-        &__message {
+        @media screen and (orientation:landscape) {
+            margin: 3rem 0;
             font-size: 3rem;
             line-height: 4rem;
-
-            p {
-                margin: 0;
-                padding: 0;
-            }
         }
 
-        &__mobile-only {
+        @media screen and (orientation:portrait) {
+            margin: 0 3rem 20rem;
+            font-size: 2.3rem;
+            line-height: 3.2rem;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    &__mobile-only {
+        @media screen and (orientation:landscape) {
             display: none;
         }
     }
-    @media screen and (orientation:portrait) {
-        &__desktop-only {
+
+    &__desktop-only {
+        @media screen and (orientation:portrait) {
             display: none;
         }
     }
