@@ -16,7 +16,7 @@ class Completed extends React.Component {
         var k = 1000;
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         var i = Math.floor(Math.log(bytes) / Math.log(k));
-        return (bytes / Math.pow(k, i)).toPrecision(2) + ' ' + sizes[i];
+        return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
     }
     render() {
         var tokens = this.props.meta.name.split('.'),

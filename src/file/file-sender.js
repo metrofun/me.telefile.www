@@ -22,9 +22,7 @@ FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
         return this.getTransport().getWriteBus();
     },
     getBlob: function () {
-        return new Promise(function (resolve) {
-            resolve(this.file);
-        });
+        return new Promise((resolve) => resolve(this.file));
     },
     _send: function () {
         var self = this,

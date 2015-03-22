@@ -8,14 +8,14 @@ var React = require('react'),
 class Button extends React.Component {
     componentWillMount() {
         this.setState(pinStore.getState());
-        this.onKeyDown_ = this.onKeyDown_.bind(this);
+        this._onKeyChange = this._onKeyChange.bind(this);
         this.reset_ = this.reset_.bind(this);
 
         serialDisposable.setDisposable(pinStore.subscribeOnNext(function(state) {
             this.setState(state);
         }, this));
     }
-    onKeyDown_(e) {
+    _onKeyChange(e) {
         if (e.keyCode === 27) {
             this.reset_();
         } else if (this.state.pin !== e.target.value) {
@@ -37,8 +37,8 @@ class Button extends React.Component {
             <input className="button__input"
                 ref="input"
                 onBlur={this.reset_}
-                onKeyDown={this.onKeyDown_}
-                onChange={this.onKeyDown_}
+                onKeyDown={this._onKeyChange}
+                onChange={this._onKeyChange}
                 value={this.state.pin}
                 type="text" placeholder="INPUT PIN"/>
             <span className="button__label">RECEIVE</span>
