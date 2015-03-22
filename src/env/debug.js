@@ -1,12 +1,3 @@
-var RSVP = require('rsvp'),
-    Rx = require('rx');
-
-RSVP.on('error', function (e) {
-    console.error(e);
-});
-
-Rx.config.Promise = RSVP.Promise.bind(RSVP);
-
 require('rx').Observable.prototype.log = function (ns) {
     ns = ns || '';
     return this.do(function (data) {

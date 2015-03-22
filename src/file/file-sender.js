@@ -1,5 +1,4 @@
 var Rx = require('rx'),
-    RSVP = require('rsvp'),
     _ = require('underscore'),
     FileTransfer = require('./file-transfer.js');
 /**
@@ -23,7 +22,7 @@ FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
         return this.getTransport().getWriteBus();
     },
     getBlob: function () {
-        return new RSVP.Promise(function (resolve) {
+        return new Promise(function (resolve) {
             resolve(this.file);
         });
     },

@@ -128,7 +128,6 @@ gulp.task('test', function () {
 });
 
 gulp.task('publish', [
-    'production',
     'renderComponentToString',
     'less',
     'uglify'

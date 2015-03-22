@@ -52,7 +52,7 @@ ReactiveWebrtc.prototype = {
     /**
      * Returns current session pin
      *
-     * @returns {RSVP.Promise}
+     * @returns {Promise}
      */
     getPin: function () {
         return this._signaller.getPin();

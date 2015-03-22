@@ -1,5 +1,4 @@
-var RSVP = require('rsvp'),
-    SockJS,
+var SockJS,
     config = require('../env/current.js'),
     ReactiveTransport = require('./reactive-transport.js');
 
@@ -34,7 +33,7 @@ Signaller.prototype = {
     /**
      * Returns current session pin
      *
-     * @returns {RSVP.Promise}
+     * @returns {Promise}
      */
     getPin: function () {
         return this._pinPromise;
@@ -48,7 +47,7 @@ Signaller.prototype = {
     _initPin: function() {
         var self = this;
 
-        this._pinPromise = new RSVP.Promise(function (resolve, reject) {
+        this._pinPromise = new Promise(function (resolve, reject) {
             self._reactiveTransport.getReadStream().take(1).subscribe(function (message) {
                 resolve(message.pin);
             }, function (e) {

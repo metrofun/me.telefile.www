@@ -7,6 +7,7 @@ class Router extends Store {
         super();
 
         dispatcher.subscribeOnNext(function(action) {
+            console.log(action);
             switch (action.type) {
                 case actions.FILE_SEND:
                     return this.setState({ pathname: '/send' });

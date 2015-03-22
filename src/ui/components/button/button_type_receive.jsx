@@ -18,7 +18,7 @@ class Button extends React.Component {
     onKeyDown_(e) {
         if (e.keyCode === 27) {
             this.reset_();
-        } else {
+        } else if (this.state.pin !== e.target.value) {
             dispatcher.onNext({
                 type: actions.PIN_CHANGED,
                 pin: e.target.value

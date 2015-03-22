@@ -42,12 +42,13 @@ class FileStore extends Store {
                 dispatcher.onNext({ type: actions.FILE_RECEIVE});
             }, function() {
                 dispatcher.onNext({ type: actions.PIN_INVALID });
-            }, function() {
-                dispatcher.onNext({ type: actions.FILE_COMPLETED});
             }),
             // don't switch to ERROR state, of first message errored.
             // This case is covered by previous line
-            receiver.getProgress().skip(1).subscribeOnError(this._onError, this)
+            receiver.getProgress().skip(1).subscribeOnError(this._onError, this),
+            receiver.getProgress().subscribeOnCompleted(function() {
+                dispatcher.onNext({ type: actions.FILE_COMPLETED });
+            })
         ));
     }
     _cancel() {
