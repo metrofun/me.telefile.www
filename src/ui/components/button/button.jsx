@@ -2,11 +2,19 @@ var React = require('react');
 
 class Button extends React.Component {
     render() {
-        return <div className="button">
-            <label onClick={this.props.onClick} className="button__label">
-                {this.props.children}
-            </label>
-        </div>;
+        if (this.props.onClick) {
+            return <div className="button">
+                <span onClick={this.props.onClick} className="button__text">
+                    {this.props.children}
+                </span>
+            </div>;
+        } else {
+            return <div className="button">
+                <a href={this.props.href} className="button__text">
+                    {this.props.children}
+                </a>
+            </div>;
+        }
     }
 }
 

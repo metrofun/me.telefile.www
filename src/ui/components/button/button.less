@@ -51,13 +51,15 @@
         text-align: center;
     }
 
-    &__label {
+    &__text {
         cursor: pointer;
         text-transform: uppercase;
         font-style: normal;
         text-shadow: @shadowZ1;
         text-align: center;
         padding: 1rem 0;
+        text-decoration: none;
+        color: inherit;
         .ripple();
 
         @media screen and (orientation:landscape) {
@@ -146,7 +148,7 @@
                 color: @grey;
             }
         }
-        .button__input:focus + .button__label {
+        .button__input:focus + .button__text {
             opacity: 0;
         }
     }
