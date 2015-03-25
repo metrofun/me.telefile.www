@@ -218,4 +218,22 @@ ReactiveWebrtc.prototype = {
         }
     }
 };
+
+ReactiveWebrtc.isSupported = function() {
+    var domPrefixes  = ['', 'webkit', 'moz', 'o', 'ms'];
+
+    for (var i = 0, l = domPrefixes.length; i < l; i++) {
+        var PeerConnectionConstructor = window[domPrefixes[i] + 'RTCPeerConnection'];
+
+        if (PeerConnectionConstructor) {
+            var peerConnection = new PeerConnectionConstructor({
+                'iceServers': [{ 'url': 'stun:0' }]
+            });
+
+            return 'createDataChannel' in peerConnection;
+        }
+    }
+    return false;
+};
+
 module.exports = ReactiveWebrtc;
