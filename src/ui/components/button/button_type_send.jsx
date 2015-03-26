@@ -13,7 +13,7 @@ class Button extends React.Component {
     }
     render() {
         return <div className="button button_type_send">
-            <label className="button__label">
+            <label className="button__text">
                 SEND
                 <input onChange={this.onFileSelect_} className="button__input" type="file" />
             </label>

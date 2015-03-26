@@ -1,4 +1,11 @@
-.home {
+.home.layout {
+    width: auto;
+    text-align: left;
+
+    .layout__main {
+        margin: 0;
+    }
+
     .lead {
         @media screen and (orientation:portrait) {
             display: none;
@@ -38,6 +45,8 @@
         }
 
         @media screen and (orientation:portrait) {
+            //override style from layout
+            display: block;
             bottom: 0;
             left: calc(~'100% - 40vw');
         }
@@ -54,6 +63,8 @@
         }
 
         @media screen and (orientation:portrait) {
+            //override style from layout
+            display: block;
             bottom: 0;
             left: 0;
         }
@@ -73,6 +84,13 @@
             bottom: 0;
             left: 0;
             right: 0;
+        }
+    }
+
+    .controls {
+        @media screen and (orientation:landscape) {
+            display: flex;
+            justify-content: space-between;
         }
     }
 }

@@ -41,7 +41,7 @@ class Button extends React.Component {
                 onChange={this._onKeyChange}
                 value={this.state.pin}
                 type="text" placeholder="INPUT PIN"/>
-            <span className="button__label">RECEIVE</span>
+            <span className="button__text">RECEIVE</span>
         </div>;
     }
 }

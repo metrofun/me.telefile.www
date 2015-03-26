@@ -19,8 +19,8 @@ class Home extends React.Component {
         }), 700);
     }
     render() {
-        return <div className="page__content home">
-            <div className="page__main">
+        return <div className="layout home">
+            <div className="layout__main">
                 <div className="lead">
                     <div className="lead__text">no limits, no cloud</div>
                     <div className="lead__hero">Send a File<br />in Two Clicks</div>
@@ -30,7 +30,7 @@ class Home extends React.Component {
                 <Particles animated={this.state.animated} />
                 <Desktop />
             </div>
-            <div className="page__controls">
+            <div className="controls">
                 <ButtonTypeSend />
                 <ButtonTypeReceive />
             </div>
