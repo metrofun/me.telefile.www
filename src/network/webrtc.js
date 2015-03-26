@@ -1,20 +1,8 @@
 Error.stackTraceLimit = Infinity;
 var Signaller = require('./signaller.js'),
     ReactiveTransport = require('./reactive-transport.js'),
-    RTCPeerConnection,
-    RTCSessionDescription,
-    RTCIceCandidate,
     scheduler,
     Rx = require('rx');
-
-// window might be undefined
-try {
-    RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
-    RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-    RTCIceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
-} catch (e) {
-    console.log(e);
-}
 
 /**
  * Creates a new WebRTC session,
@@ -26,9 +14,13 @@ try {
  * @param {String|Number} [pin] When present, joins existing peer.
  */
 function ReactiveWebrtc(pin) {
+    this.RTCSessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
+    this.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    this.RTCIceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
+
     this._pin = pin;
     this._isOffering = !!pin;
-    this._pc = new RTCPeerConnection({
+    this._pc = new this.RTCPeerConnection({
         iceServers: require('./ice-servers.js')
     });
 
@@ -115,7 +107,7 @@ ReactiveWebrtc.prototype = {
             this._signaller.getReadStream().subscribe(function (data) {
                 if (data.sdp) {
                     self._pc.setRemoteDescription(
-                        new RTCSessionDescription(data.sdp),
+                        new this.RTCSessionDescription(data.sdp),
                         function () {
                             if (!self._isOffering) {
                                 self._pc.createAnswer(
@@ -129,7 +121,7 @@ ReactiveWebrtc.prototype = {
                     );
                 } else if (data.candidate) {
                     self._pc.addIceCandidate(
-                        new RTCIceCandidate(data.candidate),
+                        new this.RTCIceCandidate(data.candidate),
                         function () {},
                         self._onInternalError.bind(self)
                     );

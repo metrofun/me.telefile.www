@@ -1,4 +1,5 @@
 var Store = require('./store.js'),
+    Env = require('../../env/current.js'),
     ReactiveWebrtc = require('../../network/webrtc.js'),
     actions = require('../actions/actions.js'),
     dispatcher = require('../dispatcher/dispatcher.js');
@@ -7,7 +8,7 @@ class Router extends Store {
     constructor() {
         super();
 
-        if (ReactiveWebrtc.isSupported())  {
+        if (Env.IS_NODE || ReactiveWebrtc.isSupported())  {
             dispatcher.subscribeOnNext(function(action) {
                 switch (action.type) {
                     case actions.FILE_SEND:
