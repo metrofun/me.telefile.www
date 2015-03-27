@@ -8,10 +8,10 @@ class FileSender extends FileTransfer {
     constructor(file) {
         super();
 
+        this._CHUNK_SIZE = 16000;
+
         this.file = file;
         this._send();
-
-        this.CHUNK_SIZE = 16000;
     }
     /**
      * @override
@@ -27,8 +27,8 @@ class FileSender extends FileTransfer {
             signalSubject =  new Rx.Subject(),
             readChunk = Rx.Observable.fromCallback(this._readFileChunk, this);
 
-        signalSubject.scan(-self.CHUNK_SIZE, function (acc) {
-            return acc + self.CHUNK_SIZE;
+        signalSubject.scan(-self._CHUNK_SIZE, function (acc) {
+            return acc + self._CHUNK_SIZE;
         }).takeWhile(function (offset) {
             return offset < self.file.size;
         }).concatMap(function (offset) {
@@ -43,7 +43,7 @@ class FileSender extends FileTransfer {
         this.getFileStream().subscribe(signalSubject);
     }
     _readFileChunk(start, onload)  {
-        var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE),
+        var chunkBlob = this.file.slice(start, start + this._CHUNK_SIZE),
             reader = new FileReader();
 
         reader.onload = function () {

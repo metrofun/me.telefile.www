@@ -37,7 +37,7 @@
     "routes.js": "0.0.1",
     "rx": "^2.4.1",
     "sinon": "^1.10.3",
-    "sockjs-client": "git://github.com/sockjs/sockjs-client",
+    "sockjs-client": "^1.0.0-beta.12",
     "static-server": "~1.0.0",
     "vinyl": "^0.4.6",
     "vinyl-buffer": "^1.0.0",

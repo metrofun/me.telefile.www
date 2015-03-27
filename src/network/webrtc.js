@@ -50,10 +50,10 @@ ReactiveWebrtc.prototype = {
         return this._signaller.getPin();
     },
     getWriteBus: function () {
-        return this._writeBusSubject.log('getWriteBus');
+        return this._writeBusSubject;
     },
     getReadStream: function () {
-        return this._readStreamSubject.log('getReadStream');
+        return this._readStreamSubject;
     },
     _initWriteBus: function () {
         var pauser = new Rx.Subject(),
