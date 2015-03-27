@@ -12,9 +12,13 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     babelify = require("babelify"),
     reactify = require('reactify'),
+    watchify = require('watchify'),
     mocha = require('gulp-mocha'),
     livereload = require('gulp-livereload'),
     source = require('vinyl-source-stream'),
+    sourcemaps = require('gulp-sourcemaps'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     LessPluginAutoPrefix = require('less-plugin-autoprefix'),
     autoprefix = new LessPluginAutoPrefix({browsers: ["last 2 versions"]}),
 
@@ -42,28 +46,30 @@ gulp.task('less', function () {
         .pipe(livereload());
 });
 
-gulp.task('browserify', function () {
-    var bundler = browserify(SRC_DIR + '/ui/index.js');
+gulp.task('js', function () {
+    watchify.args.debug = true;
+    var bundler = watchify(browserify(watchify.args));
 
+    bundler.add(SRC_DIR + '/ui/index.js');
     bundler.transform(reactify).transform(babelify);
 
+    gulp.task('js-rebundle', rebundle);
+    bundler.on('update', rebundle); // on any dep update, runs the bundler
+    bundler.on('log', gutil.log); // output build logs to terminal
+
     function rebundle () {
-        return bundler.bundle({debug: true})
-            .on('error', function () {
-                this.emit('end');
-                gutil.log.apply(this, arguments);
-            })
+        return bundler.bundle()
+            // log errors if they happen
+            .on('error', gutil.log.bind(gutil, 'Browserify Error'))
             .pipe(source('index.js'))
+            // optional, remove if you don't want sourcemaps
+            .pipe(buffer())
+            .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+            .pipe(sourcemaps.write('./')) // writes .map file
+            //
             .pipe(gulp.dest(DEST_DIR))
             .pipe(livereload());
     }
-
-    gulp.task('browserify-rebundle', rebundle);
-
-    gulp.watch([
-        SRC_DIR + '/**/*.js',
-        SRC_DIR + '/**/*.jsx'
-    ], ['browserify-rebundle']);
 
     return rebundle();
 });
@@ -112,7 +118,7 @@ gulp.task('production', function () {
         .pipe(symlink(SRC_DIR + '/env/current.js', {force: true}));
 });
 
-gulp.task('uglify', ['browserify'], function () {
+gulp.task('uglify', ['js'], function () {
     return gulp.src(DEST_DIR + '/index.js')
         .pipe(uglify())
         .pipe(gulp.dest(DEST_DIR));
@@ -140,7 +146,7 @@ gulp.task('publish', [
 gulp.task('default', [
     'renderComponentToString',
     'less',
-    'browserify',
+    'js',
     'static-server',
     'watch'
 ]);

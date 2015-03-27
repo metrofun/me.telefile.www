@@ -11,9 +11,7 @@ class Button extends React.Component {
         this._onKeyChange = this._onKeyChange.bind(this);
         this.reset_ = this.reset_.bind(this);
 
-        serialDisposable.setDisposable(pinStore.subscribeOnNext(function(state) {
-            this.setState(state);
-        }, this));
+        serialDisposable.setDisposable(pinStore.subscribe((state) => this.setState(state)));
     }
     _onKeyChange(e) {
         if (e.keyCode === 27) {

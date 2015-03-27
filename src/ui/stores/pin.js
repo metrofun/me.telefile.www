@@ -14,7 +14,7 @@ class Pin extends Store {
             if (action.type === actions.PIN_CHANGED) {
                 if (pin.length <= PIN_LENGTH) {
                     isValid = this.isValid_(action.pin);
-                    this.setState({ pin, isValid });
+                    this.setState({pin, isValid});
 
                     if (isValid) {
                         dispatcher.onNext({ type: actions.PIN_VALID, pin});

@@ -1,30 +1,28 @@
 var Rx = require('rx'),
-    _ = require('underscore'),
     FileTransfer = require('./file-transfer.js');
-/**
- * @param {Blob} file
- */
-function FileSender(file) {
-    FileTransfer.call(this);
 
-    this.file = file;
-    this._send();
-}
-FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
-    constructor: FileSender,
+class FileSender extends FileTransfer {
+    /**
+     * @param {Blob} file
+     */
+    constructor(file) {
+        super();
 
-    CHUNK_SIZE: 16000,
+        this.file = file;
+        this._send();
 
+        this.CHUNK_SIZE = 16000;
+    }
     /**
      * @override
      */
-    getFileStream: function () {
+    getFileStream() {
         return this.getTransport().getWriteBus();
-    },
-    getBlob: function () {
+    }
+    getBlob() {
         return new Promise((resolve) => resolve(this.file));
-    },
-    _send: function () {
+    }
+    _send() {
         var self = this,
             signalSubject =  new Rx.Subject(),
             readChunk = Rx.Observable.fromCallback(this._readFileChunk, this);
@@ -43,8 +41,8 @@ FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
         }).subscribe(this.getFileStream());
 
         this.getFileStream().subscribe(signalSubject);
-    },
-    _readFileChunk: function (start, onload)  {
+    }
+    _readFileChunk(start, onload)  {
         var chunkBlob = this.file.slice(start, start + this.CHUNK_SIZE),
             reader = new FileReader();
 
@@ -57,6 +55,6 @@ FileSender.prototype = _.extend(Object.create(FileTransfer.prototype), {
 
         reader.readAsArrayBuffer(chunkBlob);
     }
-});
+}
 
 module.exports = FileSender;

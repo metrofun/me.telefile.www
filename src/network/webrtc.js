@@ -50,10 +50,10 @@ ReactiveWebrtc.prototype = {
         return this._signaller.getPin();
     },
     getWriteBus: function () {
-        return this._writeBusSubject;
+        return this._writeBusSubject.log('getWriteBus');
     },
     getReadStream: function () {
-        return this._readStreamSubject;
+        return this._readStreamSubject.log('getReadStream');
     },
     _initWriteBus: function () {
         var pauser = new Rx.Subject(),
@@ -107,7 +107,7 @@ ReactiveWebrtc.prototype = {
             this._signaller.getReadStream().subscribe(function (data) {
                 if (data.sdp) {
                     self._pc.setRemoteDescription(
-                        new this.RTCSessionDescription(data.sdp),
+                        new self.RTCSessionDescription(data.sdp),
                         function () {
                             if (!self._isOffering) {
                                 self._pc.createAnswer(
@@ -121,7 +121,7 @@ ReactiveWebrtc.prototype = {
                     );
                 } else if (data.candidate) {
                     self._pc.addIceCandidate(
-                        new this.RTCIceCandidate(data.candidate),
+                        new self.RTCIceCandidate(data.candidate),
                         function () {},
                         self._onInternalError.bind(self)
                     );

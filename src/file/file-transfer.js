@@ -3,51 +3,51 @@ var Rx = require('rx'),
 
     FILE_SENDER_DISPOSED = 'File sender disposed';
 
-function FileTransfer(pin) {
-    this._webrtc = new Webrtc(pin);
+class FileTransfer {
+    constructor(pin) {
+        this._webrtc = new Webrtc(pin);
 
-    this._metaStream = this.getFileStream().first().shareReplay(1);
-    this._initSentSizeStream();
-    this._initProgressStream();
-    this._initBpsStream();
-}
-FileTransfer.prototype = {
-    getFileStream: function () {
+        this._metaStream = this.getFileStream().first().shareReplay(1);
+        this._initSentSizeStream();
+        this._initProgressStream();
+        this._initBpsStream();
+    }
+    getFileStream() {
         throw new Error('not implemented');
-    },
-    getBlob: function () {
+    }
+    getBlob() {
         throw new Error('not implemented');
-    },
-    getPin: function () {
+    }
+    getPin() {
         return this._webrtc.getPin();
-    },
-    getTransport: function () {
+    }
+    getTransport() {
         return this._webrtc;
-    },
-    getMeta: function () {
+    }
+    getMeta() {
         return this._metaStream.toPromise();
-    },
-    getProgress: function () {
+    }
+    getProgress() {
         return this._progressStream;
-    },
-    getBps: function () {
+    }
+    getBps() {
         return this._bpsStream;
-    },
-    dispose: function () {
+    }
+    dispose() {
         this._webrtc.getWriteBus().onError(new Error(FILE_SENDER_DISPOSED));
-    },
-    _initSentSizeStream: function () {
+    }
+    _initSentSizeStream() {
         // First frame always contains a meta information
         this._sentSizeStream = this.getFileStream().skip(1).scan(0, function (sum, data) {
             return sum + data.byteLength;
         }).sample(500/* ms */).shareReplay(1);
-    },
-    _initProgressStream: function () {
+    }
+    _initProgressStream() {
         this._progressStream  = this._sentSizeStream.combineLatest(this._metaStream, function (size, meta) {
             return size / meta.size * 100;
         }).shareReplay(1);
-    },
-    _initBpsStream: function () {
+    }
+    _initBpsStream() {
         this._bpsStream = Rx.Observable.combineLatest(
             this._metaStream.map(function () {return Date.now();}),
             this._sentSizeStream,
@@ -56,6 +56,6 @@ FileTransfer.prototype = {
             }
         ).shareReplay(1);
     }
-};
+}
 
 module.exports = FileTransfer;
