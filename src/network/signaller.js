@@ -50,9 +50,7 @@ Signaller.prototype = {
         this._pinPromise = new Promise(function (resolve, reject) {
             self._reactiveTransport.getReadStream().take(1).subscribe(function (message) {
                 resolve(message.pin);
-            }, function (e) {
-                reject(e);
-            });
+            }, (e) => reject(e));
         });
     }
 };

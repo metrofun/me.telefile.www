@@ -15,16 +15,17 @@ class TransferComponent extends React.Component {
     componentWillMount() {
         var source = this.props.source;
 
-        source.getProgress().subscribeOnNext((progress) => this.setState({ progress }));
+        source.getProgress().subscribe((progress) => this.setState({ progress }), this._noop);
         source.getMeta().then((meta) => {
-            source.getBps().subscribeOnNext((Bps) => {
+            source.getBps().subscribe((Bps) => {
                 this.setState({
                     subtitle: 'Average speed is ' + this._BpsToHuman(Bps),
                     footer: this._formatTimeleft(meta.size / Bps * (100 - this.state.progress) / 100) + ' left'
                 });
-            });
+            }, this._noop);
         });
     }
+    _noop() {}
     _pad(value) {
         return value < 10 ? '0' + value:value;
     }

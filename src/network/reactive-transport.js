@@ -114,8 +114,7 @@ ReactiveTransport.prototype = {
         this._observerSubject = Rx.Subject.create(inSubject, outSubject);
     },
     _initTransport: function () {
-        var self = this,
-            readyState = this._transport.readyState;
+        var readyState = this._transport.readyState;
 
         this._openPauser = new Rx.ReplaySubject(1);
         // fix for firefox
@@ -128,20 +127,9 @@ ReactiveTransport.prototype = {
             this._openPauser.onError(new Error(OPEN_ERROR_LABEL));
         }
 
-        this._transport.onopen = function () {
-            self._openPauser.onNext(true);
-        };
-        this._transport.onclose = function (e) {
-            self._openPauser.onError(e);
-                // new Error([
-                    // UNEXPECTED_CLOSE_LABEL,
-                    // Object.prototype.toString.call(self._transport)
-                // ].join(' : '))
-            // );
-        };
-        this._transport.onerror = function (e) {
-            self._openPauser.onError(e);
-        };
+        this._transport.onopen = () => this._openPauser.onNext(true);
+        this._transport.onclose = (e) => this._openPauser.onError(e);
+        this._transport.onerror = (e) => this._openPauser.onError(e);
     },
     /**
      * @param {String} reason If present, will be sent by transport

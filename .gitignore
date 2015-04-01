@@ -1,6 +1,7 @@
 key.pem
 **/.DS_Store
 .gulp-gh-pages
+dest/index.js.map
 node_modules
 npm-debug.log
 dest/index.js

@@ -10,6 +10,7 @@ class FileStore extends Store {
         super();
 
         this.serialDisposable_ = new Rx.SerialDisposable();
+        this._onError = this._onError.bind(this);
 
         dispatcher.subscribeOnNext(function(action) {
             if (action.type === actions.FILE_SEND) {
@@ -45,12 +46,12 @@ class FileStore extends Store {
             }),
             // don't switch to ERROR state, of first message errored.
             // This case is covered by previous line
-            receiver.getProgress().skip(1).subscribeOnError(this._onError, this),
-            receiver.getProgress().subscribeOnCompleted(function() {
+            receiver.getProgress().skip(1).subscribe(this._noop, this._onError, function() {
                 dispatcher.onNext({ type: actions.FILE_COMPLETED });
             })
         ));
     }
+    _noop() {}
     _cancel() {
         var state = this.getState(),
             transferer = state.sender || state.receiver;
@@ -69,11 +70,12 @@ class FileStore extends Store {
             sender: sender
         });
 
-        this.serialDisposable_.setDisposable(new Rx.CompositeDisposable(
-            sender.getProgress().subscribeOnError(() => this._onError),
-            sender.getProgress().subscribeOnCompleted(() => dispatcher.onNext({
+        this.serialDisposable_.setDisposable(sender.getProgress().subscribe(
+            this._noop,
+            this._onError,
+            () => dispatcher.onNext({
                 type: actions.FILE_COMPLETED
-            }))
+            })
         ));
     }
 }
