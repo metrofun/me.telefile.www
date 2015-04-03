@@ -1,17 +1,56 @@
+// We don't care about return value
+@noop: `(function(){
+    this.quantity = 13;
+    this.takenPositions = {};
+
+    this.isOverlapping = function(frame, pos) {
+        var minDistanceSqr = 100 * 100 / this.quantity / 3;
+
+        return this.takenPositions[frame].some(function(takenPos) {
+            return (Math.pow(takenPos.top - pos.top, 2)
+                + Math.pow(takenPos.left - pos.left, 2)) < minDistanceSqr;
+        });
+    }
+
+    this.getRandomPosition = function(frame) {
+        var pos = {}, counter = 0;
+
+        if (!this.takenPositions[frame]) {
+            this.takenPositions[frame] = [];
+        }
+
+        do {
+            counter++;
+            pos.top = Math.floor(Math.random() * 100);
+            pos.left = Math.floor(Math.random() * 100);
+        } while (this.isOverlapping(frame, pos) && (counter < 1000));
+
+        this.takenPositions[frame].push(pos);
+
+        return {
+            top: pos.top + '%',
+            left: pos.left + '%'
+        };
+    }
+
+    return '';
+})()`;
+
 .particles {
+    z-index: -1;
     @media screen and (orientation:landscape) {
         width: 10rem;
         height: 7rem;
     }
 
     @media screen and (orientation:portrait) {
-        width: 14vh;
+        width: 30vw;
         height: 10vh;
     }
 
     position: relative;
-    animation: fade-in 0.5s @ease-in-out 0.2s 1 alternate both;
-    opacity: 0;
+    /* animation: fade-in 0.5s @ease-in-out 0s 1 alternate both; */
+    /* opacity: 0; */
 
     &__item {
         @media screen and (orientation:landscape) {
@@ -46,10 +85,46 @@
         &_type_4 {
             background: #00B5A8;
         }
+
     }
+
+    // initial animation
+    .generate-items(6, 13, ~"0.6s step-start 0s 1 normal both");
 }
 
 @keyframes fade-in {
     from {opacity: 0}
     to {opacity: 1}
+}
+
+.generate-items(@steps, @items, @animation, @i: 1) when (@i <= @items) {
+    @animation-name: ~"item-animate-@{i}";
+
+    .particles__item:nth-child(@{i}) {
+        /* animation: fade-in 0.5s @ease-in-out 0s 1 alternate both; */
+        /* @animation-name: ~"item-animate-@{i} 0.6s step-start 0s 1 normal both"; */
+        /* @animation: ~"item-animate-@{i} 3s step-start 0s infinite normal both"; */
+        animation: @animation-name @animation;
+    }
+
+    @keyframes @animation-name {
+        .generate-frames(@steps);
+    }
+
+    .generate-items(@steps, @items, @animation, (@i + 1));
+}
+
+.generate-frames (@steps, @i: 1) when (@i <= @steps) {
+    @selector: 100% * @i / @steps;
+
+    @{selector} {
+        // We don't care about return value
+        @noop: ~`(function() {
+            return this.position = this.getRandomPosition(@{i});
+        })()`;
+        top: ~`(function() {return this.position.top; })()`;
+        left: ~`(function() {return this.position.left; })()`;
+    }
+
+    .generate-frames(@steps, (@i + 1));
 }

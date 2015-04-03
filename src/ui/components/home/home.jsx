@@ -27,7 +27,7 @@ class Home extends React.Component {
                     <div className="lead__text lead__text_align_right">faster, safer, easier</div>
                 </div>
                 <Mobile />
-                <Particles animated={this.state.animated} />
+                <Particles />
                 <Desktop />
             </div>
             <div className="controls">
