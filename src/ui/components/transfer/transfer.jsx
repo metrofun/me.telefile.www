@@ -4,7 +4,8 @@ var React = require('react'),
     Process = require('../process/process.jsx'),
     Button = require('../button/button.jsx'),
     Mobile = require('../mobile/mobile.jsx'),
-    Desktop = require('../desktop/desktop.jsx');
+    Desktop = require('../desktop/desktop.jsx'),
+    Particles = require('../particles/particles.jsx');
 
 class TransferComponent extends React.Component {
     constructor(props) {
@@ -79,12 +80,14 @@ class TransferComponent extends React.Component {
             <div className="layout__title">Transferring some bytes</div>
             <div className="layout__main">
                 <Mobile />
+                <Particles animated="yes"/>
                 <Process
                     progress={this.state.progress / 100}
                     title={this._formatProgress(this.state.progress) + '%'}
                     subtitle={this.state.subtitle}
                     footer={this.state.footer}
                 />
+                <Particles animated="yes"/>
                 <Desktop />
             </div>
             <div className="controls">

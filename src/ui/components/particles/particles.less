@@ -90,6 +90,10 @@
 
     // initial animation
     .generate-items(6, 13, ~"0.6s step-start 0s 1 normal both");
+
+    &_animated_yes {
+        .generate-items(20, 13, ~"3s step-start 0s infinite normal both");
+    }
 }
 
 @keyframes fade-in {
@@ -98,12 +102,18 @@
 }
 
 .generate-items(@steps, @items, @animation, @i: 1) when (@i <= @items) {
-    @animation-name: ~"item-animate-@{i}";
+    @noop: `(function() {
+        return this.animationName = 'item-animate-' + Math.random().toString(36).substr(2);
+    })()`;
+    /* We cant assign directly to @animation-name, */
+    /* because it would be lazy eveluated each time */
+    /* and return different values in the same scope */
+    @animation-name: ~`(function() {
+        return this.animationName;
+    })()`;
 
     .particles__item:nth-child(@{i}) {
-        /* animation: fade-in 0.5s @ease-in-out 0s 1 alternate both; */
-        /* @animation-name: ~"item-animate-@{i} 0.6s step-start 0s 1 normal both"; */
-        /* @animation: ~"item-animate-@{i} 3s step-start 0s infinite normal both"; */
+        animation: @animation-name @animation;
         animation: @animation-name @animation;
     }
 
