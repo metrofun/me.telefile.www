@@ -1,6 +1,17 @@
 var React = require('react');
 
 class Header extends React.Component {
+    _onShare(e) {
+        var width = 800,
+            height = 500,
+            left = screen.width / 2 - width / 2,
+            top = screen.height / 2 - height / 2;
+
+        e.preventDefault();
+
+        window.open(e.target.href, "", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width="
+                + width + ",height=" + height+ ",top=" + top + ",left=" + left);
+    }
     render() {
         return (
             <div className="header">
@@ -9,10 +20,16 @@ class Header extends React.Component {
                     <div className="brand__logo"></div>
                     <div className="brand__file">file</div>
                 </div>
-                <ul className="share">
-                    <li className="share__item share__twitter"></li>
-                    <li className="share__item share__facebook"></li>
-                    <li className="share__item share__linkedin"></li>
+                <ul className="share" onClick={this._onShare}>
+                    <li className="share__item share__twitter">
+                        <a title="Share on Twitter" target="_blank" href="https://twitter.com/home?status=TeleFile.Me%20%E2%80%93%20free%20tool%20for%20peer-to-peer%20file%20share%20via%20%40TeleFileMe">&nbsp;</a>
+                    </li>
+                    <li className="share__item share__facebook">
+                        <a title="Share on Facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://telefile.me">&nbsp;</a>
+                    </li>
+                    <li className="share__item share__linkedin">
+                        <a title="Share on LinkedIn" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://telefile.me&title=TeleFile.Me%20%E2%80%93%20Peer-to-peer%20file%20sharing%20tool&summary=&source=">&nbsp;</a>
+                    </li>
                 </ul>
                 <ul className="navbar">
                     <li className="navbar__item navbar__item_type_active">Home</li>

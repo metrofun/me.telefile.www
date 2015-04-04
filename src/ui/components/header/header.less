@@ -132,12 +132,18 @@
         padding: 0;
         margin: 0 1vw;
         display: inline-block;
-        width: 2rem;
-        height: 2rem;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
         opacity: 0.8;
+        /* font-size: 0; */
+
+        a {
+            display: block;
+            width: 2rem;
+            height: 2rem;
+            text-decoration: none;
+        }
 
         &:last-child {
             margin-right: 0;
@@ -147,7 +153,6 @@
             opacity: 1;
             cursor: pointer;
         }
-
     }
 
     &__twitter {
