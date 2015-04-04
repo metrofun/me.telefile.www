@@ -2,11 +2,10 @@ var React = require('react');
 
 class Particles extends React.Component {
     render() {
-        var items = [], i,
-            className = 'particles__item particles__item_type_';
+        var items = [], i, className;
 
         for (i = 0; i < this.props.quantity; i++) {
-            items.push(<div key={i} className={className + i % 5}/>);
+            items.push(<div key={i} className="particles__item" />);
         }
 
         className = 'particles';

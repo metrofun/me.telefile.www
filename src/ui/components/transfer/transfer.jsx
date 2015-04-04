@@ -76,7 +76,7 @@ class TransferComponent extends React.Component {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
     render() {
-        return <div className="layout receive">
+        return <div className="layout transfer">
             <div className="layout__title">Transferring some bytes</div>
             <div className="layout__main">
                 <Mobile />
