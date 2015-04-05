@@ -93,7 +93,6 @@
 
         &:hover {
             opacity: 1;
-            cursor: pointer;
 
             &:before {
                 top: -3.1rem;
@@ -116,34 +115,79 @@
 }
 
 .share {
-    list-style-type: none;
-    color: @white;
-    text-transform: uppercase;
-    padding: 0;
-    margin: 0;
-    float: right;
-    height: 2rem;
-
     @media screen and (orientation:portrait) {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    &__list {
+        list-style-type: none;
+        color: @white;
+        text-transform: uppercase;
+        padding: 0;
+        margin: 0;
+        display: block;
+        float: right;
+
+        @media screen and (orientation:landscape) {
+            height: 2rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            display: none;
+
+            :checked ~ & {
+                display: block;
+            }
+        }
+    }
+
+    &__label {
+        @media screen and (orientation:landscape) {
+            display: none;
+        }
+
+        @media screen and (orientation:portrait) {
+            padding: 3.6vh 2.4vh;
+            width: 25vw;
+            height: calc(~'1.5rem + 7.2vh');
+            box-sizing: border-box;
+            background-image: data-uri('components/header/share.svg');
+            background-position: center right;
+            background-repeat: no-repeat;
+            background-size: 1.5rem;
+            background-origin: content-box;
+            float: right;
+
+            :checked ~ & {
+                background-color: @green;
+                background-image: data-uri('components/header/close.svg');
+            }
+        }
+    }
+
+    &__checkbox {
         display: none;
     }
 
     &__item {
         padding: 0;
-        margin: 0 1vw;
+        margin: 0;
+        cursor: pointer;
         display: inline-block;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 0.8;
-        /* font-size: 0; */
 
-        a {
-            display: block;
-            width: 2rem;
-            height: 2rem;
-            text-decoration: none;
+        @media screen and (orientation:landscape) {
+            background-position: center;
+            opacity: 0.8;
+            margin: 0 1vw;
         }
+
+        @media screen and (orientation:portrait) {
+            width: 25vw;
+        }
+
 
         &:last-child {
             margin-right: 0;
@@ -151,19 +195,49 @@
 
         &:hover {
             opacity: 1;
-            cursor: pointer;
         }
     }
 
-    &__twitter {
+    &__link {
+        display: block;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-origin: content-box;
+        background-position: center right;
+        text-decoration: none;
+
+        @media screen and (orientation:portrait) {
+            padding: 3.6vh 2.4vh;
+            height: 1.5rem;
+        }
+
+        @media screen and (orientation:landscape) {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    &__twitter .share__link  {
         background-image: data-uri('components/page/twitter.svg');
+
+        @media screen and (orientation:portrait) {
+            background-color: @fb-twitter;
+        }
     }
 
-    &__linkedin {
+    &__linkedin .share__link  {
         background-image: data-uri('components/page/linkedin.svg');
+
+        @media screen and (orientation:portrait) {
+            background-color: @fb-linkedin;
+        }
     }
 
-    &__facebook {
+    &__facebook .share__link  {
         background-image: data-uri('components/page/facebook.svg');
+
+        @media screen and (orientation:portrait) {
+            background-color: @fb-color;
+        }
     }
 }
