@@ -1,1 +1,46 @@
-<svg width="23" height="25" viewBox="0 0 23 25" xmlns="http://www.w3.org/2000/svg"><title>Group</title><desc>Created with Sketch.</desc><g transform="translate(2 1.258)" fill="#F5F5F5" fill-rule="evenodd"><path d="M11.9 7v2.1C12.48 8 13.984 7 16.1 7c4.404 0 4.9 2.53 4.9 6.3V21h-4.2v-7c0-1.623.132-3.5-2.1-3.5-2.8 0-2.8 1.675-2.8 3.5v7H7.7V7h4.2zM.7 7h4.2v14H.7z"/><circle cx="2.8" cy="2.45" r="2.45"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:cc="http://creativecommons.org/ns#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:svg="http://www.w3.org/2000/svg"
+ xmlns="http://www.w3.org/2000/svg"
+ version="1.1"
+ width="21"
+ height="21"
+ viewBox="0 0 21 21"
+ id="svg3037">
+<title
+ id="title3039">Group</title>
+<desc
+ id="desc3041">Created with Sketch.</desc>
+<metadata
+ id="metadata3053">
+<rdf:RDF>
+<cc:Work
+ rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type
+ rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+<dc:title>Group</dc:title>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<defs
+ id="defs3051" />
+<g
+ transform="matrix(1.0039378,0,0,0.99612785,-0.20466642,0.0382709)"
+ id="g3043"
+ style="fill:#f5f5f5;fill-rule:evenodd">
+<path
+ d="M 11.9,7 V 9.1 C 12.48,8 13.984,7 16.1,7 20.504,7 21,9.53 21,13.3 V 21 h -4.2 v -7 c 0,-1.623 0.132,-3.5 -2.1,-3.5 -2.8,0 -2.8,1.675 -2.8,3.5 v 7 H 7.7 V 7 h 4.2 z M 0.7,7 H 4.9 V 21 H 0.7 z"
+ id="path3045" />
+<circle
+ cx="2.8"
+ cy="2.45"
+ r="2.45"
+ id="circle3047" />
+</g>
+</svg>

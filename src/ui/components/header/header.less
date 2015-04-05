@@ -116,6 +116,8 @@
 }
 
 .share {
+    @duration: 0.4s;
+
     @media screen and (orientation:portrait) {
         position: absolute;
         left: 0;
@@ -137,10 +139,10 @@
         }
 
         @media screen and (orientation:portrait) {
-            transition: opacity 0.4s @ease-in-out;
+            transition: opacity @duration @ease-in-out;
 
             :checked ~ & {
-                .share__link {
+                .share__item {
                     transform: translateX(0);
                 }
             }
@@ -154,18 +156,21 @@
 
         @media screen and (orientation:portrait) {
             cursor: pointer;
-            padding: 3.6vh 2.4vh;
             width: 25vw;
-            height: calc(~'1.5rem + 7.2vh');
-            box-sizing: border-box;
-            background-image: data-uri('components/header/share.svg');
-            background-position: center right;
-            background-repeat: no-repeat;
-            background-size: 1.5rem;
-            background-origin: content-box;
-            float: right;
-            position: relative;
-            z-index: 1;
+
+            &, &:before {
+                padding: 3.6vh 2.4vh;
+                height: calc(~'1.5rem + 7.2vh');
+                box-sizing: border-box;
+                background-image: data-uri('components/header/share.svg');
+                background-position: center right;
+                background-repeat: no-repeat;
+                background-size: 1.5rem;
+                background-origin: content-box;
+                float: right;
+                position: relative;
+                z-index: 1;
+            }
 
             &:before {
                 content: '';
@@ -176,17 +181,9 @@
                 right: 0;
                 bottom : 0;
                 transform: translateX(25vw);
-                transition: transform 0.4s @ease-in-out;
+                transition: transform @duration @ease-in-out;
                 background-color: @green;
                 background-image: data-uri('components/header/close.svg');
-                padding: 3.6vh 2.4vh;
-                width: 25vw;
-                height: calc(~'1.5rem + 7.2vh');
-                box-sizing: border-box;
-                background-position: center right;
-                background-repeat: no-repeat;
-                background-size: 1.5rem;
-                background-origin: content-box;
             }
 
             :checked ~ &:before {
@@ -204,6 +201,7 @@
         margin: 0;
         cursor: pointer;
         display: inline-block;
+        transition: all @duration @ease-in-out;
 
         @media screen and (orientation:landscape) {
             background-position: center;
@@ -236,7 +234,6 @@
         @media screen and (orientation:portrait) {
             padding: 3.6vh 2.4vh;
             height: 1.5rem;
-            transition: all 0.4s @ease-in-out;
         }
 
         @media screen and (orientation:landscape) {
@@ -245,30 +242,36 @@
         }
     }
 
-    &__twitter .share__link  {
-        background-image: data-uri('components/page/twitter.svg');
-        transform: translateX(100vw);
-
+    &__twitter {
         @media screen and (orientation:portrait) {
+            transform: translateX(100vw);
             background-color: @fb-twitter;
         }
-    }
 
-    &__facebook .share__link  {
-        background-image: data-uri('components/page/facebook.svg');
-        transform: translateX(75vw);
-
-        @media screen and (orientation:portrait) {
-            background-color: @fb-color;
+        .share__link  {
+            background-image: data-uri('components/page/twitter.svg');
         }
     }
 
-    &__linkedin .share__link  {
-        background-image: data-uri('components/page/linkedin.svg');
-        transform: translateX(50vw);
-
+    &__facebook {
         @media screen and (orientation:portrait) {
+            transform: translateX(75vw);
+            background-color: @fb-color;
+        }
+
+        .share__link  {
+            background-image: data-uri('components/page/facebook.svg');
+        }
+    }
+
+    &__linkedin {
+        @media screen and (orientation:portrait) {
+            transform: translateX(50vw);
             background-color: @fb-linkedin;
+        }
+
+        .share__link  {
+            background-image: data-uri('components/page/linkedin.svg');
         }
     }
 }
