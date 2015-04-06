@@ -25,17 +25,17 @@ class Header extends React.Component {
                     <div className="brand__logo"></div>
                     <div className="brand__file">file</div>
                 </div>
-                <div className="share">
-                    <input className="share__checkbox" id="share__checkbox" type="checkbox" />
-                    <label className="share__label" htmlFor="share__checkbox"></label>
-                    <ul className="share__list" onClick={this._onShare}>
-                        <li className="share__item share__twitter">
+                <div className="share menu menu_col_4 menu_align_right">
+                    <input className="menu__checkbox" id="menu__checkbox-2" type="checkbox" />
+                    <label className="menu__toggle share__toggle" htmlFor="menu__checkbox-2"></label>
+                    <ul className="menu__list" onClick={this._onShare}>
+                        <li className="menu__item share__item share__twitter">
                             <a className="share__link" title="Share on Twitter" target="_blank" href="https://twitter.com/home?status=TeleFile.Me%20%E2%80%93%20free%20tool%20for%20peer-to-peer%20file%20share%20via%20%40TeleFileMe">&nbsp;</a>
                         </li>
-                        <li className="share__item share__facebook">
+                        <li className="menu__item share__item share__facebook">
                             <a className="share__link" title="Share on Facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://telefile.me">&nbsp;</a>
                         </li>
-                        <li className="share__item share__linkedin">
+                        <li className="menu__item share__item share__linkedin">
                             <a className="share__link" title="Share on LinkedIn" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://telefile.me&title=TeleFile.Me%20%E2%80%93%20Peer-to-peer%20file%20sharing%20tool&summary=&source=">&nbsp;</a>
                         </li>
                     </ul>
