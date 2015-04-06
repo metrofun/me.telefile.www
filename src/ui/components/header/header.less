@@ -117,6 +117,7 @@
 
 .share {
     @duration: 0.4s;
+    overflow: hidden;
 
     @media screen and (orientation:portrait) {
         position: absolute;
@@ -142,6 +143,7 @@
             transition: opacity @duration @ease-in-out;
 
             :checked ~ & {
+
                 .share__item {
                     transform: translateX(0);
                 }

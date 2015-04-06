@@ -2,15 +2,20 @@ var React = require('react');
 
 class Header extends React.Component {
     _onShare(e) {
-        var width = 800,
-            height = 500,
-            left = screen.width / 2 - width / 2,
+        var width, height, left, top;
+
+        // event delegation
+        if (e.target.className === 'share__link') {
+            width = 800;
+            height = 500;
+            left = screen.width / 2 - width / 2;
             top = screen.height / 2 - height / 2;
 
-        e.preventDefault();
+            e.preventDefault();
 
-        window.open(e.target.href, "", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width="
-                + width + ",height=" + height+ ",top=" + top + ",left=" + left);
+            window.open(e.target.href, "", "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width="
+                        + width + ",height=" + height+ ",top=" + top + ",left=" + left);
+        }
     }
     render() {
         return (
