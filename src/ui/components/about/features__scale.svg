@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="252px" height="251px" viewBox="0 0 252 251" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>img size contstraints</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-851.000000, -3483.000000)">
+            <g id="about" transform="translate(2.000000, 2869.000000)" sketch:type="MSShapeGroup">
+                <g id="img-size-contstraints" transform="translate(849.000000, 614.000000)">
+                    <g id="Oval-114" transform="translate(1.000000, 0.000000)" fill="#0288D1">
+                        <circle cx="125.5" cy="125.5" r="125.5"></circle>
+                    </g>
+                    <g id="video" transform="translate(29.000000, 110.000000)">
+                        <rect id="Rectangle-574" stroke="#F5F5F5" stroke-width="3" fill="#01C9A4" x="0" y="0" width="37" height="37"></rect>
+                        <g id="Group" transform="translate(2.094340, 4.188679)" fill="#F5F5F5">
+                            <rect id="Rectangle-575" x="0.218160377" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-576" x="5.99941038" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-577" x="11.7806604" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-580" x="17.5619104" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-578" x="23.3431604" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-579" x="29.1244104" y="0.218160377" width="3.46875" height="3.46875"></rect>
+                        </g>
+                        <g id="Group" transform="translate(2.094340, 28.622642)" fill="#F5F5F5">
+                            <rect id="Rectangle-586" x="0.218160377" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-581" x="5.99941038" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-582" x="11.7806604" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-583" x="17.5619104" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-584" x="23.3431604" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                            <rect id="Rectangle-585" x="29.1244104" y="0.501768868" width="3.46875" height="3.46875"></rect>
+                        </g>
+                        <path d="M13.875,25.4375 L13.875,11.8515625 L25.4375,18.6445312 L13.875,25.4375 Z" id="Triangle-1" fill="#F9C82E"></path>
+                    </g>
+                    <g id="video-2" transform="translate(85.000000, 92.000000)">
+                        <rect id="Rectangle-574" stroke="#F5F5F5" stroke-width="3" fill="#01C9A4" x="0" y="0" width="55" height="55"></rect>
+                        <g id="Group" transform="translate(3.113208, 6.226415)" fill="#F5F5F5">
+                            <rect id="Rectangle-575" x="0.324292453" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-576" x="8.91804245" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-577" x="17.5117925" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-580" x="26.1055425" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-578" x="34.6992925" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-579" x="43.2930425" y="0.324292453" width="5.15625" height="5.15625"></rect>
+                        </g>
+                        <g id="Group" transform="translate(3.113208, 42.547170)" fill="#F5F5F5">
+                            <rect id="Rectangle-586" x="0.324292453" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-581" x="8.91804245" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-582" x="17.5117925" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-583" x="26.1055425" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-584" x="34.6992925" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                            <rect id="Rectangle-585" x="43.2930425" y="0.745872642" width="5.15625" height="5.15625"></rect>
+                        </g>
+                        <path d="M20.625,37.8125 L20.625,17.6171875 L37.8125,27.7148438 L20.625,37.8125 Z" id="Triangle-1" fill="#F9C82E"></path>
+                    </g>
+                    <g id="video-3" transform="translate(157.000000, 75.000000)">
+                        <rect id="Rectangle-574" stroke="#F5F5F5" stroke-width="3" fill="#01C9A4" x="0" y="0" width="72" height="72"></rect>
+                        <g id="Group" transform="translate(4.075472, 8.150943)" fill="#F5F5F5">
+                            <rect id="Rectangle-575" x="0.424528302" y="0.424528302" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-576" x="11.6745283" y="0.424528302" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-577" x="22.9245283" y="0.424528302" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-580" x="34.1745283" y="0.424528302" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-578" x="45.4245283" y="0.424528302" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-579" x="56.6745283" y="0.424528302" width="6.75" height="6.75"></rect>
+                        </g>
+                        <g id="Group" transform="translate(4.075472, 55.698113)" fill="#F5F5F5">
+                            <rect id="Rectangle-586" x="0.424528302" y="0.976415094" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-581" x="11.6745283" y="0.976415094" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-582" x="22.9245283" y="0.976415094" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-583" x="34.1745283" y="0.976415094" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-584" x="45.4245283" y="0.976415094" width="6.75" height="6.75"></rect>
+                            <rect id="Rectangle-585" x="56.6745283" y="0.976415094" width="6.75" height="6.75"></rect>
+                        </g>
+                        <path d="M27,49.5 L27,23.0625 L49.5,36.28125 L27,49.5 Z" id="Triangle-1" fill="#F9C82E"></path>
+                    </g>
+                    <g id="ruler" transform="translate(0.000000, 160.000000)">
+                        <rect id="Rectangle-564" fill="#F9C82E" x="0" y="0" width="252" height="34"></rect>
+                        <g id="Group" transform="translate(5.000000, 0.000000)" fill="#A6861D">
+                            <rect id="Rectangle-614" x="0" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-616" x="8" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-615" x="16" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-620" x="24" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-617" x="32" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-618" x="40" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-619" x="48" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-628" x="56" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-621" x="64" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-622" x="72" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-623" x="80" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-624" x="88" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-625" x="96" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-626" x="104" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-627" x="112" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-644" x="120" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-629" x="128" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-630" x="136" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-631" x="144" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-632" x="152" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-633" x="160" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-634" x="168" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-635" x="176" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-636" x="184" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-637" x="192" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-638" x="200" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-639" x="208" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-640" x="216" y="0" width="4" height="10"></rect>
+                            <rect id="Rectangle-641" x="224" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-643" x="240" y="0" width="4" height="5"></rect>
+                            <rect id="Rectangle-642" x="232" y="0" width="4" height="10"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

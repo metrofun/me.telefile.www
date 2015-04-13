@@ -1,6 +1,6 @@
 .page {
-    overflow: hidden;
-    height: 100%;
+    /* overflow: hidden; */
+    /* height: 100%; */
     color: @white;
     -webkit-tap-highlight-color: transparent;
     display: flex;
@@ -20,6 +20,17 @@
                 height: calc(~'7.2vh + 1.6rem');
                 background-size: 100% 31vh;
             }
+        }
+    }
+
+    &_type_about {
+        display: block;
+        overflow: hidden;
+
+        &.page:before {
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: 100% auto;
         }
     }
 

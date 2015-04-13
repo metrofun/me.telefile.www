@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="251px" height="251px" viewBox="0 0 251 251" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>img send photo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="125.5" cy="125.5" r="125.5"></circle>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-184.000000, -3860.000000)">
+            <g id="about" transform="translate(2.000000, 2869.000000)">
+                <g id="img-send-photo" transform="translate(182.000000, 991.000000)">
+                    <circle id="Oval-114" fill="#0288D1" sketch:type="MSShapeGroup" cx="125.5" cy="125.5" r="125.5"></circle>
+                    <g id="New-Mask-Group">
+                        <mask id="mask-2" sketch:name="Mask" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                        <g id="iphone-2" mask="url(#mask-2)" sketch:type="MSShapeGroup">
+                            <g transform="translate(30.000000, 75.000000)">
+                                <path d="M44.3989074,101.649741 L6.25936605,101.649741 C2.80255,101.649741 0.000389676029,98.9934372 0.000389676029,95.7160051 L0.000389676029,5.96379088 C0.000389676029,2.68635886 2.80255,0.0300545673 6.25936605,0.0300545673 L44.3989074,0.0300545673 C47.8557235,0.0300545673 50.6578837,2.68635886 50.6578837,5.96379088 L50.6578837,95.7160051 C50.6578837,98.9934372 47.8557235,101.649741 44.3989074,101.649741 Z" id="bezel" stroke="none" fill="#F5F5F5" fill-rule="evenodd"></path>
+                                <rect id="screen" stroke="#BDBDBD" stroke-width="1" fill="#F9C82E" fill-rule="evenodd" x="3.50708427" y="13.3575855" width="43.6164379" height="73.868932"></rect>
+                                <path d="M30.0050542,9.5528999 C30.0050542,9.78851287 29.8339864,9.97848742 29.6231717,9.97848742 L21.7899042,9.97848742 C21.5786998,9.97848742 21.4080217,9.78814182 21.4080217,9.5528999 L21.4080217,8.59560626 C21.4080217,8.3599933 21.5790894,8.17001875 21.7899042,8.17001875 L29.6231717,8.17001875 C29.8339864,8.17001875 30.0050542,8.36036435 30.0050542,8.59560626 L30.0050542,9.5528999 L30.0050542,9.5528999 Z" id="speaker" stroke="#BDBDBD" stroke-width="1" fill="none"></path>
+                                <ellipse id="camera" stroke="#BDBDBD" stroke-width="1" fill="none" cx="25.7186179" cy="4.4525285" rx="1.16902809" ry="1.11313213"></ellipse>
+                                <ellipse id="lock" stroke="#BDBDBD" stroke-width="1" fill="none" cx="25.3445289" cy="94.2455577" rx="3.91234734" ry="3.71081146"></ellipse>
+                            </g>
+                        </g>
+                        <g id="laptop-2" mask="url(#mask-2)">
+                            <g transform="translate(113.409696, 65.635133)">
+                                <path d="M30.1153063,0 C25.9680445,0 22.4328302,3.42000941 22.4328302,7.65611424 L22.4328302,108.410577 L190.218109,108.410574 L190.218109,7.65611424 C190.2181,3.41970134 186.695687,0 182.535632,0 L30.1153063,0 Z" id="bezel" stroke="none" fill="#2B3E50" fill-rule="evenodd" filter="url(#filter-3)" sketch:type="MSShapeGroup"></path>
+                                <ellipse id="webcam" stroke="#F5F5F5" stroke-width="2" fill="none" sketch:type="MSShapeGroup" cx="106.632768" cy="5.86791083" rx="1.22919618" ry="1.23534965"></ellipse>
+                                <g id="bottom" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSLayerGroup" transform="translate(0.000000, 108.401931)">
+                                    <path d="M196.920915,9.57704814 L15.7607534,9.57704814 C6.34295959,9.57704814 0,6.32931393 0,4.94819301 L0,0.749857233 C0,0.334779754 0.410244224,0 0.920360636,0 L211.761,0 C212.271732,0 212.68259,0.334779754 212.68259,0.749857233 L212.68259,5.11342102 C212.68044,6.20516126 207.768571,9.57704814 196.920915,9.57704814 L196.920915,9.57704814 L196.920915,9.57704814 Z" id="Shape" fill="#F5F5F5" sketch:type="MSShapeGroup"></path>
+                                    <path d="M0.153649522,4.47814246 L212.110914,4.47814246" id="Line" stroke="#BDBDBD" sketch:type="MSShapeGroup"></path>
+                                </g>
+                                <path d="M129.372897,110.484619 L129.372897,111.438 C129.372897,112.117752 128.041284,112.32304 127.033344,112.32304 L85.6796709,112.32304 C84.6191822,112.32304 83.2780409,112.11806 83.2780409,111.438 L83.2780409,110.484619" id="touchpad" stroke="none" fill="#BDBDBD" fill-rule="evenodd" sketch:type="MSShapeGroup"></path>
+                                <rect id="screen" stroke="#0F151C" stroke-width="1" fill="#01C9A4" fill-rule="evenodd" sketch:type="MSShapeGroup" x="29.1934092" y="12.044659" width="153.979516" height="90.1833034"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="upload" transform="translate(174.000000, 100.000000)" fill="#00826A" sketch:type="MSShapeGroup">
+                        <rect id="Rectangle-649" x="8" y="43" width="31" height="8"></rect>
+                        <rect id="Rectangle-650" x="0" y="31" width="8" height="20"></rect>
+                        <rect id="Rectangle-651" x="39" y="31" width="8" height="20"></rect>
+                        <rect id="Rectangle-648" x="19" y="0" width="8" height="29"></rect>
+                        <polygon id="Triangle-2" transform="translate(23.000000, 30.000000) scale(1, -1) translate(-23.000000, -30.000000) " points="23 22 35 38 11 38 "></polygon>
+                    </g>
+                    <g id="download" transform="translate(40.000000, 100.000000)" fill="#A6861E" sketch:type="MSShapeGroup">
+                        <rect id="Rectangle-648" x="11" y="8" width="8" height="29"></rect>
+                        <polygon id="Triangle-1" points="15 0 27 16 3 16 "></polygon>
+                        <rect id="Rectangle-649" x="0" y="43" width="31" height="8"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
