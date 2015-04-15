@@ -53,7 +53,7 @@ class ErrorComponent extends React.Component {
                 </div>
             </div>
             <div className="controls">
-                <Button onClick={this._cancel}>Start using for FREE</Button>
+                <Button href="/">Start using for FREE</Button>
             </div>
         </div>;
     }
