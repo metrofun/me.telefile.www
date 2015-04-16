@@ -13,7 +13,7 @@
     &__features {
         background-color: @white;
         margin: 0 -10vw;
-        padding: 0 10vw 5rem;
+        padding: 0 10vw 3rem;
         position: relative;
 
         &:after,
@@ -28,20 +28,20 @@
         }
 
         &:after {
-            top: -15.99vw;
+            top: -15.9vw;
             border-color: transparent transparent transparent @white;
             border-width:  16vw 0 0 100vw;
         }
 
         &:before {
-            bottom: -15.99vw;
+            bottom: -15.9vw;
             border-color: transparent @white transparent transparent;
             border-width:  0 100vw 16vw 0;
         }
     }
 
     .controls {
-        margin: 20rem 0 10rem;
+        margin: 17vw 0 10rem;
     }
 
     .button {
@@ -71,8 +71,11 @@
         @media screen and (orientation:landscape) {
             font-size: 2.8rem;
             letter-spacing: 1em / 100;
-            line-height: 4rem;
+            line-height: 3.6rem;
+            letter-spacing: 0.01em;
             max-width: 40rem;
+            position: relative;
+            top: -1rem;
         }
     }
 
@@ -100,7 +103,7 @@
 }
 
 .features {
-    @prefix-width: 7rem;
+    @prefix-width: 8rem;
     &__item {
         width: 50%;
         padding-right: 50%;
@@ -135,11 +138,15 @@
             }
 
             .features__caption {
-                background-position: center right;
+                background-position: right center;
+
+                &:after {
+                    left: -@prefix-width / 2;
+                }
 
                 &:before {
-                    right: 2.6rem;
-                    left: auto;
+                    /* right: 2.6rem; */
+                    left: -@prefix-width / 2;
                 }
             }
 
@@ -182,17 +189,13 @@
 
     &__caption {
         font-size: 2.8rem;
-        line-height: 3.2rem;
+        line-height: 3.6rem;
         text-align: center;
         color: #076FA8;
         box-sizing: border-box;
         margin-bottom: 2rem;
         position: relative;
-
-        background-position: left center;
-        background-repeat: no-repeat;
-        background-size: 6rem;
-        background-image: data-uri('components/about/item-prefix.svg');
+        letter-spacing: 0.01em;
 
         padding-left: @prefix-width;
         padding-right: @prefix-width / 2;
@@ -200,14 +203,28 @@
         &:before {
             position: absolute;
             top: 0;
-            left: 0;
             bottom: 0;
-            font-size: 2.5rem;
-            height: 2.5rem;
-            line-height: 2.5rem;
             margin: auto;
+            left: 0;
+            font-size: 2.5rem;
+            height: 3.6rem;
+            line-height: 3.6rem;
             width: 3.5rem;
             text-align: center;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: @prefix-width;
+
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: 6rem;
+            background-image: data-uri('components/about/item-prefix.svg');
         }
     }
 
@@ -216,6 +233,8 @@
         padding-right: @prefix-width / 2;
 
         font-size: 2rem;
+        line-height: 2.8rem;
         color: #044568;
+        text-align: center;
     }
 }
