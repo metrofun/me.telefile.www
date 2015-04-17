@@ -11,7 +11,9 @@ module.exports = class Device extends React.Component {
         classes['device_type_' + this.props.type] = true;
 
         return <div className={cx(classes)}>
-            <div className="device__background" />
+            <div className="device__background">
+                {this.props.children}
+            </div>;
         </div>;
     }
 };
