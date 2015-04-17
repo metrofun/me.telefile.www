@@ -29,22 +29,22 @@
             content: '';
             position: absolute;
             z-index: -1;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-        }
-
-        &:after {
-            top: -15.9vw;
-            border-color: transparent transparent transparent @white;
-            border-width:  16vw 0 0 100vw;
+            height: 20vw;
+            width: 200vw;
+            transform: rotate(9deg);
+            background: @white;
         }
 
         &:before {
-            bottom: -15.9vw;
-            border-color: transparent @white transparent transparent;
-            border-width:  0 100vw 16vw 0;
+            top: 0;
+            right: 0;
+            transform-origin: top right;
+        }
+
+        &:after {
+            bottom: 0;
+            left: 0;
+            transform-origin: bottom left;
         }
     }
 
@@ -87,10 +87,10 @@
         letter-spacing: 1em / 100;
 
         @media screen and (orientation:portrait) {
-            padding-left: 30%;
-            width: 70%;
-            font-size: 2rem;
-            line-height: 2.6rem;
+            padding-left: 20%;
+            width: 80%;
+            font-size: 2.4rem;
+            line-height: 3.0rem;
             letter-spacing: 0.01em;
             text-align: right;
             margin-top: 16vw;
@@ -141,6 +141,10 @@
             margin-bottom: 2.4rem * 4;
             padding-top: 2.4rem * 7;
             position: relative;
+
+            &:last-child {
+                padding-bottom: 8vw;
+            }
 
             &:after {
                 width: 2.4rem * 5;
@@ -257,8 +261,8 @@
         letter-spacing: 0.01em;
 
         @media screen and (orientation:portrait) {
-            font-size: 2rem;
-            line-height: 2.6rem;
+            font-size: 2.4rem;
+            line-height: 3.0rem;
             padding: 0 4.8vh;
             margin-bottom: 4.8vh;
         }
@@ -302,8 +306,8 @@
 
     &__text {
         @media screen and (orientation:portrait) {
-            font-size: 1.6rem;
-            line-height: 2.1rem;
+            font-size: 2rem;
+            line-height: 2.8rem;
         }
 
         @media screen and (orientation:landscape) {
