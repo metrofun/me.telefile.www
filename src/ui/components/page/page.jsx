@@ -8,6 +8,7 @@ var React = require('react'),
     NotSupported = require('../not-supported/not-supported.jsx'),
     ErrorComponent = require('../error/error.jsx'),
     About = require('../about/about.jsx'),
+    Support = require('../support/support.jsx'),
     Header = require('../header/header.jsx');
 
 class Page extends React.Component {
@@ -54,6 +55,8 @@ class Page extends React.Component {
                 return <NotSupported />;
             case '/about':
                 return <About />;
+            case '/support':
+                return <Support />;
             default :
                 return <Home />;
         }

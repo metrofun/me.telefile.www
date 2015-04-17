@@ -10,7 +10,7 @@ class Button extends React.Component {
             </div>;
         } else {
             return <div className="button">
-                <a href={this.props.href} className="button__text">
+                <a href={this.props.href} target={this.props.target} className="button__text">
                     {this.props.children}
                 </a>
             </div>;

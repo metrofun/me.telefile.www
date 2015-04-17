@@ -32,11 +32,12 @@ class Router extends Store {
     getDefaultState() {
         return {
             // pathname: '/completed'
-            // pathname: '/error'
+            pathname: '/error'
             // pathname: '/not-supported'
             // pathname: '/receive'
             // pathname: '/'
-            pathname: '/about'
+            // pathname: '/about'
+            // pathname: '/support'
         };
     }
 }
