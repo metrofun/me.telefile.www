@@ -1,20 +1,28 @@
 .about {
     &__hero {
+        margin-bottom: 16vw;
+
         @media screen and (orientation:landscape) {
             margin-top: 10rem;
-            margin-bottom: 17vw;
             position: relative;
         }
 
         @media screen and (orientation:portrait) {
-            display: none;
+            padding: 0 2.4vh;
         }
     }
     &__features {
         background-color: @white;
-        margin: 0 -10vw;
-        padding: 0 10vw 3rem;
         position: relative;
+
+        @media screen and (orientation:landscape) {
+            margin: 0 -10vw;
+            padding: 0 10vw 3rem;
+        }
+
+        @media screen and (orientation:portrait) {
+            padding: 0 2.4vh;
+        }
 
         &:after,
         &:before {
@@ -41,7 +49,9 @@
     }
 
     .controls {
-        margin: 17vw 0 10rem;
+        @media screen and (orientation:landscape) {
+            margin: 17vw 0 10rem;
+        }
     }
 
     .button {
@@ -52,25 +62,42 @@
     }
 
     &:before {
-        content: '';
         position: fixed;
-        bottom: 0;
-        left: 0;
 
         &:extend(.page:before);
 
+        height: 60vh !important;
+        top: auto !important;
+        bottom: 0 !important;
         background-repeat: no-repeat !important;
-        background-size: 100% auto !important;
         transform: none !important;
         background-position: bottom !important;
+
+        @media screen and (orientation:portrait) {
+        }
+
+        @media screen and (orientation:landscape) {
+            background-size: 100% auto !important;
+        }
     }
 }
 
 .hero {
     &__text {
+        letter-spacing: 1em / 100;
+
+        @media screen and (orientation:portrait) {
+            padding-left: 30%;
+            width: 70%;
+            font-size: 2rem;
+            line-height: 2.6rem;
+            letter-spacing: 0.01em;
+            text-align: right;
+            margin-top: 16vw;
+        }
+
         @media screen and (orientation:landscape) {
             font-size: 2.8rem;
-            letter-spacing: 1em / 100;
             line-height: 3.6rem;
             letter-spacing: 0.01em;
             max-width: 40rem;
@@ -80,6 +107,10 @@
     }
 
     &__img {
+        @media screen and (orientation:portrait) {
+            display: none;
+        }
+
         .device, .particles {
             position: absolute;
             top: 0;
@@ -104,14 +135,89 @@
 
 .features {
     @prefix-width: 8rem;
-    &__item {
-        width: 50%;
-        padding-right: 50%;
-        margin-bottom: 10rem;
-        position: relative;
 
-        &:last-child {
-            margin-bottom: 0;
+    &__item {
+        @media screen and (orientation:portrait) {
+            margin-bottom: 2.4rem * 4;
+            padding-top: 2.4rem * 7;
+            position: relative;
+
+            &:after {
+                width: 2.4rem * 5;
+                height: 2.4rem * 5;
+                left: 0;
+                right: 0;
+                margin: auto;
+                background-size: contain;
+                top: 0;
+            }
+        }
+
+        @media screen and (orientation:landscape) {
+            width: 50%;
+            padding-right: 50%;
+            margin-bottom: 10rem;
+            position: relative;
+            min-height: 15rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            &:after {
+                background-size: 15rem;
+                left: calc(~'50% + @{prefix-width} / 2');
+                right: @prefix-width;
+                top: 0;
+                bottom: 0;
+            }
+
+            &_align_right {
+                padding-left: 50%;
+                padding-right: 0;
+
+                .features__caption,
+                .features__text {
+                    padding-right: @prefix-width;
+                    padding-left: @prefix-width / 2;
+                }
+
+                .features__caption {
+                    background-position: right center;
+
+                    &:after {
+                        left: -@prefix-width / 2;
+                    }
+
+                    &:before {
+                        /* right: 2.6rem; */
+                        left: -@prefix-width / 2;
+                    }
+                }
+
+                &:after {
+                    left: @prefix-width;
+                    right: calc(~'50% + @{prefix-width} / 2');
+                }
+            }
+
+            &:nth-child(1) {
+                .features__caption:before {
+                    content: "1";
+                }
+            }
+
+            &:nth-child(2) {
+                .features__caption:before {
+                    content: "2";
+                }
+            }
+
+            &:nth-child(3) {
+                .features__caption:before {
+                    content: "3";
+                }
+            }
         }
 
         &:after {
@@ -120,67 +226,22 @@
             display: block;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: 15rem;
-            left: calc(~'50% + @{prefix-width} / 2');
-            right: @prefix-width;
-            top: 0;
-            bottom: 0;
         }
 
-        &_align_right {
-            padding-left: 50%;
-            padding-right: 0;
-
-            .features__caption,
-            .features__text {
-                padding-right: @prefix-width;
-                padding-left: @prefix-width / 2;
-            }
-
-            .features__caption {
-                background-position: right center;
-
-                &:after {
-                    left: -@prefix-width / 2;
-                }
-
-                &:before {
-                    /* right: 2.6rem; */
-                    left: -@prefix-width / 2;
-                }
-            }
-
-            &:after {
-                left: @prefix-width;
-                right: calc(~'50% + @{prefix-width} / 2');
-            }
-        }
 
         &:nth-child(1) {
-            .features__caption:before {
-                content: "1";
-            }
-
             &:after {
                 background-image: data-uri('components/about/features__constraints.svg');
             }
         }
 
         &:nth-child(2) {
-            .features__caption:before {
-                content: "2";
-            }
-
             &:after {
                 background-image: data-uri('components/about/features__scale.svg');
             }
         }
 
         &:nth-child(3) {
-            .features__caption:before {
-                content: "3";
-            }
-
             &:after {
                 background-image: data-uri('components/about/features__speed.svg');
             }
@@ -188,17 +249,26 @@
     }
 
     &__caption {
-        font-size: 2.8rem;
         line-height: 3.6rem;
         text-align: center;
         color: #076FA8;
         box-sizing: border-box;
-        margin-bottom: 2rem;
         position: relative;
         letter-spacing: 0.01em;
 
-        padding-left: @prefix-width;
-        padding-right: @prefix-width / 2;
+        @media screen and (orientation:portrait) {
+            font-size: 2rem;
+            line-height: 2.6rem;
+            padding: 0 4.8vh;
+            margin-bottom: 4.8vh;
+        }
+
+        @media screen and (orientation:landscape) {
+            font-size: 2.8rem;
+            padding-left: @prefix-width;
+            padding-right: @prefix-width / 2;
+            margin-bottom: 2rem;
+        }
 
         &:before {
             position: absolute;
@@ -213,27 +283,36 @@
             text-align: center;
         }
 
-        &:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: @prefix-width;
+        @media screen and (orientation:landscape) {
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: @prefix-width;
 
-            background-position: left center;
-            background-repeat: no-repeat;
-            background-size: 6rem;
-            background-image: data-uri('components/about/item-prefix.svg');
+                background-position: left center;
+                background-repeat: no-repeat;
+                background-size: 6rem;
+                background-image: data-uri('components/about/item-prefix.svg');
+            }
         }
     }
 
     &__text {
-        padding-left: @prefix-width;
-        padding-right: @prefix-width / 2;
+        @media screen and (orientation:portrait) {
+            font-size: 1.6rem;
+            line-height: 2.1rem;
+        }
 
-        font-size: 2rem;
-        line-height: 2.8rem;
+        @media screen and (orientation:landscape) {
+            padding-left: @prefix-width;
+            padding-right: @prefix-width / 2;
+            font-size: 2rem;
+            line-height: 2.8rem;
+        }
+
         color: #044568;
         text-align: center;
     }
