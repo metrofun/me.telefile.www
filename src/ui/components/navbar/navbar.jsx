@@ -6,18 +6,16 @@ class Navbar extends React.Component {
         super(props);
 
         this.state = routerStore.getState();
-
-        console.log(this.state.parent);
     }
     render() {
-        var items = this._ITEMS.map(function(item) {
+        var items = this._ITEMS.map(function(item, i) {
             var className = 'menu__item navbar__item navbar__item_type_' + item.name;
 
             if (item.url === this.state.parent) {
                 className += ' navbar__item_type_active';
             }
 
-            return <li className={className}>
+            return <li key={i} className={className}>
                 <a className="navbar__link" href={item.url}>
                     <span className="navbar__icon"></span>
                     <span className="navbar__text">{item.name}</span>

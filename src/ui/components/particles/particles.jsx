@@ -5,7 +5,9 @@ class Particles extends React.Component {
         var items = [], i, className;
 
         for (i = 0; i < this.props.quantity; i++) {
-            items.push(<div key={i} className="particles__item" />);
+            items.push(<div key={i} className="particles__item">
+                <div className="particles__item-internal" />
+            </div>);
         }
 
         className = 'particles';
