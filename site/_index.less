@@ -1,0 +1,32 @@
+@light-blue: #2FB8F7;
+@blue: #0288D1;
+@navy: #00446A;
+@white: #F5F5F5;
+@red: #F44336;
+@yellow: #F9C82E;
+@grey: #BDBDBD;
+@green: #01C9A4;
+@fb-color: #39579A;
+@fb-linkedin: #0073B5;
+@fb-twitter: #5AA8DF;
+
+@shadowZ1: 0px 0px 5px rgba(0,0,0,0.30);
+
+@ease-in-out: cubic-bezier(0.22, 1, 0.22, 1);
+@duration: 500ms;
+
+/* @import (css) "http://fonts.googleapis.com/css?family=Roboto"; */
+@import (inline) "../node_modules/normalize.css/normalize.css";
+
+body, html {
+    font-family: Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+
+    @media screen and (orientation:landscape) {
+        font-size: 10px;
+    }
+
+    @media screen and (orientation:portrait) {
+        font-size: 2.5vw;
+    }
+}

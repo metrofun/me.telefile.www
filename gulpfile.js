@@ -23,14 +23,14 @@ var gulp = require('gulp'),
     autoprefix = new LessPluginAutoPrefix({browsers: ["last 2 versions"]}),
 
     SRC_DIR = './src',
-    DEST_DIR = './dest';
+    SITE_DIR = './site';
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
 require("babel/register");
 
 gulp.task('less', function () {
     return gulp.src([
-            SRC_DIR + '/ui/index.less',
+            SITE_DIR + '/_index.less',
             SRC_DIR + '/ui/components/**/*.less'
         ])
         .pipe(concat('index.less'))
@@ -42,7 +42,7 @@ gulp.task('less', function () {
             gutil.log(e);
             this.emit('end');
         })
-        .pipe(gulp.dest(DEST_DIR))
+        .pipe(gulp.dest(SITE_DIR))
         .pipe(livereload());
 });
 
@@ -50,7 +50,7 @@ gulp.task('js', function () {
     watchify.args.debug = true;
     var bundler = watchify(browserify(watchify.args));
 
-    bundler.add(SRC_DIR + '/ui/index.js');
+    bundler.add(SITE_DIR + '/_index.js');
     bundler.transform(reactify).transform(babelify);
 
     gulp.task('js-rebundle', rebundle);
@@ -67,7 +67,7 @@ gulp.task('js', function () {
             .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
             .pipe(sourcemaps.write('./')) // writes .map file
             //
-            .pipe(gulp.dest(DEST_DIR))
+            .pipe(gulp.dest(SITE_DIR))
             .pipe(livereload());
     }
 
@@ -80,7 +80,7 @@ gulp.task('watch', function () {
 
 gulp.task('static-server', function (next) {
     var NodeServer = require('node-static'),
-        server = new NodeServer.Server(DEST_DIR),
+        server = new NodeServer.Server(SITE_DIR),
         port = 8080;
 
     require('http').createServer(function (request, response) {
@@ -94,14 +94,14 @@ gulp.task('static-server', function (next) {
 });
 
 gulp.task('renderComponentToString', function(){
-    return gulp.src(SRC_DIR + '/ui/index.html')
+    return gulp.src(SITE_DIR + '/_index.html')
         .pipe(replace(/<!-- renderComponentToString ([a-z/0-9]+) -->/g, function (matched, componentName) {
             var component = require(SRC_DIR + '/ui/components/' + componentName  + '.jsx');
 
             return React.renderToString(React.createElement(component));
         }))
         .pipe(rename('index.html'))
-        .pipe(gulp.dest(DEST_DIR));
+        .pipe(gulp.dest(SITE_DIR));
 });
 
 gulp.task('development', function () {
@@ -119,9 +119,9 @@ gulp.task('production', function () {
 });
 
 gulp.task('uglify', ['js'], function () {
-    return gulp.src(DEST_DIR + '/index.js')
+    return gulp.src(SITE_DIR + '/index.js')
         .pipe(uglify())
-        .pipe(gulp.dest(DEST_DIR));
+        .pipe(gulp.dest(SITE_DIR));
 });
 
 gulp.task('test', function () {
@@ -138,7 +138,7 @@ gulp.task('publish', [
     'less',
     'uglify'
 ], function () {
-     return gulp.src(DEST_DIR + '/**/*').pipe(ghPages({
+     return gulp.src(SITE_DIR + '/**/*').pipe(ghPages({
         cacheDir: '.gulp-gh-pages'
      }));
 });

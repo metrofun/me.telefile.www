@@ -4,6 +4,7 @@ key.pem
 dest/index.js.map
 node_modules
 npm-debug.log
-dest/index.js
-dest/index.css
-dest/index.html
+site/index.css
+site/index.html
+site/index.js
+site/index.js.map
