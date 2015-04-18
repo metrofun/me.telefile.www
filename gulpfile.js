@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    map = require('map-stream'),
     less = require('gulp-less'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
@@ -93,14 +94,13 @@ gulp.task('static-server', function (next) {
     });
 });
 
-gulp.task('renderComponentToString', function(){
-    return gulp.src(SITE_DIR + '/_index.html')
-        .pipe(replace(/<!-- renderComponentToString ([a-z/0-9]+) -->/g, function (matched, componentName) {
-            var component = require(SRC_DIR + '/ui/components/' + componentName  + '.jsx');
-
-            return React.renderToString(React.createElement(component));
+gulp.task('renderStaticPages', function(){
+    return gulp.src(SITE_DIR + '/**/_*.html.js')
+        .pipe(map(function(file, cb) {
+            file.contents = new Buffer(require(file.path));
+            file.path = file.base + '/' + file.relative.replace(/_(.+)\.html.js/, '$1.html');
+            cb(null, file);
         }))
-        .pipe(rename('index.html'))
         .pipe(gulp.dest(SITE_DIR));
 });
 
@@ -134,7 +134,7 @@ gulp.task('test', function () {
 });
 
 gulp.task('publish', [
-    'renderComponentToString',
+    'renderStaticPages',
     'less',
     'uglify'
 ], function () {
@@ -144,7 +144,7 @@ gulp.task('publish', [
 });
 
 gulp.task('default', [
-    'renderComponentToString',
+    'renderStaticPages',
     'less',
     'js',
     'static-server',

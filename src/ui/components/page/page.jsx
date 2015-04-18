@@ -17,7 +17,7 @@ class Page extends React.Component {
 
         this.stars_ = <div className="page__stars">
             {Array.apply([], {length: 10}).map((value, i) =>
-                <div className={'page__star page__star_type_' + i} />)}
+                <div key={i} className={'page__star page__star_type_' + i} />)}
         </div>;
     }
     componentWillMount() {
@@ -79,5 +79,4 @@ class Page extends React.Component {
         );
     }
 }
-
 module.exports = Page;
