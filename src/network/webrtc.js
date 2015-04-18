@@ -212,17 +212,19 @@ ReactiveWebrtc.prototype = {
 };
 
 ReactiveWebrtc.isSupported = function() {
-    var domPrefixes  = ['', 'webkit', 'moz', 'o', 'ms'];
+    if (typeof window !== 'undefined') {
+        var domPrefixes  = ['', 'webkit', 'moz', 'o', 'ms'];
 
-    for (var i = 0, l = domPrefixes.length; i < l; i++) {
-        var PeerConnectionConstructor = window[domPrefixes[i] + 'RTCPeerConnection'];
+        for (var i = 0, l = domPrefixes.length; i < l; i++) {
+            var PeerConnectionConstructor = window[domPrefixes[i] + 'RTCPeerConnection'];
 
-        if (PeerConnectionConstructor) {
-            var peerConnection = new PeerConnectionConstructor({
-                'iceServers': [{ 'url': 'stun:0' }]
-            });
+            if (PeerConnectionConstructor) {
+                var peerConnection = new PeerConnectionConstructor({
+                    'iceServers': [{ 'url': 'stun:0' }]
+                });
 
-            return 'createDataChannel' in peerConnection;
+                return 'createDataChannel' in peerConnection;
+            }
         }
     }
     return false;

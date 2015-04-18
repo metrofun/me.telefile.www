@@ -5,6 +5,6 @@ dest/index.js.map
 node_modules
 npm-debug.log
 site/index.css
-site/index.html
+site/**/index.html
 site/index.js
 site/index.js.map

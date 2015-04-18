@@ -22,7 +22,7 @@ class FileStore extends Store {
             }
         }, this);
     }
-    getDefaultState() {
+    getInitialState() {
         return { state: 'PENDING' };
     }
     _onError() {

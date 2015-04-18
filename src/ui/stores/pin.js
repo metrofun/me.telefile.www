@@ -25,7 +25,7 @@ class Pin extends Store {
             }
         }, this);
     }
-    getDefaultState() {
+    getInitialState() {
         return {
             pin: '',
             isValid: false

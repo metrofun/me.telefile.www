@@ -12,17 +12,17 @@ var React = require('react'),
     Header = require('../header/header.jsx');
 
 class Page extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        this.state = routerStore.getState();
 
         this.stars_ = <div className="page__stars">
             {Array.apply([], {length: 10}).map((value, i) =>
                 <div key={i} className={'page__star page__star_type_' + i} />)}
         </div>;
     }
-    componentWillMount() {
-        this.setState(routerStore.getState());
-
+    componentDidMount() {
         this.routerSubscription_ = routerStore.subscribeOnNext(function(state) {
             var source;
 

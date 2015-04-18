@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    Navbar = require('../navbar/navbar.jsx');
 
 class Header extends React.Component {
     _onShare(e) {
@@ -40,30 +41,7 @@ class Header extends React.Component {
                         </li>
                     </ul>
                 </div>
-                <div className="navbar menu menu_col_4 menu_align_left">
-                    <input className="menu__checkbox" type="checkbox" id="menu__checkbox-1"/>
-                    <label className="menu__toggle navbar__toggle" htmlFor="menu__checkbox-1"></label>
-                    <ul className="menu__list">
-                        <li className="menu__item navbar__item navbar__item_type_active navbar__item_type_home">
-                            <a className="navbar__link" href="/">
-                                <span className="navbar__icon"></span>
-                                <span className="navbar__text">Home</span>
-                            </a>
-                        </li>
-                        <li className="menu__item navbar__item navbar__item_type_about">
-                            <a className="navbar__link" href="/about">
-                                <span className="navbar__icon"></span>
-                                <span className="navbar__text">About</span>
-                            </a>
-                        </li>
-                        <li className="menu__item navbar__item navbar__item_type_support">
-                            <a className="navbar__link" href="/support">
-                                <span className="navbar__icon"></span>
-                                <span className="navbar__text">Support</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <Navbar />
             </div>
         );
     }

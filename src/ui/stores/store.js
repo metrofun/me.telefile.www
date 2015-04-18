@@ -4,11 +4,11 @@ var Rx = require('rx'),
 module.exports = class Store extends Rx.AnonymousObservable {
     constructor() {
         this.subject_ = new Rx.ReplaySubject(1);
-        this.replaceState(this.getDefaultState());
+        this.replaceState(this.getInitialState());
 
         super((observer) => this.subject_.subscribe(observer) );
     }
-    getDefaultState() {
+    getInitialState() {
         return {};
     }
     getState() {

@@ -1,5 +1,11 @@
-var React = require('react');
+var React = require('react'),
+    routerStore = require('../src/ui/stores/router.js');
 
-module.exports = '<!DOCTYPE html>\n' + React.renderToString(React.createElement(
+routerStore.setState({
+    pathname: '/',
+    parent: '/'
+});
+
+module.exports = '<!DOCTYPE html>\n' + React.renderToStaticMarkup(React.createElement(
     require('../src/ui/components/document/document.jsx')
 ));
