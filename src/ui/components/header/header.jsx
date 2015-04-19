@@ -22,9 +22,11 @@ class Header extends React.Component {
         return (
             <div className="header">
                 <div className="brand">
-                    <div className="brand__tele">tele</div>
-                    <div className="brand__logo"></div>
-                    <div className="brand__file">file</div>
+                    <a class="brand_link" href="/">
+                        <div className="brand__tele">tele</div>
+                        <div className="brand__logo"></div>
+                        <div className="brand__file">file</div>
+                    </a>
                 </div>
                 <div className="share menu menu_col_4 menu_align_right">
                     <input className="menu__checkbox" id="menu__checkbox-2" type="checkbox" />

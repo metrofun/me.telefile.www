@@ -4,6 +4,7 @@
     color: @white;
     -webkit-tap-highlight-color: transparent;
     display: flex;
+    position: relative;
 
 
     &_type_completed {
@@ -248,9 +249,9 @@
 
     @media screen and (orientation:portrait) {
         position: absolute;
-        bottom: 0;
         left: 0;
         right: 0;
+        bottom: 0;
 
         &:after {
             z-index: -1;
