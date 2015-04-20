@@ -22,12 +22,15 @@ module.exports = class extends React.Component {
             timeleft: MAX_WAITING_TIME,
             title: '----'
         });
-        sender.getPin().then((title) => this.setState({ title }));
+        sender.getPin().then(
+            (title) => this.setState({ title }),
+            () => dispatcher.onNext({ type: actions.PIN_ERROR })
+        );
 
-        sender.getProgress().first().subscribeOnNext(() => {
+        sender.getProgress().first().subscribe(() => {
             this.setState({ mode: SEND_MODE });
             this._clearWaitingTick();
-        });
+        }, () => dispatcher.onNext({ type: actions.FILE_ERROR }));
 
         this._intervalId = setInterval(this._waitingTick.bind(this), WAITING_TIME_STEP);
     }

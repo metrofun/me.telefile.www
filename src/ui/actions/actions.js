@@ -10,5 +10,6 @@ module.exports = keyMirror({
     PIN_CHANGED: null,
     PIN_INVALID: null,
     PIN_VALID: null,
+    PIN_ERROR: null,
     RESET: null
 });

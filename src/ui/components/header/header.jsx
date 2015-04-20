@@ -22,7 +22,7 @@ class Header extends React.Component {
         return (
             <div className="header">
                 <div className="brand">
-                    <a class="brand_link" href="/">
+                    <a className="brand_link" href="/">
                         <div className="brand__tele">tele</div>
                         <div className="brand__logo"></div>
                         <div className="brand__file">file</div>

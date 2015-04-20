@@ -45,12 +45,11 @@ Signaller.prototype = {
         return this._reactiveTransport.getWriteBus();
     },
     _initPin: function() {
-        var self = this;
-
-        this._pinPromise = new Promise(function (resolve, reject) {
-            self._reactiveTransport.getReadStream().take(1).subscribe(function (message) {
-                resolve(message.pin);
-            }, (e) => reject(e));
+        this._pinPromise = new Promise((resolve, reject) => {
+            this._reactiveTransport.getReadStream().take(1).subscribe(
+                (message) => resolve(message.pin),
+                (e) => reject(e)
+            );
         });
     }
 };
