@@ -26,7 +26,7 @@ var gulp = require('gulp'),
     SRC_DIR = './src',
     SITE_DIR = './site';
 
-require('node-jsx').install({extension: '.jsx', harmony: true});
+require('node-jsx').install({extension: '.jsx'});
 require("babel/register");
 
 gulp.task('less', function () {
@@ -77,6 +77,7 @@ gulp.task('js', function () {
 
 gulp.task('watch', function () {
     gulp.watch(SRC_DIR + '/**/*.less', ['less']);
+    gulp.watch(SITE_DIR + '/**/_*.html.js', ['renderStaticPages']);
 });
 
 gulp.task('static-server', function (next) {
@@ -101,7 +102,8 @@ gulp.task('renderStaticPages', function(){
             file.path = file.base + '/' + file.relative.replace(/_(.+)\.html.js/, '$1.html');
             cb(null, file);
         }))
-        .pipe(gulp.dest(SITE_DIR));
+        .pipe(gulp.dest(SITE_DIR))
+        .pipe(livereload());
 });
 
 gulp.task('development', function () {

@@ -2,6 +2,13 @@ var React = require('react'),
     Page = require('../page/page.jsx');
 
 class DocumentComponent extends React.Component {
+    _getContent() {
+        // hack to set checksum to the content,
+        // so that content can be reused in client side
+        return {
+            __html: React.renderToString(<Page/>)
+        };
+    }
     render() {
         return (<html>
             <head>
@@ -38,9 +45,7 @@ class DocumentComponent extends React.Component {
                 <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
                 <title>TeleFile.Me</title>
             </head>
-            <body>
-                <Page />
-            </body>
+            <body dangerouslySetInnerHTML={this._getContent()}></body>
             <script async src="/index.js"></script>
         </html>);
     }
