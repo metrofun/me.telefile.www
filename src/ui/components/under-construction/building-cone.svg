@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="162px" height="163px" viewBox="0 0 162 163" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M0.458759102,82.9011542 L32.6934023,2.56686689 C33.5594854,0.408438618 35.2975955,0.418161439 35.2975955,0.418161439 C35.2975955,0.418161439 37.0656985,0.437648699 37.952722,2.61068201 C48.8315729,29.2617285 70.5892745,82.5638215 70.5892745,82.5638215"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="desktop" sketch:type="MSLayerGroup" transform="translate(-1892.000000, -4016.000000)">
+            <g id="Under-construction" transform="translate(1367.000000, 3846.000000)">
+                <g id="logo" transform="translate(530.000000, 176.000000)">
+                    <g id="Oval-153-+-Under-construction">
+                        <circle id="Oval-153" fill="#0288D1" sketch:type="MSShapeGroup" cx="77" cy="77" r="77"></circle>
+                        <g id="Under-construction" transform="translate(30.000000, 18.000000)">
+                            <g id="Group">
+                                <path d="M11.0119506,84.2192178 C11.0119506,84.2192178 31.5796569,31.8258219 42.3245379,4.61981692 C43.190621,2.42689735 46.0772088,2.31800584 46.0772088,2.31800584 C46.0772088,2.31800584 48.4624037,2.41205893 49.3494272,4.61981692 C60.228278,31.6967424 81.142466,83.8764946 81.142466,83.8764946" id="Path-1" fill="#FFB74D" sketch:type="MSShapeGroup"></path>
+                                <g id="New-Mask-Group" transform="translate(10.553191, 0.000000)">
+                                    <g>
+                                        <mask id="mask-2" sketch:name="Mask" fill="white">
+                                            <use xlink:href="#path-1"></use>
+                                        </mask>
+                                        <use id="Mask" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                                        <rect id="Rectangle-3" fill="#F5F5F5" sketch:type="MSShapeGroup" mask="url(#mask-2)" x="0" y="49.4897959" width="71.893617" height="13.1972789"></rect>
+                                        <rect id="Rectangle-11" fill="#F5F5F5" sketch:type="MSShapeGroup" mask="url(#mask-2)" x="0" y="23.755102" width="71.893617" height="13.1972789"></rect>
+                                    </g>
+                                </g>
+                                <rect id="Rectangle-1" fill="#FFB74D" sketch:type="MSShapeGroup" x="4.61702128" y="83.8027211" width="83.106383" height="13.1972789" rx="3"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="progress-3" transform="translate(76.000000, 76.000000) scale(-1, 1) translate(-76.000000, -76.000000) " sketch:type="MSShapeGroup">
+                        <path d="M76,152 C117.973641,152 152,117.973641 152,76 C152,73.5105303 151.880305,71.0490169 151.646356,68.6209007 C150.548965,57.2312584 146.937648,46.576456 141.373977,37.2180645 C136.734992,29.4150431 130.738688,22.5133145 123.710594,16.8384074 C110.66725,6.30642387 94.0700969,0 76,0 C34.026359,0 0,34.026359 0,76 C0,117.973641 34.026359,152 76,152 Z" id="Oval-11" stroke="#02D1AA" stroke-width="9"></path>
+                        <path d="M81.1722019,0.440522791 L81.1779789,0.173617698 C83.6676451,0.341127192 86.1244536,0.628533634 88.5426791,1.03011146 L88.5426791,1.03011146 L88.5093952,1.29495864 C86.1002056,0.894524797 83.6525737,0.607812056 81.1722019,0.440522791 Z" id="Oval-12" stroke="#00446A" stroke-width="10"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
