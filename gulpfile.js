@@ -138,6 +138,7 @@ gulp.task('test', function () {
 gulp.task('publish', [
     'renderStaticPages',
     'less',
+    'js',
     'uglify'
 ], function () {
      return gulp.src(SITE_DIR + '/**/*').pipe(ghPages({
