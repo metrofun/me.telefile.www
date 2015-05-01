@@ -74,8 +74,9 @@ class Page extends React.Component {
                 {this.getContent_()}
                 <div className="footer">
                     <div className="info">made with<i className="info__heart">❤</i>by <a
+                            target="_blank"
                             className="info__link"
-                            href="https://twitter.com/MeTroFuN">@metrofun</a></div>
+                            href="http://twitter.com/MeTroFuN">@metrofun</a></div>
                 </div>
             </div>
         );

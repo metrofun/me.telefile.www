@@ -21,15 +21,18 @@ class DocumentComponent extends React.Component {
                 <meta name="author" content="Dmytrii Shchadei" />
 
                 <meta property="og:site_name" content="TeleFile.Me" />
-                <meta property="og:title" content="TeleFile.Me – send a file in two clicks" />
+                <meta property="og:title" content="TeleFile.Me – send files peer-to-peer in two clicks" />
                 <meta property="og:description" content="Seamlessly share files between all your friends and devices" />
                 <meta property="og:type" content="website" />
+                <meta property="og:image" content="/assets/twitter-card-image.png" />
+                <meta property="og:image:type" content="image/png" />
+                <meta property="og:image:width" content="750" />
+                <meta property="og:image:height" content="260" />
 
                 <meta name="twitter:card" content="product" />
                 <meta name="twitter:site" content="@TeleFileMe" />
                 <meta name="twitter:creator" content="@metrofun" />
                 <meta name="twitter:domain" content="telefile.me" />
-                <meta name="twitter:title" content="TeleFile.Me – peer-to-peer file sharing tool" />
 
                 <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png" />
                 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114.png" />
