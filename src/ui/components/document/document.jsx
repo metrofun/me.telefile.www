@@ -47,7 +47,7 @@ class DocumentComponent extends React.Component {
                 <meta name="msapplication-TileColor" content="#0288D1" />
                 <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
 
-                <link rel="manifest" href="/manifest.json">
+                <link rel="manifest" href="/manifest.json" />
 
                 <title>TeleFile.Me</title>
             </head>
