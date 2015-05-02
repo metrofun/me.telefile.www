@@ -18,7 +18,7 @@ class Button extends React.Component {
                 <input onChange={this.onFileSelect_} className="button__input" type="file" />
             </label>
             <label className="button__icon">
-                <input onChange={this.onFileSelect_} className="button__input" type="file" accept="image/*;capture=camera" />
+                <input onChange={this.onFileSelect_} className="button__input" type="file" accept="image/*" />
             </label>
         </div>;
     }

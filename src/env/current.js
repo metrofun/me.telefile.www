@@ -1,1 +1,1 @@
-development.js
+production.js
