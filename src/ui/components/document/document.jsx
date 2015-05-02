@@ -14,7 +14,7 @@ class DocumentComponent extends React.Component {
             <head>
                 <meta charSet="UTF-8" />
                 <link href="/index.css" rel="stylesheet" type="text/css" />
-                <meta name="viewport" content="width=device-width,initial-scale=1" />
+                <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no, maximum-scale=1.0" />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
                 <meta name="description" content="TeleFile.Me is a free service for peer-to-peer file share" />
                 <meta name="keywords" content="file share, send file, from desktop to mobile, webrtc" />
@@ -46,6 +46,9 @@ class DocumentComponent extends React.Component {
                 <meta name="application-name" content="TeleFile"/>
                 <meta name="msapplication-TileColor" content="#0288D1" />
                 <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+
+                <link rel="manifest" href="/manifest.json">
+
                 <title>TeleFile.Me</title>
             </head>
             <body dangerouslySetInnerHTML={this._getContent()}></body>
