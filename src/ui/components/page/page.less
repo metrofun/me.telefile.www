@@ -271,14 +271,20 @@
 }
 
 .info {
+    color: fade(@white, 60);
+
     &__link {
         margin: -1em;
         padding: 1em;
         color: inherit;
         text-decoration: none;
 
-        &:hover {
+        &:hover, &:focus {
             color: @white;
+        }
+
+        &:visited {
+            color: inherit;
         }
     }
 
@@ -288,7 +294,6 @@
     }
 
     @media screen and (orientation:landscape) {
-        color: fade(@white, 60%);
         font-size: 1.5rem;
         font-style: italic;
         text-align: right;
@@ -303,7 +308,6 @@
     @media screen and (orientation:portrait) {
         text-align: center;
         font-size: 1.2rem;
-        color: fade(@white, 60);
         height: 8vw;
         line-height: 8vw;
         //hard code: center for current text,
