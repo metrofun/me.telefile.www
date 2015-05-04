@@ -23,23 +23,28 @@ class DocumentComponent extends React.Component {
                 <link href="/index.css" rel="stylesheet" type="text/css" />
                 <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no, maximum-scale=1.0" />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-                <meta name="description" content="TeleFile.Me is a free service for peer-to-peer file share" />
+                <meta name="description" content="TeleFile is the peer-to-peer (P2P) file sharing tool that has no limits. Send large videos, send photos and send large files of any type. Sharing files with your friends or between devices was never this easy." />
                 <meta name="keywords" content="file share, send file, from desktop to mobile, webrtc" />
                 <meta name="author" content="Dmytrii Shchadei" />
 
                 <meta property="og:site_name" content="TeleFile.Me" />
                 <meta property="og:title" content="TeleFile.Me – send files peer-to-peer in two clicks" />
-                <meta property="og:description" content="Seamlessly share files between all your friends and devices" />
+                <meta property="og:description" content="TeleFile is the peer-to-peer (P2P) file sharing tool that has no limits. Send large videos, send photos and send large files of any type. Sharing files with your friends or between devices was never this easy." />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="/assets/twitter-card-image.png" />
+                <meta property="og:url" content="http://telefile.me/" />
+                <meta property="og:image" content="http://telefile.me/assets/twitter-card-image.png" />
                 <meta property="og:image:type" content="image/png" />
-                <meta property="og:image:width" content="750" />
-                <meta property="og:image:height" content="260" />
+                <meta property="og:image:width" content="940" />
+                <meta property="og:image:height" content="492" />
 
                 <meta name="twitter:card" content="product" />
                 <meta name="twitter:site" content="@TeleFileMe" />
                 <meta name="twitter:creator" content="@metrofun" />
                 <meta name="twitter:domain" content="telefile.me" />
+                <meta name="twitter:description" content="TeleFile is the peer-to-peer (P2P) file sharing tool that has no limits. Send large videos, send photos and send large files of any type. Sharing files with your friends or between devices was never this easy."/>
+                <meta name="twitter:image" content="http://telefile.me/assets/twitter-card-image.png" />
+                <meta name="twitter:image:width" content="940" />
+                <meta name="twitter:image:height" content="492" />
 
                 <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png" />
                 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114.png" />

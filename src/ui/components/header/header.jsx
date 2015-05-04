@@ -36,7 +36,7 @@ class Header extends React.Component {
                             <a className="share__link" title="Share on Twitter" target="_blank" href="https://twitter.com/home?status=TeleFile.Me%20%E2%80%93%20transfer%20files%20peer-to-peer%20to%20another%20browser%20via%20%40TeleFileMe%20%23WebRTC">&nbsp;</a>
                         </li>
                         <li className="menu__item share__item share__facebook">
-                            <a className="share__link" title="Share on Facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://telefile.me">&nbsp;</a>
+                            <a className="share__link" title="Share on Facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://telefile.me">&nbsp;</a>
                         </li>
                         <li className="menu__item share__item share__linkedin">
                             <a className="share__link" title="Share on LinkedIn" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://telefile.me&title=TeleFile.Me%20%E2%80%93%20Peer-to-peer%20file%20sharing%20tool&summary=&source=">&nbsp;</a>
