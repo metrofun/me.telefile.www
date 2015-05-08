@@ -22,9 +22,9 @@ class Home extends React.Component {
         return <div className="layout home">
             <div className="layout__main">
                 <div className="lead">
-                    <div className="lead__text">no limits, no cloud</div>
+                    <div className="lead__text">from peer to peer</div>
                     <div className="lead__hero">Send a File<br />in Two Clicks</div>
-                    <div className="lead__text lead__text_align_right">from peer to peer</div>
+                    <div className="lead__text lead__text_align_right">no limits, no cloud</div>
                 </div>
                 <Mobile />
                 <Particles />
