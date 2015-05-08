@@ -3,7 +3,7 @@ var React = require('react'),
     Env = require('../src/env/current.js'),
     Page;
 
-Rx.config.Promise = Promise;
+Rx.config.Promise = window.Promise;
 if (Env.IS_DEBUG) {
     Rx.Observable.prototype.log = function (ns) {
         ns = ns || '';
