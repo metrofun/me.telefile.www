@@ -33,7 +33,7 @@ class Pin extends Store {
     }
     isValid_(pin) {
         // should be in sync with PIN_LENGTH
-        return /^[a-zA-Z0-9]{6}$/.test(pin);
+        return /^[a-zA-Z0-9]{4}$/.test(pin);
     }
 }
 
