@@ -4,7 +4,7 @@ class Button extends React.Component {
     render() {
         if (this.props.onClick) {
             return <div className="button">
-                <span onClick={this.props.onClick} className="button__text">
+                <span role="button" onClick={this.props.onClick} className="button__text">
                     {this.props.children}
                 </span>
             </div>;

@@ -1,0 +1,142 @@
+.send {
+    &__button {
+        transition: opacity 100ms @ease-in-out;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-top: auto;
+        cursor: pointer;
+
+        &:active {
+            opacity: 0.7;
+        }
+
+        @media screen and (orientation:portrait) {
+            background-size: contain;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        @media screen and (orientation:landscape) {
+            .ripple(5);
+            overflow: hidden;
+            box-shadow: @shadowZ1;
+            background-size: auto 2.5rem;
+            border-radius: 5rem;
+            width: 5rem;
+            height: 5rem;
+            border: 0.3rem solid white;
+            background-color: rgba(0,0,0,0.2);
+
+            &:hover {
+                background-color: rgba(255,255,255,0.1);
+            }
+        }
+
+        &_type_link,
+        &_type_pin {
+            left: 0;
+
+            @media screen and (orientation:landscape) {
+                transform: translateX(-200%);
+                margin: auto;
+            }
+
+            @media screen and (orientation:portrait) {
+                transform: translate(-100%, 100%);
+            }
+        }
+
+        &_type_link {
+            background-image: data-uri('src/ui/components/send/link.svg');
+        }
+
+        &_type_pin {
+            @media screen and (orientation:landscape) {
+                background-size: 2.5rem;
+            }
+            background-image: data-uri('src/ui/components/send/pin.svg');
+        }
+
+        &_type_copy {
+            background-image: data-uri('src/ui/components/send/copy.svg');
+            right: 0;
+
+
+            @media screen and (orientation:landscape) {
+                transform: translateX(200%);
+                margin: auto;
+            }
+
+            @media screen and (orientation:portrait) {
+                transform: translate(100%, 100%);
+            }
+
+        }
+    }
+
+    @amplitude: 2rem;
+    &__spinner {
+        display: block;
+        position: relative;
+
+        & > span {
+            background-color: @yellow;
+            height: 0.5rem;
+            width: 2rem;
+            border-radius: 0.1rem;
+            margin: 0.3rem;
+            animation-fill-mode: both;
+            display: block;
+            float: left;
+            animation: line-scale 1s 0.1s infinite cubic-bezier(.2, .68, .18, 1.08);
+
+            &:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            &:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            &:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+        }
+    }
+
+    @keyframes line-scale {
+        0% { transform: scaley(1); }
+
+        50% { transform: scaley(0.5); }
+
+        100% { transform: scaley(1); }
+    }
+
+    .line-scale > div {
+    }
+
+    &__link {
+        display: block;
+        line-height: 2rem;
+        padding-bottom: 0.5rem;
+    }
+    &__link-domain {
+        text-transform: none;
+        font-size: 2rem;
+        display: block;
+    }
+    &__link-pin {
+        font-size: 5rem;
+        line-height: 5rem;
+    }
+}

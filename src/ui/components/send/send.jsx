@@ -10,20 +10,26 @@ var React = require('react'),
 
     WAIT_MODE = 'wait mode',
     SEND_MODE = 'send mode',
+    LINK_SHARE = 'link shareType',
+    PIN_SHARE = 'pin shareType',
     WAITING_TIME_STEP = 1000,
     MAX_WAITING_TIME = 10 * 60;
 
-module.exports = class extends React.Component {
+class Send extends React.Component {
     componentWillMount() {
         var sender = fileStore.getState().sender;
 
         this.setState({
             mode: WAIT_MODE,
-            timeleft: MAX_WAITING_TIME,
-            title: '----'
+            shareType: PIN_SHARE,
+            timeleft: MAX_WAITING_TIME
         });
         sender.getPin().then(
-            (title) => this.setState({ title }),
+            (pin) => {
+                this.setState({ pin });
+                // TODO potential memory lick, if unmounted before pin arrived
+                this._intervalId = setInterval(this._waitingTick.bind(this), WAITING_TIME_STEP);
+            },
             () => dispatcher.onNext({ type: actions.PIN_ERROR })
         );
 
@@ -31,11 +37,26 @@ module.exports = class extends React.Component {
             this.setState({ mode: SEND_MODE });
             this._clearWaitingTick();
         }, () => dispatcher.onNext({ type: actions.FILE_ERROR }));
-
-        this._intervalId = setInterval(this._waitingTick.bind(this), WAITING_TIME_STEP);
     }
     componentWillUnmount() {
         this._clearWaitingTick();
+    }
+    _selectTitle() {
+        var text =  this.refs.title.getDOMNode(),
+            range,
+            selection;
+
+        if(document.body.createTextRange){ //ms
+            range = document.body.createTextRange();
+            range.moveToElementText(text);
+            range.select();
+        }else if(window.getSelection){ //all others
+            selection = window.getSelection();
+            range = document.createRange();
+            range.selectNodeContents(text);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
     }
     _pad(value) {
         return value < 10 ? '0' + value:value;
@@ -61,18 +82,59 @@ module.exports = class extends React.Component {
     _cancel() {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
+    _toggleShareType() {
+        this.setState({
+            shareType: this.state.shareType === PIN_SHARE ? LINK_SHARE:PIN_SHARE
+        });
+    }
+    _getLinkShareTitle() {
+        return <span className="send__link">
+            <span className="send__link-domain">telefile.me/</span>
+            <span className="send__link-pin">{this.state.pin}</span>
+        </span>;
+    }
     render() {
+        var title, subtitle, buttons;
         if (this.state.mode === WAIT_MODE) {
-            return <div className="layout">
+            if (this.state.pin) {
+                if (this.state.shareType === LINK_SHARE) {
+                    title = this._getLinkShareTitle();
+                    subtitle = 'Link works only while this page is opened';
+                } else if (this.state.shareType === PIN_SHARE) {
+                    title = this.state.pin;
+                    subtitle = 'copy above pin on another device';
+                }
+                buttons = [
+                    <div
+                        className={'send__button send__button_type_' + (this.state.shareType === LINK_SHARE ? 'pin':'link')}
+                        role="button"
+                        onClick={this._toggleShareType.bind(this)}
+                        aria-label="switch pin or url"></div>,
+                    <div className="send__button send__button_type_copy"
+                        role="button"
+                        onClick={this._selectTitle.bind(this)}
+                        aria-label="copy pin or url"></div>
+                ];
+            } else {
+                title = <span className="send__spinner">
+                    {new Array(5).join(' ').split('').map(() => <span/>)}
+                </span>;
+            }
+            return <div className="layout send">
                 <div className="layout__title">Waiting for receiver</div>
                 <div className="layout__main">
                     <Mobile />
                     <Process
                         progress={1 - this.state.timeleft / MAX_WAITING_TIME}
-                        title={this.state.title}
-                        subtitle="copy above pin on another device"
-                        footer={this._formatTimeleft(this.state.timeleft)}
-                    />
+                        title={<span
+                            ref="title"
+                            onClick={this._selectTitle.bind(this)}>
+                            {title}
+                        </span>}
+                        subtitle={subtitle}
+                        footer={this._formatTimeleft(this.state.timeleft)}>
+                        {buttons}
+                    </Process>
                     <Desktop />
                 </div>
                 <div className="controls">
@@ -84,3 +146,7 @@ module.exports = class extends React.Component {
         }
     }
 };
+
+Send.defaultProps = {mode: Send.LINK_MODE_};
+
+module.exports = Send;

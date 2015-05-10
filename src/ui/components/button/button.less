@@ -15,7 +15,7 @@
         pointer-events: none;
         transform: scale(@scale);
         opacity: 0;
-        transition: all (@scale / 10 * 500ms) linear;
+        transition: transform (@scale / 10 * 500ms) linear, opacity (@scale / 10 * 500ms) linear;
     }
 
     &:active:before {
@@ -36,7 +36,7 @@
     @media screen and (orientation:landscape) {
         font-size: 2.2rem;
         width: 18.2rem;
-        border: 3px solid @white;
+        border: 0.3rem solid @white;
         box-shadow: @shadowZ1;
         background-color: rgba(0,0,0,0.10);
         line-height: 3rem;

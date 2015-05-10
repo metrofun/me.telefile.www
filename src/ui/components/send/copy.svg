@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="26px" height="29px" viewBox="0 0 26 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2 (9961) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="mobile" sketch:type="MSLayerGroup" transform="translate(-1550.000000, -368.000000)" filter="url(#filter-1)" fill="#FFFFFF">
+            <g id="waiting-for-recevier---code" transform="translate(1242.000000, 0.000000)" sketch:type="MSShapeGroup">
+                <path d="M326.684211,369 L311.526316,369 C310.130526,369 309,370.098409 309,371.454545 L309,388.636364 L311.526316,388.636364 L311.526316,371.454545 L326.684211,371.454545 L326.684211,369 L326.684211,369 Z M330.473684,373.909091 L316.578947,373.909091 C315.183158,373.909091 314.052632,375.0075 314.052632,376.363636 L314.052632,393.545455 C314.052632,394.901591 315.183158,396 316.578947,396 L330.473684,396 C331.869474,396 333,394.901591 333,393.545455 L333,376.363636 C333,375.0075 331.869474,373.909091 330.473684,373.909091 L330.473684,373.909091 Z M330.473684,393.545455 L316.578947,393.545455 L316.578947,376.363636 L330.473684,376.363636 L330.473684,393.545455 L330.473684,393.545455 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -76,7 +76,10 @@ gulp.task('js', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(SRC_DIR + '/**/*.less', ['less']);
+    gulp.watch([
+        SRC_DIR + '/**/*.less',
+        SRC_DIR + '/ui/components/**/*.less'
+    ], ['less']);
     gulp.watch(SITE_DIR + '/**/_*.html.js', ['renderStaticPages']);
 });
 

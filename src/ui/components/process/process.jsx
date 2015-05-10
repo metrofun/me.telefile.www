@@ -16,6 +16,7 @@ module.exports = class extends React.Component {
             <div className="process__footer">
                 {this.props.footer}
             </div>
+            {this.props.children}
         </div>;
     }
 };
