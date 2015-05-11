@@ -11,5 +11,6 @@ module.exports = keyMirror({
     PIN_INVALID: null,
     PIN_VALID: null,
     PIN_ERROR: null,
-    RESET: null
+    RESET: null,
+    SEND_OPTIONS_CHANGED: null
 });

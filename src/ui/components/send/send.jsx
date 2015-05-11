@@ -2,6 +2,7 @@ var React = require('react'),
     dispatcher = require('../../dispatcher/dispatcher.js'),
     actions = require('../../actions/actions.js'),
     fileStore = require('../../stores/file.js'),
+    optionsStore = require('../../stores/options.js'),
     Process = require('../process/process.jsx'),
     Button = require('../button/button.jsx'),
     Mobile = require('../mobile/mobile.jsx'),
@@ -17,13 +18,18 @@ var React = require('react'),
 
 class Send extends React.Component {
     componentWillMount() {
-        var sender = fileStore.getState().sender;
+        var sender = fileStore.getState().sender,
+            {send} = optionsStore.getState(),
+            shareType = send && send.shareType;
 
         this.setState({
             mode: WAIT_MODE,
-            shareType: PIN_SHARE,
+            shareType: shareType || PIN_SHARE,
             timeleft: MAX_WAITING_TIME
         });
+
+        optionsStore.subscribeOnNext(({send}) => send && this.setState(send));
+
         sender.getPin().then(
             (pin) => {
                 this.setState({ pin });
@@ -83,8 +89,13 @@ class Send extends React.Component {
         dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
     }
     _toggleShareType() {
-        this.setState({
-            shareType: this.state.shareType === PIN_SHARE ? LINK_SHARE:PIN_SHARE
+        dispatcher.onNext({
+            type: actions.SEND_OPTIONS_CHANGED,
+            options: {
+                send: {
+                    shareType: this.state.shareType === PIN_SHARE ? LINK_SHARE:PIN_SHARE
+                }
+            }
         });
     }
     _getLinkShareTitle() {
@@ -146,7 +157,5 @@ class Send extends React.Component {
         }
     }
 };
-
-Send.defaultProps = {mode: Send.LINK_MODE_};
 
 module.exports = Send;
