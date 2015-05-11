@@ -1,6 +1,8 @@
 var Store = require('./store.js'),
     actions = require('../actions/actions.js'),
-    dispatcher = require('../dispatcher/dispatcher.js');
+    dispatcher = require('../dispatcher/dispatcher.js'),
+
+    STORAGE_KEY = 'options';
 
 class Options extends Store {
     constructor() {
@@ -14,15 +16,14 @@ class Options extends Store {
         }, this);
     }
     getInitialState() {
-        var item = localStorage.getItem('options');
         try {
-            return JSON.parse(item) || {};
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
         } catch (e) {
             return {};
         }
     }
     _store() {
-        localStorage.setItem('options', JSON.stringify(this.getState()));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.getState()));
     }
 }
 

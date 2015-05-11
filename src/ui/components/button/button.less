@@ -130,7 +130,7 @@
             cursor: pointer;
             letter-spacing: 0.65 / 26 * 1em;
 
-            &:focus {
+            &:focus, &:not([value=""]) {
                 opacity: 1;
             }
 
@@ -148,7 +148,8 @@
                 color: @grey;
             }
         }
-        .button__input:focus + .button__text {
+        .button__input:focus + .button__text,
+        .button__input:not([value=""]) + .button__text {
             opacity: 0;
         }
     }

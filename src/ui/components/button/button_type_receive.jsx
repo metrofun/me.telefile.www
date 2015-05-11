@@ -37,6 +37,7 @@ class Button extends React.Component {
                 onBlur={this.reset_}
                 onKeyDown={this._onKeyChange}
                 onChange={this._onKeyChange}
+                autoComplete="off"
                 value={this.state.pin}
                 type="text" placeholder="INPUT PIN"/>
             <span className="button__text">RECEIVE</span>

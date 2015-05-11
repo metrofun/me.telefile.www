@@ -8,6 +8,8 @@ class Router extends Store {
         super();
 
         if (ReactiveWebrtc.isSupported())  {
+            this._handleDownloadLinks();
+
             dispatcher.subscribeOnNext(function(action) {
                 this.setState({parent: '/'});
                 switch (action.type) {
@@ -28,6 +30,21 @@ class Router extends Store {
             }, this);
         } else {
             this.setState({ pathname: '/not-supported' });
+        }
+    }
+    _handleDownloadLinks() {
+        var pin = location.hash.replace(/^#/, '');
+
+        if (pin) {
+            // remove hash
+            history.pushState("", document.title, window.location.pathname);
+
+            // Implicit dependency
+            require('./pin.js');
+            dispatcher.onNext({
+                type: actions.PIN_CHANGED,
+                pin
+            });
         }
     }
     _normalizePathname(pathname) {

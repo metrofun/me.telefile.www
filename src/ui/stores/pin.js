@@ -2,7 +2,7 @@ var Store = require('./store.js'),
     actions = require('../actions/actions.js'),
     dispatcher = require('../dispatcher/dispatcher.js'),
 
-    PIN_LENGTH = 6;
+    PIN_LENGTH = 4;
 
 class Pin extends Store {
     constructor() {
@@ -17,6 +17,8 @@ class Pin extends Store {
                     this.setState({pin, isValid});
 
                     if (isValid) {
+                        // Implicit dependency
+                        require('./file.js');
                         dispatcher.onNext({ type: actions.PIN_VALID, pin});
                     }
                 }
