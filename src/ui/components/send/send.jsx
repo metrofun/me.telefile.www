@@ -105,7 +105,7 @@ class Send extends React.Component {
     }
     _getLinkShareTitle() {
         return <span className="send__link">
-            <span className="send__link-domain">telefile.me/</span>
+            <span className="send__link-domain">telefile.me/g/</span>
             <span className="send__link-pin">{this.state.pin}</span>
         </span>;
     }

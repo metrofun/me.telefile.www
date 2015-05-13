@@ -34,11 +34,11 @@ class Router extends Store {
         }
     }
     _handleDownloadLinks() {
-        var pin = location.hash.replace(/^#/, '');
+        var {'1': pin} = location.hash.match(/^#?\/([0-9]+)/) || {};
 
         if (pin) {
             // remove hash
-            history.replaceState('', document.title, '/' + pin);
+            history.replaceState('', document.title, '/g/' + pin);
 
             // Implicit dependency
             require('./pin.js');
