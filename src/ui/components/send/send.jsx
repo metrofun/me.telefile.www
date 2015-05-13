@@ -22,9 +22,14 @@ class Send extends React.Component {
             {send} = optionsStore.getState(),
             shareType = send && send.shareType;
 
+        if (!shareType) {
+            shareType = window.matchMedia('(orientation:landscape)').matches ?
+                LINK_SHARE:PIN_SHARE;
+        }
+
         this.setState({
             mode: WAIT_MODE,
-            shareType: shareType || PIN_SHARE,
+            shareType,
             timeleft: MAX_WAITING_TIME
         });
 
@@ -137,11 +142,7 @@ class Send extends React.Component {
                     <Mobile />
                     <Process
                         progress={1 - this.state.timeleft / MAX_WAITING_TIME}
-                        title={<span
-                            ref="title"
-                            onClick={this._selectTitle.bind(this)}>
-                            {title}
-                        </span>}
+                        title={<span ref="title" > {title} </span>}
                         subtitle={subtitle}
                         footer={this._formatTimeleft(this.state.timeleft)}>
                         {buttons}
