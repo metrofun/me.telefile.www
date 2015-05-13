@@ -7,7 +7,7 @@ var React = require('react'),
 
 class Completed extends React.Component {
     _cancel() {
-        dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
+        dispatcher.onNext({ type: actions.RESET });
     }
     _formatSize(bytes) {
         if(bytes === 0) {

@@ -32,6 +32,7 @@ class Button extends React.Component {
     }
     render() {
         return <div className="button button_type_receive">
+            {this.state.isValid && <div className="button__spinner"></div>}
             <input className="button__input"
                 ref="input"
                 onBlur={this.reset_}

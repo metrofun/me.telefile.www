@@ -22,8 +22,8 @@ class Pin extends Store {
                         dispatcher.onNext({ type: actions.PIN_VALID, pin});
                     }
                 }
-            } else if (action.type === actions.PIN_INVALID) {
-                // If pin is invalid remove it from the input
+            } else if (action.type === actions.PIN_INVALID
+                || action.type === actions.RESET) {
                 this.setState({ isValid: false, pin: '' });
             }
         }, this);

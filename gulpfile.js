@@ -76,6 +76,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('watch', function () {
+    livereload.listen();
     gulp.watch([
         SRC_DIR + '/**/*.less',
         SRC_DIR + '/ui/components/**/*.less'

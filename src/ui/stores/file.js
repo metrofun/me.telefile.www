@@ -17,7 +17,7 @@ class FileStore extends Store {
                 this._onFileSend(action.file);
             } else if (action.type === actions.PIN_VALID) {
                 this._onValidPin(action.pin);
-            } else if (action.type === actions.FILE_TRANSFER_CANCEL) {
+            } else if (action.type === actions.RESET) {
                 this._cancel();
             }
         }, this);

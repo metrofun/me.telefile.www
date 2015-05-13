@@ -86,7 +86,7 @@ class Send extends React.Component {
         clearInterval(this._intervalId);
     }
     _cancel() {
-        dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
+        dispatcher.onNext({ type: actions.RESET });
     }
     _toggleShareType() {
         dispatcher.onNext({

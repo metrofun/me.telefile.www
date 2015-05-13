@@ -73,7 +73,7 @@ class TransferComponent extends React.Component {
         return Number(progress).toFixed(Number(progress < 10));
     }
     _cancel() {
-        dispatcher.onNext({ type: actions.FILE_TRANSFER_CANCEL });
+        dispatcher.onNext({ type: actions.RESET });
     }
     render() {
         return <div className="layout transfer">

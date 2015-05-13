@@ -154,3 +154,64 @@
         }
     }
 }
+
+.button__spinner {
+    @outer-size: 3rem;
+    height: @outer-size;
+    width: @outer-size;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    @media screen and (orientation:landscape) {
+        right: 1rem;
+    }
+
+    @media screen and (orientation:portrait) {
+        right: calc(10vw - 1.2rem);
+    }
+
+    &:after,
+    &:before {
+        box-sizing: border-box;
+        content: '';
+        border-radius: 100%;
+        animation-fill-mode: both;
+        border: 0.4rem solid @white;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    &:before{
+        width: 100%;
+        height: 100%;
+
+        border-bottom-color: transparent;
+        border-top-color: transparent;
+
+        animation: rotate 1s 0s ease-in-out infinite;
+    }
+
+    &:after{
+        @inner-size: 1.8rem;
+        height: @inner-size;
+        width: @inner-size;
+
+        border-color: @white transparent @white transparent;
+
+        animation: rotate 0.5s 0s ease-in-out infinite reverse;
+    }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(0.6); }
+    100% { transform: rotate(360deg) scale(1); }
+}

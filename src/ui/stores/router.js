@@ -25,7 +25,6 @@ class Router extends Store {
                     case actions.PIN_ERROR:
                         return this.setState({ pathname: '/error'});
                     case actions.FILE_SEND_TIMEOUT:
-                        case actions.FILE_TRANSFER_CANCEL:
                         case actions.RESET:
                         return this.setState({ pathname: '/' });
                 }
