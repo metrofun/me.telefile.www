@@ -167,12 +167,15 @@ ReactiveWebrtc.prototype = {
         }.bind(this)).subscribe(this._reactiveTransportOpening);
     },
     _disposeSignaller: function (e) {
+        // Before throwing an error into signaller
+        // unsubscribe from it first
+        this._signallerDisposable.dispose();
+
         if (e) {
             this._signaller.getWriteBus().onError(e);
         } else {
             this._signaller.getWriteBus().onCompleted();
         }
-        this._signallerDisposable.dispose();
     },
     _onInternalError: function (e) {
         this._disposeSignaller(e);

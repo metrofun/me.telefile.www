@@ -28,7 +28,9 @@ class FileReceiver extends FileTransfer {
             return new Blob(parts, options);
         }).bufferWithCount(2048).reduce(function (acc, blobs) {
             return new Blob([].concat(acc, blobs), options);
-        }, new Blob([], options)).toPromise();
+        }, new Blob([], options)).toPromise()
+        // if nobody listens don't throw
+        .then(null, function() {});
     }
 }
 

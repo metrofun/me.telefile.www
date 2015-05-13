@@ -23,7 +23,8 @@ class Pin extends Store {
                     }
                 }
             } else if (action.type === actions.PIN_INVALID) {
-                this.setState({ isValid: false });
+                // If pin is invalid remove it from the input
+                this.setState({ isValid: false, pin: '' });
             }
         }, this);
     }

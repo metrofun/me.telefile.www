@@ -18,6 +18,8 @@ class Router extends Store {
                     case actions.FILE_COMPLETED:
                         return this.setState({ pathname: '/completed'});
                     case actions.FILE_RECEIVE:
+                        // If we came by download link, then remove id from url
+                        history.replaceState('', document.title, '/');
                         return this.setState({ pathname: '/receive'});
                     case actions.FILE_ERROR:
                     case actions.PIN_ERROR:
@@ -37,7 +39,7 @@ class Router extends Store {
 
         if (pin) {
             // remove hash
-            history.pushState("", document.title, window.location.pathname);
+            history.replaceState('', document.title, '/' + pin);
 
             // Implicit dependency
             require('./pin.js');

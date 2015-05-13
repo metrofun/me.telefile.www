@@ -50,7 +50,8 @@ Signaller.prototype = {
                 (message) => resolve(message.pin),
                 (e) => reject(e)
             );
-        });
+        // if nobody listens don't throw
+        }).then(null, function() {});
     }
 };
 
