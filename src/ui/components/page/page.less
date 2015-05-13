@@ -29,11 +29,15 @@
         /* overflow: hidden; */
 
         &.page:before {
-            height: 60vh;
             background-repeat: no-repeat;
             background-position: bottom;
 
+            @media screen and (orientation:portrait) {
+                height: 60vh;
+            }
+
             @media screen and (orientation:landscape) {
+                height: 100%;
                 background-size: 100% auto;
             }
         }

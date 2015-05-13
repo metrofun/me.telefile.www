@@ -93,7 +93,7 @@
                 float: left;
             }
 
-            :checked ~ * {
+            input:checked ~ .menu__list {
                 .menu__item {
                     .generate-items(@n, @i: 1) when (@i <= @n) {
                         &:nth-child(@{i}) {
@@ -129,7 +129,7 @@
                 float: right;
             }
 
-            :checked ~ * {
+            input:checked ~ .menu__list {
                 .menu__item {
                     .generate-items(@n, @i: 1) when (@i <= @n) {
                         &:nth-child(@{i}) {
@@ -152,7 +152,7 @@
     &__toggle {
         z-index: 4;
 
-        :checked ~ & {
+        input:checked ~ & {
             z-index: 8;
         }
 
@@ -220,7 +220,7 @@
             background-image: data-uri('src/ui/components/header/close.svg');
         }
 
-        :checked ~ & {
+        input:checked ~ & {
             &:before {
                 transform: translateX(0);
             }
