@@ -56,6 +56,10 @@ class FileStore extends Store {
         var state = this.getState(),
             transferer = state.sender || state.receiver;
 
+        //Dispose subscriptions to sender/receiver
+        //before disposing it
+        this.serialDisposable_.dispose();
+
         if (transferer) {
             transferer.dispose();
         }

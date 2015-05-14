@@ -9,6 +9,7 @@
     "bluebird": "^2.9.4",
     "bootstrap": "^3.2.0",
     "browserify": "^9.0.3",
+    "chai": "^2.3.0",
     "delete": "^0.1.5",
     "gulp": "~3.8.1",
     "gulp-babel": "^4.0.0",

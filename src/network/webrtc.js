@@ -67,10 +67,10 @@ ReactiveWebrtc.prototype = {
             // so we merge inSubject with a sequence
             //  which completes after first unpause
             .merge(pauser.filter(Boolean).take(1).ignoreElements())
-            .pausableBuffered(pauser)
             // signaller might be already disposed
             .doOnError(this._disposeSignaller.bind(this))
             .doOnCompleted(this._disposeSignaller.bind(this))
+            .pausableBuffered(pauser)
             .subscribe(proxySubject);
 
 

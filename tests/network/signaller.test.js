@@ -54,7 +54,7 @@ describe('network', function () {
             ]);
         });
 
-        it('getPin should reject on errror', function (done) {
+        it('getPin should reject on error', function (done) {
             sockMock.onclose();
 
             signaller.getPin().catch(function () {

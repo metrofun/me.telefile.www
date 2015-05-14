@@ -1,4 +1,3 @@
-require('../../src/env/debug.js');
 var expect = require('chai').expect,
     sinon = require('sinon'),
     rewire = require('rewire'),
@@ -14,6 +13,7 @@ describe('network', function () {
         var webrtc,
             scheduler,
             result,
+            errorMock,
             pcMock,
             dataChannelMock,
             signallerMock,
@@ -26,6 +26,7 @@ describe('network', function () {
                 bufferedAmount: 0,
                 readyState: 'connecting'
             };
+            errorMock = new Error('mock error');
             pcMock = {
                 createOffer: sinon.stub(),
                 createDataChannel: sinon.stub().returns(dataChannelMock),
@@ -35,7 +36,8 @@ describe('network', function () {
             signallerWriteBusMock = new Rx.ReplaySubject();
             signallerMock = {
                 getReadStream: sinon.stub().returns(signallerReadStreamMock),
-                getWriteBus: sinon.stub().returns(signallerWriteBusMock)
+                getWriteBus: sinon.stub().returns(signallerWriteBusMock),
+                dispose: sinon.spy()
             };
             scheduler = new TestScheduler();
             result = scheduler.createObserver();
@@ -43,9 +45,11 @@ describe('network', function () {
             // override  variables from the scope
             Webrtc.__set__('Signaller', sinon.stub().returns(signallerMock));
             Webrtc.__set__('scheduler', scheduler);
-            Webrtc.__set__('RTCPeerConnection ', sinon.stub().returns(pcMock));
-            Webrtc.__set__('RTCSessionDescription', sinon.stub().returns({}));
-            Webrtc.__set__('RTCIceCandidate', sinon.stub().returns({}));
+            Webrtc.__set__('window', {
+                RTCPeerConnection: sinon.stub().returns(pcMock),
+                RTCSessionDescription: sinon.stub().returns({}),
+                RTCIceCandidate: sinon.stub().returns({})
+            });
 
             // call RTCSessionDescriptionCallback
             pcMock.createOffer.callsArgWith(0, 'sample sdp');
@@ -274,6 +278,25 @@ describe('network', function () {
                 scheduler.start();
 
                 expect(result.messages).to.deep.equal([]);
+            });
+            it('passes error to signaller#writeBus', function () {
+                webrtc = new Webrtc('pin123');
+
+                signallerWriteBusMock.subscribe(result);
+
+                scheduler.scheduleAbsolute(200, function () {
+                    dataChannelMock.onopen();
+                });
+                scheduler.scheduleAbsolute(100, function () {
+                    webrtc.getWriteBus().onError(errorMock);
+                });
+
+                scheduler.start();
+
+                expect(result.messages).to.deep.equal([
+                    onNext(0, {sdp : 'sample sdp'}),
+                    onError(100, errorMock)
+                ]);
             });
         });
         describe('#readStream', function () {

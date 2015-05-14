@@ -16,7 +16,7 @@ class FileReceiver extends FileTransfer {
         return this.getTransport().getReadStream();
     }
     getBlob() {
-        return this._blobIsLoading;
+        return this._blobIsLoading.toPromise();
     }
     _initBlob() {
         var options = {type: 'application/octet-stream'};
@@ -28,9 +28,7 @@ class FileReceiver extends FileTransfer {
             return new Blob(parts, options);
         }).bufferWithCount(2048).reduce(function (acc, blobs) {
             return new Blob([].concat(acc, blobs), options);
-        }, new Blob([], options)).toPromise()
-        // if nobody listens don't throw
-        .then(null, function() {});
+        }, new Blob([], options)).shareReplay(1);
     }
 }
 

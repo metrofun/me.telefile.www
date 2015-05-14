@@ -168,7 +168,7 @@ gulp.task('rev-replace', ['revision', 'renderStaticPages'], function(){
         .pipe(gulp.dest(SITE_DIR));
 });
 
-gulp.task('publish', ['rev-replace'], function () {
+gulp.task('publish', ['test', 'rev-replace'], function () {
      return gulp.src(SITE_DIR + '/**/*').pipe(ghPages({
         cacheDir: '.gulp-gh-pages'
      }));

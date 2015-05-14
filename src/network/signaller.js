@@ -29,14 +29,13 @@ function Signaller(pin) {
 
 Signaller.prototype = {
     constructor: Signaller,
-
     /**
      * Returns current session pin
      *
      * @returns {Promise}
      */
     getPin: function () {
-        return this._pinPromise;
+        return this._pinObservable.toPromise();
     },
     getReadStream: function () {
         return this._reactiveTransport.getReadStream().skip(1);
@@ -45,13 +44,8 @@ Signaller.prototype = {
         return this._reactiveTransport.getWriteBus();
     },
     _initPin: function() {
-        this._pinPromise = new Promise((resolve, reject) => {
-            this._reactiveTransport.getReadStream().take(1).subscribe(
-                (message) => resolve(message.pin),
-                (e) => reject(e)
-            );
-        // if nobody listens don't throw
-        }).then(null, function() {});
+        this._pinObservable = this._reactiveTransport.getReadStream()
+            .take(1).pluck('pin').shareReplay(1);
     }
 };
 
