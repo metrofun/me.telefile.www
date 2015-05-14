@@ -58,7 +58,7 @@ class FileStore extends Store {
 
         //Dispose subscriptions to sender/receiver
         //before disposing it
-        this.serialDisposable_.dispose();
+        this.serialDisposable_.setDisposable(Rx.Disposable.create());
 
         if (transferer) {
             transferer.dispose();
