@@ -2,12 +2,12 @@ var gulp = require('gulp'),
     map = require('map-stream'),
     less = require('gulp-less'),
     gutil = require('gulp-util'),
+    clean = require('gulp-clean'),
     concat = require('gulp-concat'),
-    React = require('react'),
+    rev = require('gulp-rev'),
+    revReplace = require("gulp-rev-replace"),
     del = require('delete'),
-    replace = require('gulp-replace'),
     symlink = require('gulp-symlink'),
-    rename = require('gulp-rename'),
     ghPages = require("gulp-gh-pages"),
     uglify = require('gulp-uglify'),
     browserify = require('browserify'),
@@ -139,12 +139,36 @@ gulp.task('test', function () {
     }));
 });
 
-gulp.task('publish', [
-    'renderStaticPages',
-    'less',
-    'js',
-    'uglify'
-], function () {
+gulp.task('clean', function () {
+    return gulp.src([
+        SITE_DIR + '/**/*-*.css',
+        SITE_DIR + '/**/*-*.js'
+    ], {read: false})
+    .pipe(clean())
+    .pipe(gulp.dest(SITE_DIR));
+});
+
+gulp.task('revision', ['less', 'uglify', 'clean'], function () {
+    return gulp.src([
+        SITE_DIR + '/**/*.css',
+        SITE_DIR + '/**/*.js',
+        '!' + SITE_DIR + '/**/_*'
+    ])
+    .pipe(rev())
+    .pipe(gulp.dest(SITE_DIR))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest(SITE_DIR));
+});
+
+gulp.task('rev-replace', ['revision', 'renderStaticPages'], function(){
+    var manifest = gulp.src(SITE_DIR + '/rev-manifest.json');
+
+    return gulp.src(SITE_DIR + '/index.html')
+        .pipe(revReplace({manifest: manifest}))
+        .pipe(gulp.dest(SITE_DIR));
+});
+
+gulp.task('publish', ['rev-replace'], function () {
      return gulp.src(SITE_DIR + '/**/*').pipe(ghPages({
         cacheDir: '.gulp-gh-pages'
      }));
