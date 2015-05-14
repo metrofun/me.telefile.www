@@ -1,36 +1,28 @@
 module.exports = [
+    {
+        'url':'stun:global.stun.twilio.com:3478?transport=udp'
+    },
+    {
+        "url":"stun:turn2.xirsys.com"
+    },
+    {
+        'url':'turn:global.turn.twilio.com:3478?transport=udp',
+        'username':'6b1b54ef3516b0896246b2cfad46f30119dbe4d33badc0548ba5e5039c505325',
+        'credential':'Kl5WS0OV2sim9ZGLqS9lXBRsUNptS2GKc28wtF9uvqw='
+    },
+    {
+        "username":"bf98b2ff-dedc-4a91-a47f-63df76360b46",
+        "url":"turn:turn2.xirsys.com:443?transport=udp",
+        "credential":"a29ba4d8-e969-41c1-b0db-dfce4819ea90"
+    },
+    {
+        "username":"bf98b2ff-dedc-4a91-a47f-63df76360b46",
+        "url":"turn:turn2.xirsys.com:443?transport=tcp",
+        "credential":"a29ba4d8-e969-41c1-b0db-dfce4819ea90"
+    },
     {url: 'stun:stun.l.google.com:19302'},
     {url: 'stun:stun1.l.google.com:19302'},
     {url: 'stun:stun2.l.google.com:19302'},
     {url: 'stun:stun3.l.google.com:19302'},
-    {url: 'stun:stun4.l.google.com:19302'},
-    {url: 'stun:stun01.sipphone.com'},
-    {url: 'stun:stun.ekiga.net'},
-    {url: 'stun:stun.fwdnet.net'},
-    {url: 'stun:stun.ideasip.com'},
-    {url: 'stun:stun.iptel.org'},
-    {url: 'stun:stun.rixtelecom.se'},
-    {url: 'stun:stun.schlund.de'},
-    {url: 'stun:stunserver.org'},
-    {url: 'stun:stun.softjoys.com'},
-    {url: 'stun:stun.voiparound.com'},
-    {url: 'stun:stun.voipbuster.com'},
-    {url: 'stun:stun.voipstunt.com'},
-    {url: 'stun:stun.voxgratia.org'},
-    {url: 'stun:stun.xten.com'},
-    {
-        url: 'turn:numb.viagenie.ca',
-        credential: 'muazkh',
-        username: 'webrtc@live.com'
-    },
-    {
-        url: 'turn:192.158.29.39:3478?transport=udp',
-        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-        username: '28224511:1379330808'
-    },
-    {
-        url: 'turn:192.158.29.39:3478?transport=tcp',
-        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-        username: '28224511:1379330808'
-    }
+    {url: 'stun:stun4.l.google.com:19302'}
 ];
