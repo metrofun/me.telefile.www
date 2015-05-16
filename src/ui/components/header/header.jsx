@@ -31,12 +31,12 @@ class Header extends React.Component {
                 <div className="share menu menu_col_4 menu_align_right">
                     <input className="menu__checkbox" id="menu__checkbox-2" type="checkbox" />
                     <label className="menu__toggle share__toggle" htmlFor="menu__checkbox-2"></label>
-                    <ul className="menu__list" onClick={this._onShare}>
+                    <ul className="menu__list">
                         <li className="menu__item share__item share__twitter">
-                            <a className="share__link" title="Share on Twitter" target="_blank" href="https://twitter.com/home?status=TeleFile.Me%20%E2%80%93%20transfer%20files%20peer-to-peer%20to%20another%20browser%20via%20%40TeleFileMe%20%23WebRTC">&nbsp;</a>
+                            <a className="share__link" title="Share on Twitter" target="_blank" href="//twitter.com/TeleFileMe">&nbsp;</a>
                         </li>
                         <li className="menu__item share__item share__facebook">
-                            <a className="share__link" title="Share on Facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://telefile.me">&nbsp;</a>
+                            <a className="share__link" title="Share on Facebook" target="_blank" href="//www.facebook.com/TeleFileMe/timeline">&nbsp;</a>
                         </li>
                         <li className="menu__item share__item share__linkedin">
                             <a className="share__link" title="Share on LinkedIn" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://telefile.me&title=TeleFile.Me%20%E2%80%93%20Peer-to-peer%20file%20sharing%20tool&summary=&source=">&nbsp;</a>
