@@ -18,6 +18,9 @@ var React = require('react'),
 
 class Send extends React.Component {
     componentWillMount() {
+        this.copyUrl = this.copyUrl.bind(this);
+        document.addEventListener('copy', this.copyUrl);
+
         var sender = fileStore.getState().sender,
             {send} = optionsStore.getState(),
             shareType = send && send.shareType;
@@ -50,7 +53,19 @@ class Send extends React.Component {
         }, () => dispatcher.onNext({ type: actions.FILE_ERROR }));
     }
     componentWillUnmount() {
+        document.removeEventListener('copy', this.copyUrl);
         this._clearWaitingTick();
+    }
+    copyUrl(e) {
+        if ((this.state.shareType === LINK_SHARE)) {
+            e.clipboardData.setData('text/plain', [
+                document.location.protocol,
+                '//telefile.me/g/',
+                this.state.pin
+            ].join(''));
+
+            e.preventDefault();
+        }
     }
     _selectTitle() {
         var text =  this.refs.title.getDOMNode(),
