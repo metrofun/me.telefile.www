@@ -45,7 +45,9 @@ Signaller.prototype = {
     },
     _initPin: function() {
         this._pinObservable = this._reactiveTransport.getReadStream()
-            .take(1).pluck('pin').shareReplay(1);
+            .take(1).pluck('pin').publishLast();
+
+        this._pinObservable.connect();
     }
 };
 
