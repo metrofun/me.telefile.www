@@ -24,7 +24,7 @@ class Home extends React.Component {
                 <div className="lead">
                     <div className="lead__text">from peer to peer</div>
                     <div className="lead__hero">Send a File<br />in Two Clicks</div>
-                    <div className="lead__text lead__text_align_right">no limits, no cloud</div>
+                    <div className="lead__text lead__text_align_right">no limits, faster than cloud</div>
                 </div>
                 <Mobile />
                 <Particles />

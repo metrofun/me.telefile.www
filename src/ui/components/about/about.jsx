@@ -33,7 +33,7 @@ class ErrorComponent extends React.Component {
                 <div className="features__item features__item_align_right">
                     <div className="features__caption">
                         Share large video files
-                        without a size constraints
+                        without size constraints
                     </div>
                     <div className="features__text">
                         Take a video on your phone and send it to your friends just in two clicks.
